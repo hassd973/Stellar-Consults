@@ -50,7 +50,7 @@ document.addEventListener('DOMContentLoaded', () => {
       starfieldCtx.fillStyle = this.color;
       starfieldCtx.globalAlpha = this.opacity;
       starfieldCtx.shadowColor = this.color;
-      starfieldCtx.shadowBlur = 15;
+      starfieldCtx.shadowBlur = 20;
       starfieldCtx.fill();
       starfieldCtx.shadowBlur = 0;
       starfieldCtx.globalAlpha = 1;
