@@ -9,29 +9,56 @@ document.addEventListener('DOMContentLoaded', () => {
     .bindPopup('Stellar Consults<br>Servcorp One World Trade Center, 285 Fulton St Fl 85, New York, NY 10007')
     .openPopup();
 
-  // Video Playback with YouTube Fallback
+  // Video Playback with Robust Fallback
   const video = document.querySelector('.video-background');
   const youtubeIframe = document.querySelector('.youtube-background');
+  const fallbackImage = document.querySelector('.fallback-image');
   const videoSource = video.querySelector('source');
+  let retryCount = 0;
+  const maxRetries = 3;
 
   const tryVideoPlayback = () => {
+    console.log('Attempting to load video:', videoSource.src);
     video.load();
     const playPromise = video.play();
     if (playPromise !== undefined) {
-      playPromise.catch((error) => {
-        console.error('Video playback failed:', error);
-        // Fallback to YouTube
-        video.classList.add('hidden');
-        youtubeIframe.classList.add('active');
-      });
+      playPromise
+        .then(() => {
+          console.log('Video playback started successfully');
+        })
+        .catch((error) => {
+          console.error('Video playback failed:', error);
+          retryCount++;
+          if (retryCount < maxRetries) {
+            console.log(`Retrying video playback (${retryCount}/${maxRetries})`);
+            setTimeout(tryVideoPlayback, 1000);
+          } else {
+            console.log('Switching to YouTube fallback');
+            video.classList.add('hidden');
+            youtubeIframe.classList.add('active');
+            // Check YouTube iframe load
+            youtubeIframe.addEventListener('error', () => {
+              console.error('YouTube iframe failed to load');
+              youtubeIframe.classList.remove('active');
+              fallbackImage.classList.add('active');
+              console.log('Switched to fallback image');
+            });
+          }
+        });
     }
   };
 
-  video.addEventListener('error', () => {
-    console.error('Video failed to load:', videoSource.src);
-    // Fallback to YouTube
-    video.classList.add('hidden');
-    youtubeIframe.classList.add('active');
+  video.addEventListener('error', (e) => {
+    console.error('Video failed to load:', videoSource.src, e);
+    retryCount++;
+    if (retryCount < maxRetries) {
+      console.log(`Retrying video load (${retryCount}/${maxRetries})`);
+      setTimeout(tryVideoPlayback, 1000);
+    } else {
+      console.log('Switching to YouTube fallback');
+      video.classList.add('hidden');
+      youtubeIframe.classList.add('active');
+    }
   });
 
   // Attempt to play video
@@ -39,16 +66,19 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // Fade-in animation on scroll
   const sections = document.querySelectorAll('.fade-in');
-  const observer = new IntersectionObserver((entries) => {
-    entries.forEach((entry) => {
-      if (entry.isIntersecting) {
-        entry.target.classList.add('visible');
-      }
-    });
-  }, { threshold: 0.1 });
+  const observer = new IntersectionObserver(
+    (entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+        }
+      });
+    },
+    { threshold: 0.1 }
+  );
   sections.forEach((section) => observer.observe(section));
 
-  // Typing animation with terminal cursor
+  // Typing animation with neon cursor
   const typingText = document.querySelector('.typing-text');
   typingText.style.width = '0';
   setTimeout(() => {
