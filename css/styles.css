@@ -1,61 +1,113 @@
+@font-face {
+  font-family: 'Neue Metana';
+  src: url('/assets/fonts/neue-metana.otf') format('opentype');
+  font-weight: normal;
+  font-style: normal;
+}
+
+/* Light Mode (Default) */
+:root.light {
+  --bg-color: #FFFFFF;
+  --text-color: #1F2937;
+  --header-color: #1E3A8A;
+  --accent-color: #14B8A6;
+  --secondary-accent: #8B5CF6;
+  --section-bg: #F9FAFB;
+  --button-bg: #1E3A8A;
+  --button-text: #FFFFFF;
+  --button-hover-bg: #14B8A6;
+  --footer-bg: #1E3A8A;
+  --input-border: #D1D1D1;
+}
+
+/* Dark Mode */
+:root.dark {
+  --bg-color: #1F2937;
+  --text-color: #E5E7EB;
+  --header-color: #14B8A6;
+  --accent-color: #8B5CF6;
+  --secondary-accent: #EF4444;
+  --section-bg: #374151;
+  --button-bg: #14B8A6;
+  --button-text: #1F2937;
+  --button-hover-bg: #8B5CF6;
+  --footer-bg: #111827;
+  --input-border: #4B5563;
+}
+
 body {
-  font-family: 'Neue Metana', 'Nunito Sans', sans-serif;
-  background-color: #FFFFFF;
-  color: #000000;
+  font-family: 'Neue Metana', 'JetBrains Mono', monospace;
+  background-color: var(--bg-color);
+  color: var(--text-color);
   line-height: 1.6;
   margin: 0;
   padding: 0;
+  transition: background-color 0.3s, color 0.3s;
 }
+
 h1, h2, h3 {
-  font-family: 'Neue Metana', 'Nunito Sans', sans-serif;
-  font-weight: 600;
-  color: #000000;
+  font-family: 'Neue Metana', 'JetBrains Mono', monospace;
+  font-weight: 800;
+  color: var(--header-color);
 }
+
 .section {
   padding: 80px 0;
   position: relative;
   z-index: 1;
 }
+
 .container {
-  max-width: 800px;
+  max-width: 1280px;
 }
+
 .logo {
   overflow: hidden;
   white-space: nowrap;
 }
+
 .btn {
-  transition: background-color 0.3s, transform 0.2s;
+  transition: background-color 0.3s, transform 0.2s, color 0.3s;
+  background-color: var(--button-bg);
+  color: var(--button-text);
 }
+
 .btn:hover {
-  background-color: #D1D1D1;
+  background-color: var(--button-hover-bg);
   transform: scale(1.05);
 }
+
 #map {
-  height: 400px;
+  height: 500px;
 }
+
 .form-input {
-  background-color: #FFFFFF;
-  border: 1px solid #D1D1D1;
-  color: #000000;
-  border-radius: 4px;
+  background-color: var(--bg-color);
+  border: 1px solid var(--input-border);
+  color: var(--text-color);
+  border-radius: 8px;
   padding: 12px;
   width: 100%;
   box-sizing: border-box;
-  transition: border-color 0.3s;
+  transition: border-color 0.3s, background-color 0.3s, color 0.3s;
 }
+
 .form-input:focus {
-  border-color: #2563EB;
+  border-color: var(--accent-color);
   outline: none;
 }
+
 .fade-in {
   opacity: 0;
-  transform: translateY(20px);
-  transition: opacity 0.5s ease, transform 0.5s ease;
+  transform: translateY(30px);
+  transition: opacity 0.6s ease, transform 0.6s ease;
 }
+
 .fade-in.visible {
   opacity: 1;
   transform: translateY(0);
 }
+
 /* Video Background */
 .video-background {
   position: absolute;
@@ -65,31 +117,83 @@ h1, h2, h3 {
   height: 100%;
   object-fit: cover;
   z-index: -1;
-  opacity: 0.3;
-  filter: brightness(0.8);
+  opacity: 0.5;
+  filter: brightness(0.9);
 }
+
 .video-overlay {
   position: absolute;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
-  background: rgba(255, 255, 255, 0.7);
+  background: rgba(255, 255, 255, 0.6);
   z-index: -1;
+  transition: background 0.3s;
 }
-/* Typing Animation */
+
+:root.dark .video-overlay {
+  background: rgba(31, 41, 55, 0.6);
+}
+
+/* Typing Animation with Cursor */
 .typing-text {
   display: inline-block;
   overflow: hidden;
   white-space: nowrap;
   animation: typing 2s steps(15, end) forwards;
+  position: relative;
 }
+
+.typing-text.cursor-blink::after {
+  content: '|';
+  position: absolute;
+  right: -5px;
+  color: var(--accent-color);
+  animation: blink 0.7s infinite;
+}
+
 @keyframes typing {
   from { width: 0; }
   to { width: 100%; }
 }
-@media (max-width: 640px) {
+
+@keyframes blink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0; }
+}
+
+/* Dark Mode Background Texture */
+:root.dark body {
+  background-image: url('data:image/svg+xml,%3Csvg width="100" height="100" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"%3E%3Ccircle cx="10" cy="10" r="1" fill="%23E5E7EB" /%3E%3Ccircle cx="50" cy="50" r="1" fill="%23E5E7EB" /%3E%3Ccircle cx="90" cy="90" r="1" fill="%23E5E7EB" /%3E%3C/svg%3E');
+  background-size: 50px 50px;
+}
+
+/* Links and Hover Effects */
+a {
+  color: var(--accent-color);
+  transition: color 0.3s;
+}
+
+a:hover {
+  color: var(--secondary-accent);
+}
+
+@media (max-width: 768px) {
   .section {
     padding: 40px 0;
+  }
+  h1 {
+    font-size: 2.5rem;
+  }
+  h2 {
+    font-size: 2rem;
+  }
+  h3 {
+    font-size: 1.5rem;
+  }
+  .btn {
+    padding: 12px 24px;
+    font-size: 1rem;
   }
 }
