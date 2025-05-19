@@ -121,6 +121,40 @@ h1:hover, h2:hover, p:hover {
   outline: none;
 }
 
+/* Video Box */
+.video-box {
+  position: relative;
+  width: 100%;
+  max-width: 960px;
+  margin: 0 auto;
+  aspect-ratio: 16 / 9;
+  overflow: hidden;
+}
+
+.video-background, .youtube-background, .fallback-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.youtube-background, .fallback-image {
+  display: none;
+}
+
+.youtube-background.active, .fallback-image.active {
+  display: block;
+}
+
+.video-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.02);
+}
+
 /* Text Bubbles */
 .text-bubble-container {
   display: flex;
@@ -166,45 +200,6 @@ h1:hover, h2:hover, p:hover {
 
 .fade-in.visible {
   opacity: 1;
-}
-
-/* Background Video */
-.background-container {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100vh;
-  z-index: -2;
-  overflow: hidden;
-}
-
-.video-background, .youtube-background, .fallback-image {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  opacity: 0.9;
-  transition: opacity 0.5s ease;
-}
-
-.youtube-background, .fallback-image {
-  display: none;
-}
-
-.youtube-background.active, .fallback-image.active {
-  display: block;
-}
-
-.video-overlay {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: rgba(0, 0, 0, 0.02);
 }
 
 /* Navigation */
@@ -305,7 +300,7 @@ footer {
   nav .logo { margin-bottom: 0.5rem; }
   .form-input, .btn { font-size: 0.95rem; }
   .service-item, .success-item, .team-item, .resource-item { padding: 6px 10px; }
-  .video-overlay { background: rgba(0, 0, 0, 0.1); }
+  .video-box { padding: 0 1.5rem; }
   .text-bubble-container { flex-direction: column; align-items: center; }
   .text-bubble { width: 100%; max-width: 200px; font-size: 0.9rem; }
   ul { padding-left: 1.5rem; }
