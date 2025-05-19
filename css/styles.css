@@ -1,190 +1,175 @@
-@font-face {
-  font-family: 'Neue Metana';
-  src: url('/assets/fonts/neue-metana.otf') format('opentype');
-  font-weight: normal;
-  font-style: normal;
-}
-
 /* Light Mode (Default) */
 :root.light {
   --bg-color: #FFFFFF;
-  --text-color: #1F2937;
-  --header-color: #1E3A8A;
-  --accent-color: #00F7FF; /* Neon Blue */
-  --secondary-accent: #8B5CF6;
-  --button-bg: #1E3A8A;
+  --text-color: #1A1A1A;
+  --header-color: #1A1A1A;
+  --accent-color: #4A4A4A;
+  --button-bg: #1A1A1A;
   --button-text: #FFFFFF;
-  --button-hover-bg: #00F7FF;
-  --footer-bg: #1E3A8A;
-  --input-border: #D1D1D1;
+  --button-hover-bg: #4A4A4A;
+  --footer-bg: #1A1A1A;
+  --input-border: #E5E5E5;
 }
 
 /* Dark Mode */
 :root.dark {
-  --bg-color: #1F2937;
-  --text-color: #E5E7EB;
-  --header-color: #00F7FF;
-  --accent-color: #00F7FF;
-  --secondary-accent: #EF4444; /* Martian red hint */
-  --button-bg: #00F7FF;
-  --button-text: #1F2937;
-  --button-hover-bg: #8B5CF6;
-  --footer-bg: #111827;
-  --input-border: #4B5563;
+  --bg-color: #1A1A1A;
+  --text-color: #E5E5E5;
+  --header-color: #E5E5E5;
+  --accent-color: #B3B3B3;
+  --button-bg: #E5E5E5;
+  --button-text: #1A1A1A;
+  --button-hover-bg: #B3B3B3;
+  --footer-bg: #0F0F0F;
+  --input-border: #4A4A4A;
 }
 
 body {
   font-family: 'JetBrains Mono', monospace;
   background-color: var(--bg-color);
   color: var(--text-color);
-  line-height: 1.6;
+  line-height: 1.8;
   margin: 0;
   padding: 0;
   transition: background-color 0.3s, color 0.3s;
 }
 
 h1, h2, h3 {
-  font-family: 'Neue Metana', monospace;
-  font-weight: 800;
+  font-family: 'JetBrains Mono', monospace;
+  font-weight: 700;
   color: var(--header-color);
-  letter-spacing: -0.025em;
+  letter-spacing: 0.02em;
 }
 
 .section {
-  padding: 80px 0;
+  padding: 100px 0;
   position: relative;
   z-index: 10;
   transition: background-color 0.3s;
 }
 
-/* Neon Blue Gradients (Light Mode) */
+/* Monochromatic Gradients (Light Mode) */
 :root.light #home, :root.light #book {
   background-color: transparent; /* Video visible */
 }
 :root.light #about {
-  background-color: rgba(0, 247, 255, 0.1); /* Neon blue */
+  background-color: rgba(0, 0, 0, 0.1);
 }
 :root.light #success {
-  background-color: rgba(0, 212, 255, 0.09);
+  background-color: rgba(0, 0, 0, 0.09);
 }
 :root.light #services {
-  background-color: rgba(0, 183, 235, 0.08);
+  background-color: rgba(0, 0, 0, 0.08);
 }
 :root.light #subscribe {
-  background-color: rgba(0, 183, 235, 0.07);
+  background-color: rgba(0, 0, 0, 0.07);
 }
 :root.light #team {
-  background-color: rgba(0, 183, 235, 0.06);
+  background-color: rgba(0, 0, 0, 0.06);
 }
 :root.light #approach {
-  background-color: rgba(0, 183, 235, 0.05);
+  background-color: rgba(0, 0, 0, 0.05);
 }
 :root.light #why-us {
-  background-color: rgba(0, 183, 235, 0.04);
+  background-color: rgba(0, 0, 0, 0.04);
 }
 :root.light #contact {
-  background-color: rgba(0, 183, 235, 0.03);
+  background-color: rgba(0, 0, 0, 0.03);
 }
 :root.light #map-section {
-  background-color: rgba(0, 183, 235, 0.02); /* Light neon blue */
+  background-color: rgba(0, 0, 0, 0.02);
 }
 
-/* Neon Blue Gradients (Dark Mode) */
+/* Monochromatic Gradients (Dark Mode) */
 :root.dark #home, :root.dark #book {
   background-color: transparent; /* Video visible */
 }
 :root.dark #about {
-  background-color: rgba(0, 247, 255, 0.1); /* Neon blue with Martian hint */
+  background-color: rgba(255, 255, 255, 0.1);
 }
 :root.dark #success {
-  background-color: rgba(0, 212, 255, 0.09);
+  background-color: rgba(255, 255, 255, 0.09);
 }
 :root.dark #services {
-  background-color: rgba(0, 183, 235, 0.08);
+  background-color: rgba(255, 255, 255, 0.08);
 }
 :root.dark #subscribe {
-  background-color: rgba(0, 183, 235, 0.07);
+  background-color: rgba(255, 255, 255, 0.07);
 }
 :root.dark #team {
-  background-color: rgba(0, 183, 235, 0.06);
+  background-color: rgba(255, 255, 255, 0.06);
 }
 :root.dark #approach {
-  background-color: rgba(0, 183, 235, 0.05);
+  background-color: rgba(255, 255, 255, 0.05);
 }
 :root.dark #why-us {
-  background-color: rgba(0, 183, 235, 0.04);
+  background-color: rgba(255, 255, 255, 0.04);
 }
 :root.dark #contact {
-  background-color: rgba(0, 183, 235, 0.03);
+  background-color: rgba(255, 255, 255, 0.03);
 }
 :root.dark #map-section {
-  background-color: rgba(0, 183, 235, 0.02); /* Light neon blue */
+  background-color: rgba(255, 255, 255, 0.02);
 }
 
 .container {
-  max-width: 1280px;
+  max-width: 960px; /* Tighter for minimalism */
 }
 
 .logo {
-  overflow: hidden;
   white-space: nowrap;
-  transition: transform 0.3s ease, text-shadow 0.3s ease;
+  transition: opacity 0.3s ease;
 }
 
-.logo:hover.glow {
-  transform: rotate(2deg);
-  text-shadow: 0 0 10px var(--accent-color), 0 0 20px var(--accent-color);
+.logo:hover {
+  opacity: 0.8;
 }
 
 .btn {
-  transition: all 0.3s ease;
+  transition: background-color 0.3s ease, border-bottom 0.3s ease;
   background-color: var(--button-bg);
   color: var(--button-text);
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+  border: 1px solid var(--input-border);
 }
 
 .btn:hover {
   background-color: var(--button-hover-bg);
-  transform: scale(1.05);
-}
-
-.btn:hover.pulse {
-  box-shadow: 0 0 20px var(--accent-color);
-  animation: pulse 1.5s infinite;
+  border-bottom: 2px solid var(--accent-color);
 }
 
 #map {
-  height: 500px;
-  border-radius: 8px;
+  height: 400px;
+  border: 1px solid var(--input-border);
 }
 
 .form-input {
   background-color: var(--bg-color);
   border: 1px solid var(--input-border);
   color: var(--text-color);
-  border-radius: 8px;
   padding: 12px;
   width: 100%;
   box-sizing: border-box;
-  transition: all 0.3s ease;
+  transition: border-color 0.3s ease;
+  font-family: 'JetBrains Mono', monospace;
+}
+
+.form-input::placeholder {
+  color: var(--accent-color);
 }
 
 .form-input:focus {
   border-color: var(--accent-color);
   outline: none;
-  box-shadow: 0 0 10px var(--accent-color);
 }
 
 /* Fade-in Animation */
 .fade-in {
   opacity: 0;
-  transform: translateY(30px) scale(0.95);
-  transition: opacity 0.6s ease, transform 0.6s ease;
+  transition: opacity 0.8s ease;
 }
 
 .fade-in.visible {
   opacity: 1;
-  transform: translateY(0) scale(1);
 }
 
 /* Fixed Background Video */
@@ -205,8 +190,7 @@ h1, h2, h3 {
   width: 100%;
   height: 100%;
   object-fit: cover;
-  opacity: 0.7;
-  filter: brightness(0.9);
+  opacity: 0.9;
 }
 
 .youtube-background, .fallback-image {
@@ -223,50 +207,29 @@ h1, h2, h3 {
   left: 0;
   width: 100%;
   height: 100%;
-  background: radial-gradient(circle, rgba(0, 247, 255, 0.05) 0%, rgba(0, 0, 0, 0.05) 70%);
+  background: rgba(0, 0, 0, 0.03);
   transition: background 0.3s;
 }
 
 /* Navigation Styling */
 nav {
-  background-color: rgba(255, 255, 255, 0.95);
+  background-color: rgba(255, 255, 255, 0.98);
   transition: background-color 0.3s;
 }
 
 :root.dark nav {
-  background-color: rgba(31, 41, 55, 0.95);
+  background-color: rgba(26, 26, 26, 0.98);
 }
 
 nav a {
-  position: relative;
-  transition: color 0.3s ease;
+  transition: border-bottom 0.3s ease;
 }
 
 nav a:hover {
-  color: var(--accent-color);
+  border-bottom: 1px solid var(--accent-color);
 }
 
-nav a.underline-slide::after {
-  content: '';
-  position: absolute;
-  width: 0;
-  height: 2px;
-  bottom: -2px;
-  left: 0;
-  background-color: var(--accent-color);
-  transition: width 0.3s ease;
-}
-
-nav a:hover.underline-slide::after {
-  width: 100%;
-}
-
-/* Neon Glow */
-.neon-glow {
-  text-shadow: 0 0 5px var(--accent-color), 0 0 10px var(--accent-color);
-}
-
-/* Typing Animation with Neon Cursor */
+/* Typewriter Typing Animation */
 .typing-text {
   display: inline-block;
   overflow: hidden;
@@ -276,14 +239,13 @@ nav a:hover.underline-slide::after {
 }
 
 .typing-text.cursor-blink::after {
-  content: '|';
+  content: '_';
   position: absolute;
   right: -5px;
   color: var(--accent-color);
-  animation: blink 0.7s infinite, pulse 1.5s infinite;
+  animation: blink 0.7s infinite;
 }
 
-/* Animations */
 @keyframes typing {
   from { width: 0; }
   to { width: 100%; }
@@ -294,51 +256,26 @@ nav a:hover.underline-slide::after {
   50% { opacity: 0; }
 }
 
-@keyframes pulse {
-  0% { box-shadow: 0 0 0 0 rgba(0, 247, 255, 0.7); }
-  70% { box-shadow: 0 0 0 10px rgba(0, 247, 255, 0); }
-  100% { box-shadow: 0 0 0 0 rgba(0, 247, 255, 0); }
-}
-
-/* Dark Mode Starry Background with Neon Particles */
+/* Dark Mode Paper Texture */
 :root.dark body {
-  background-image: url('data:image/svg+xml,%3Csvg width="100" height="100" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"%3E%3Ccircle cx="10" cy="10" r="1" fill="%23E5E7EB" /%3E%3Ccircle cx="50" cy="50" r="1" fill="%23E5E7EB" /%3E%3Ccircle cx="90" cy="90" r="1" fill="%23E5E7EB" /%3E%3C/svg%3E');
+  background-image: url('data:image/svg+xml,%3Csvg width="100" height="100" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"%3E%3Crect x="0" y="0" width="100" height="100" fill="none" stroke="%234A4A4A" stroke-width="0.5" /%3E%3C/svg%3E');
   background-size: 50px 50px;
-  position: relative;
-}
-
-:root.dark body::before {
-  content: '';
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: url('data:image/svg+xml,%3Csvg width="10" height="10" viewBox="0 0 10 10" xmlns="http://www.w3.org/2000/svg"%3E%3Ccircle cx="5" cy="5" r="0.5" fill="%2300F7FF" /%3E%3C/svg%3E');
-  background-size: 20px 20px;
-  opacity: 0.3;
-  animation: particle-drift 20s linear infinite;
-}
-
-@keyframes particle-drift {
-  0% { background-position: 0 0; }
-  100% { background-position: 20px 20px; }
 }
 
 /* Links and Hover Effects */
 a {
-  color: var(--accent-color);
-  transition: color 0.3s ease;
+  color: var(--text-color);
+  transition: border-bottom 0.3s ease;
 }
 
 a:hover {
-  color: var(--secondary-accent);
+  border-bottom: 1px solid var(--accent-color);
 }
 
 /* Responsive Design */
 @media (max-width: 768px) {
   .section {
-    padding: 40px 0;
+    padding: 60px 0;
   }
   h1 {
     font-size: 2.5rem;
@@ -350,7 +287,7 @@ a:hover {
     font-size: 1.5rem;
   }
   .btn {
-    padding: 12px 24px;
+    padding: 10px 20px;
     font-size: 1rem;
   }
   nav .container {
@@ -360,5 +297,8 @@ a:hover {
   }
   nav .logo {
     margin-bottom: 0.5rem;
+  }
+  .form-input, .btn {
+    font-size: 1.1rem;
   }
 }
