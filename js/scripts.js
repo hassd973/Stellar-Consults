@@ -9,19 +9,33 @@ document.addEventListener('DOMContentLoaded', () => {
     .bindPopup('Stellar Consults<br>Servcorp One World Trade Center, 285 Fulton St Fl 85, New York, NY 10007')
     .openPopup();
 
-  // Ensure Video Playback
+  // Video Playback with YouTube Fallback
   const video = document.querySelector('.video-background');
-  video.load();
-  video.play().catch((error) => {
-    console.error('Video playback failed:', error);
-    video.play(); // Retry playback
-  });
-  video.addEventListener('error', () => {
-    console.error('Video failed to load');
-    video.src = '/assets/videos/background.mp4'; // Fallback to default
+  const youtubeIframe = document.querySelector('.youtube-background');
+  const videoSource = video.querySelector('source');
+
+  const tryVideoPlayback = () => {
     video.load();
-    video.play();
+    const playPromise = video.play();
+    if (playPromise !== undefined) {
+      playPromise.catch((error) => {
+        console.error('Video playback failed:', error);
+        // Fallback to YouTube
+        video.classList.add('hidden');
+        youtubeIframe.classList.add('active');
+      });
+    }
+  };
+
+  video.addEventListener('error', () => {
+    console.error('Video failed to load:', videoSource.src);
+    // Fallback to YouTube
+    video.classList.add('hidden');
+    youtubeIframe.classList.add('active');
   });
+
+  // Attempt to play video
+  tryVideoPlayback();
 
   // Fade-in animation on scroll
   const sections = document.querySelectorAll('.fade-in');
