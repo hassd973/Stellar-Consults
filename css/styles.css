@@ -5,7 +5,6 @@
   --header-color: #000000;
   --accent-color: #4A4A4A;
   --glow-color: #00F7FF;
-  --glow-red: #FF5555;
   --button-bg: #1A1A1A;
   --button-text: #FFFFFF;
   --button-hover-bg: #4A4A4A;
@@ -20,7 +19,6 @@
   --header-color: #FFFFFF;
   --accent-color: #B3B3B3;
   --glow-color: #00F7FF;
-  --glow-red: #FF5555;
   --button-bg: #E5E5E5;
   --button-text: #1A1A1A;
   --button-hover-bg: #B3B3B3;
@@ -101,8 +99,7 @@ h1:hover, h2:hover, p:hover {
 .btn {
   background-color: var(--button-bg);
   color: var(--button-text);
-  border:  enclosed in single quotes
-1px solid var(--input-border);
+  border: 1px solid var(--input-border);
   transition: all 0.3s ease;
 }
 
