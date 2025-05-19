@@ -55,6 +55,77 @@ h1, h2, h3 {
   padding: 80px 0;
   position: relative;
   z-index: 1;
+  transition: background-color 0.3s;
+}
+
+/* Section Backgrounds (Light Mode) */
+:root.light #home {
+  background-color: rgba(30, 58, 138, 0.8); /* Dark blue, space-like */
+}
+:root.light #book {
+  background-color: rgba(20, 184, 166, 0.7); /* Teal */
+}
+:root.light #about {
+  background-color: rgba(139, 92, 246, 0.6); /* Purple */
+}
+:root.light #success {
+  background-color: rgba(239, 68, 68, 0.5); /* Red */
+}
+:root.light #services {
+  background-color: rgba(20, 184, 166, 0.4); /* Teal, lighter */
+}
+:root.light #subscribe {
+  background-color: rgba(139, 92, 246, 0.3); /* Purple, lighter */
+}
+:root.light #team {
+  background-color: rgba(239, 68, 68, 0.2); /* Red, lighter */
+}
+:root.light #approach {
+  background-color: rgba(20, 184, 166, 0.1); /* Teal, very light */
+}
+:root.light #why-us {
+  background-color: rgba(139, 92, 246, 0.05); /* Purple, almost transparent */
+}
+:root.light #contact {
+  background-color: rgba(239, 68, 68, 0.03); /* Red, Earth-like */
+}
+:root.light #map-section {
+  background-color: rgba(255, 255, 255, 0.01); /* Nearly transparent, Earth-like */
+}
+
+/* Section Backgrounds (Dark Mode) */
+:root.dark #home {
+  background-color: rgba(31, 41, 55, 0.8); /* Dark gray, space-like */
+}
+:root.dark #book {
+  background-color: rgba(139, 92, 246, 0.7); /* Purple */
+}
+:root.dark #about {
+  background-color: rgba(20, 184, 166, 0.6); /* Teal */
+}
+:root.dark #success {
+  background-color: rgba(239, 68, 68, 0.5); /* Red */
+}
+:root.dark #services {
+  background-color: rgba(139, 92, 246, 0.4); /* Purple, lighter */
+}
+:root.dark #subscribe {
+  background-color: rgba(20, 184, 166, 0.3); /* Teal, lighter */
+}
+:root.dark #team {
+  background-color: rgba(239, 68, 68, 0.2); /* Red, lighter */
+}
+:root.dark #approach {
+  background-color: rgba(139, 92, 246, 0.1); /* Purple, very light */
+}
+:root.dark #why-us {
+  background-color: rgba(20, 184, 166, 0.05); /* Teal, almost transparent */
+}
+:root.dark #contact {
+  background-color: rgba(239, 68, 68, 0.03); /* Red, Earth-like */
+}
+:root.dark #map-section {
+  background-color: rgba(31, 41, 55, 0.01); /* Nearly transparent, Earth-like */
 }
 
 .container {
@@ -108,8 +179,8 @@ h1, h2, h3 {
   transform: translateY(0);
 }
 
-/* Video Background */
-.video-background {
+/* Video and YouTube Background */
+.video-background, .youtube-background {
   position: absolute;
   top: 0;
   left: 0;
@@ -119,6 +190,14 @@ h1, h2, h3 {
   z-index: -1;
   opacity: 0.5;
   filter: brightness(0.9);
+}
+
+.youtube-background {
+  display: none;
+}
+
+.youtube-background.active {
+  display: block;
 }
 
 .video-overlay {
