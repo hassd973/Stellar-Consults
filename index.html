@@ -13,16 +13,6 @@
   <!-- Starfield Canvas (Landing Page Only) -->
   <canvas id="starfield" style="position: absolute; top: 0; left: 0; width: 100%; height: 100vh; z-index: -3;"></canvas>
 
-  <!-- Background Video Container -->
-  <div class="background-container">
-    <video class="video-background" autoplay muted loop playsinline>
-      <source src="/assets/videos/background.mp4" type="video/mp4">
-    </video>
-    <iframe class="youtube-background hidden" src="https://www.youtube.com/embed/-46vRLS_3LE?autoplay=1&mute=1&loop=1&playlist=-46vRLS_3LE&controls=0&showinfo=0&rel=0" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
-    <img class="fallback-image hidden" src="/assets/images/fallback.jpg" alt="Fallback Background">
-    <div class="video-overlay"></div>
-  </div>
-
   <!-- Navigation Bar -->
   <nav class="fixed top-0 w-full z-30 py-4">
     <div class="container mx-auto px-6 max-w-3xl flex justify-between items-center flex-wrap">
@@ -37,12 +27,20 @@
     </div>
   </nav>
 
-  <!-- Hero Section with Text Bubbles -->
+  <!-- Hero Section with Video Box and Text Bubbles -->
   <section id="home" class="section fade-in relative text-center min-h-screen flex items-center justify-center">
     <div class="container mx-auto px-6 max-w-3xl relative z-10">
       <h1 class="text-5xl font-bold mb-6 tracking-tight"><span class="typing-text">Stellar Consults</span> 🚀</h1>
       <p class="text-xl font-normal mb-8 leading-relaxed">At Stellar Consults, we specialize in transforming healthcare practices by combining timeless expertise with cutting-edge digital solutions tailored for the demands of 2025. Our mission is to empower dental, medical, and wellness practices to achieve unparalleled efficiency, productivity, and profitability.</p>
       <p class="text-lg font-medium mb-8 leading-relaxed">Empowering Healthcare Excellence Through Strategic Innovation</p>
+      <div class="video-box mx-auto mb-8">
+        <video class="video-background" autoplay muted loop playsinline>
+          <source src="/assets/videos/background.mp4" type="video/mp4">
+        </video>
+        <iframe class="youtube-background hidden" src="https://www.youtube.com/embed/-46vRLS_3LE?autoplay=1&mute=1&loop=1&playlist=-46vRLS_3LE&controls=0&showinfo=0&rel=0" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+        <img class="fallback-image hidden" src="/assets/images/fallback.jpg" alt="Fallback Background">
+        <div class="video-overlay"></div>
+      </div>
       <a href="#book" class="btn inline-block px-6 py-3 text-base font-medium">Book Online 📅</a>
       <div class="text-bubble-container mt-12 flex flex-wrap justify-center gap-4">
         <a href="#success" class="text-bubble">26% Revenue Increase</a>
