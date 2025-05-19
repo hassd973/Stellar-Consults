@@ -10,15 +10,15 @@ document.addEventListener('DOMContentLoaded', () => {
     .openPopup();
 
   // Starfield Animation
-  const canvas = document.getElementById('starfield');
-  const ctx = canvas.getContext('2d');
-  if (!ctx) {
-    console.error('Canvas context not supported');
+  const starfieldCanvas = document.getElementById('starfield');
+  const starfieldCtx = starfieldCanvas.getContext('2d');
+  if (!starfieldCtx) {
+    console.error('Starfield canvas context not supported');
     return;
   }
-  canvas.width = window.innerWidth;
-  canvas.height = window.innerHeight;
-  console.log('Starfield initialized: width=', canvas.width, 'height=', canvas.height);
+  starfieldCanvas.width = window.innerWidth;
+  starfieldCanvas.height = window.innerHeight;
+  console.log('Starfield initialized: width=', starfieldCanvas.width, 'height=', starfieldCanvas.height);
 
   const stars = [];
   const numStars = 50;
@@ -27,9 +27,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
   class Star {
     constructor() {
-      this.x = Math.random() * canvas.width;
-      this.y = Math.random() * canvas.height;
-      this.radius = Math.random() * 2 + 2;
+      this.x = Math.random() * starfieldCanvas.width;
+      this.y = Math.random() * starfieldCanvas.height;
+      this.radius = Math.random() * 2 + 2.5;
       this.vx = (Math.random() - 0.5) * 0.2;
       this.vy = (Math.random() - 0.5) * 0.2;
       this.opacity = 0.7 + Math.random() * 0.3;
@@ -45,23 +45,23 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     draw() {
-      ctx.beginPath();
-      ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
-      ctx.fillStyle = this.color;
-      ctx.globalAlpha = this.opacity;
-      ctx.shadowColor = this.color;
-      ctx.shadowBlur = 10;
-      ctx.fill();
-      ctx.shadowBlur = 0;
-      ctx.globalAlpha = 1;
+      starfieldCtx.beginPath();
+      starfieldCtx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
+      starfieldCtx.fillStyle = this.color;
+      starfieldCtx.globalAlpha = this.opacity;
+      starfieldCtx.shadowColor = this.color;
+      starfieldCtx.shadowBlur = 12;
+      starfieldCtx.fill();
+      starfieldCtx.shadowBlur = 0;
+      starfieldCtx.globalAlpha = 1;
       console.log('Drawing star: x=', this.x, 'y=', this.y, 'color=', this.color);
     }
 
     update() {
       this.x += this.vx;
       this.y += this.vy;
-      if (this.x < 0 || this.x > canvas.width) this.vx *= -1;
-      if (this.y < 0 || this.y > canvas.height) this.vy *= -1;
+      if (this.x < 0 || this.x > starfieldCanvas.width) this.vx *= -1;
+      if (this.y < 0 || this.y > starfieldCanvas.height) this.vy *= -1;
 
       this.opacity += this.pulseSpeed * this.pulseDirection;
       if (this.opacity > 1 || this.opacity < 0.7) this.pulseDirection *= -1;
@@ -73,10 +73,10 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   function animateStars() {
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    starfieldCtx.clearRect(0, 0, starfieldCanvas.width, starfieldCanvas.height);
     // Test canvas rendering
-    ctx.fillStyle = 'rgba(255, 0, 0, 0.1)';
-    ctx.fillRect(0, 0, 100, 100);
+    starfieldCtx.fillStyle = 'rgba(255, 0, 0, 0.1)';
+    starfieldCtx.fillRect(0, 0, 100, 100);
     stars.forEach(star => {
       star.update();
       star.draw();
@@ -85,17 +85,53 @@ document.addEventListener('DOMContentLoaded', () => {
     requestAnimationFrame(animateStars);
   }
 
+  // Check WebGL availability
+  const gl = starfieldCanvas.getContext('webgl2') || starfieldCanvas.getContext('webgl');
+  if (!gl) {
+    console.warn('WebGL not supported, starfield and Spline may not render correctly');
+  }
+
   animateStars();
 
   window.addEventListener('resize', () => {
-    canvas.width = window.innerWidth;
-    canvas.height = window.innerHeight;
-    console.log('Canvas resized: width=', canvas.width, 'height=', canvas.height);
+    starfieldCanvas.width = window.innerWidth;
+    starfieldCanvas.height = window.innerHeight;
+    console.log('Starfield canvas resized: width=', starfieldCanvas.width, 'height=', starfieldCanvas.height);
     stars.forEach(star => {
-      star.x = Math.random() * canvas.width;
-      star.y = Math.random() * canvas.height;
+      star.x = Math.random() * starfieldCanvas.width;
+      star.y = Math.random() * starfieldCanvas.height;
     });
   });
+
+  // Spline Initialization
+  const splineCanvas = document.getElementById('spline-canvas');
+  const fallbackImage = document.querySelector('.fallback-image');
+  let splineApp;
+
+  try {
+    splineApp = new SplineApplication(splineCanvas, 'https://prod.spline.design/ejMWcGxXRWgS7POl/scene.splinecode');
+    console.log('Spline initialized:', splineCanvas);
+    splineApp.addEventListener('error', (e) => {
+      console.error('Spline load error:', e);
+      splineCanvas.style.display = 'none';
+      fallbackImage.classList.remove('hidden');
+      fallbackImage.classList.add('active');
+      console.log('Switched to image fallback');
+    });
+    splineApp.load().then(() => {
+      console.log('Spline scene loaded successfully');
+    }).catch(e => {
+      console.error('Spline load failed:', e);
+      splineCanvas.style.display = 'none';
+      fallbackImage.classList.remove('hidden');
+      fallbackImage.classList.add('active');
+    });
+  } catch (e) {
+    console.error('Spline initialization failed:', e);
+    splineCanvas.style.display = 'none';
+    fallbackImage.classList.remove('hidden');
+    fallbackImage.classList.add('active');
+  }
 
   // Dynamic Nav Padding
   const nav = document.querySelector('nav');
@@ -107,90 +143,6 @@ document.addEventListener('DOMContentLoaded', () => {
   }
   updateHomePadding();
   window.addEventListener('resize', updateHomePadding);
-
-  // Video Playback
-  const video = document.querySelector('.video-background');
-  const youtubeIframe = document.querySelector('.youtube-background');
-  const fallbackImage = document.querySelector('.fallback-image');
-  const videoSource = video.querySelector('source');
-
-  const debugVideo = () => {
-    console.log('Video Debug Info:');
-    console.log('Source:', videoSource.src);
-    console.log('Muted:', video.muted);
-    console.log('Autoplay:', video.autoplay);
-    console.log('Loop:', video.loop);
-    console.log('Playsinline:', video.playsInline);
-    console.log('Network State:', video.networkState);
-    console.log('Ready State:', video.readyState);
-    console.log('Error:', video.error ? video.error.message : 'None');
-  };
-
-  const tryVideoPlayback = () => {
-    console.log(`Attempting to play video: ${videoSource.src}`);
-    video.muted = true;
-    video.loop = true;
-    video.playsInline = true;
-    video.load();
-    const playPromise = video.play();
-    if (playPromise !== undefined) {
-      playPromise
-        .then(() => console.log('Video started successfully'))
-        .catch((error) => {
-          console.error('Video playback failed:', error.message);
-          debugVideo();
-          console.log('Switching to YouTube fallback');
-          video.classList.add('hidden');
-          youtubeIframe.classList.remove('hidden');
-          youtubeIframe.classList.add('active');
-        });
-    }
-  };
-
-  // YouTube Iframe Error Handling
-  youtubeIframe.onerror = (e) => {
-    console.error('YouTube iframe error:', e);
-    youtubeIframe.classList.remove('active');
-    youtubeIframe.classList.add('hidden');
-    fallbackImage.classList.remove('hidden');
-    fallbackImage.classList.add('active');
-    console.log('Switched to image fallback');
-  };
-
-  // User Interaction Fallback
-  const playVideoOnInteraction = () => {
-    if (video.paused && !youtubeIframe.classList.contains('active')) {
-      console.log('Retrying video playback on user interaction');
-      tryVideoPlayback();
-    }
-  };
-
-  document.addEventListener('click', playVideoOnInteraction);
-  document.addEventListener('touchstart', playVideoOnInteraction);
-  document.addEventListener('scroll', playVideoOnInteraction, { once: true });
-
-  video.addEventListener('error', (e) => {
-    console.error('Video error:', videoSource.src, e);
-    debugVideo();
-    video.classList.add('hidden');
-    youtubeIframe.classList.remove('hidden');
-    youtubeIframe.classList.add('active');
-  });
-
-  video.addEventListener('ended', () => {
-    console.log('Video ended, restarting');
-    video.play();
-  });
-
-  setTimeout(() => {
-    if (video.paused && !youtubeIframe.classList.contains('active')) {
-      console.log('Initial playback failed, retrying...');
-      tryVideoPlayback();
-    }
-  }, 1000);
-
-  debugVideo();
-  tryVideoPlayback();
 
   // Fade-in Animation
   const sections = document.querySelectorAll('.fade-in');
