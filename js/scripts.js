@@ -17,19 +17,26 @@ document.addEventListener('DOMContentLoaded', () => {
 
   const stars = [];
   const numStars = 50;
-  const greyShades = ['#000000', '#4A4A4A', '#7A7A7A', '#B3B3B3'];
+  const lightModeColors = ['#000000', '#4A4A4A', '#7A7A7A', '#B3B3B3'];
+  const darkModeColors = ['#FFFFFF', '#4A4A4A', '#7A7A7A', '#B3B3B3'];
 
   class Star {
     constructor() {
       this.x = Math.random() * canvas.width;
       this.y = Math.random() * canvas.height;
       this.radius = Math.random() * 1 + 0.5;
-      this.color = greyShades[Math.floor(Math.random() * greyShades.length)];
       this.vx = (Math.random() - 0.5) * 0.2;
       this.vy = (Math.random() - 0.5) * 0.2;
       this.opacity = 0.5 + Math.random() * 0.5;
       this.pulseSpeed = 0.01 + Math.random() * 0.02;
       this.pulseDirection = 1;
+      this.updateColor();
+    }
+
+    updateColor() {
+      const isLightMode = document.documentElement.classList.contains('light');
+      const colors = isLightMode ? lightModeColors : darkModeColors;
+      this.color = colors[Math.floor(Math.random() * colors.length)];
     }
 
     draw() {
@@ -37,7 +44,10 @@ document.addEventListener('DOMContentLoaded', () => {
       ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
       ctx.fillStyle = this.color;
       ctx.globalAlpha = this.opacity * 0.8;
+      ctx.shadowColor = this.color;
+      ctx.shadowBlur = 3;
       ctx.fill();
+      ctx.shadowBlur = 0;
       ctx.globalAlpha = 1;
     }
 
@@ -141,29 +151,6 @@ document.addEventListener('DOMContentLoaded', () => {
   debugVideo();
   tryVideoPlayback();
 
-  // Mobile Video Fade
-  const homeSection = document.querySelector('#home');
-  const isMobile = window.innerWidth <= 640;
-  if (isMobile) {
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            video.style.opacity = '0.9';
-            youtubeIframe.style.opacity = '0.9';
-            fallbackImage.style.opacity = '0.9';
-          } else {
-            video.style.opacity = '0';
-            youtubeIframe.style.opacity = '0';
-            fallbackImage.style.opacity = '0';
-          }
-        });
-      },
-      { threshold: 0.1 }
-    );
-    observer.observe(homeSection);
-  }
-
   // Fade-in Animation
   const sections = document.querySelectorAll('.fade-in');
   const sectionObserver = new IntersectionObserver(
@@ -225,5 +212,7 @@ document.addEventListener('DOMContentLoaded', () => {
     html.classList.add(newTheme);
     localStorage.setItem('theme', newTheme);
     themeToggle.textContent = newTheme === 'light' ? 'Toggle Dark Mode' : 'Toggle Light Mode';
+    // Update star colors on theme change
+    stars.forEach(star => star.updateColor());
   });
 });
