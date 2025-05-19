@@ -10,11 +10,11 @@
   --bg-color: #FFFFFF;
   --text-color: #1F2937;
   --header-color: #1E3A8A;
-  --accent-color: #14B8A6;
+  --accent-color: #00F7FF; /* Neon Blue */
   --secondary-accent: #8B5CF6;
   --button-bg: #1E3A8A;
   --button-text: #FFFFFF;
-  --button-hover-bg: #14B8A6;
+  --button-hover-bg: #00F7FF;
   --footer-bg: #1E3A8A;
   --input-border: #D1D1D1;
 }
@@ -23,10 +23,10 @@
 :root.dark {
   --bg-color: #1F2937;
   --text-color: #E5E7EB;
-  --header-color: #14B8A6;
-  --accent-color: #8B5CF6;
-  --secondary-accent: #EF4444;
-  --button-bg: #14B8A6;
+  --header-color: #00F7FF;
+  --accent-color: #00F7FF;
+  --secondary-accent: #EF4444; /* Martian red hint */
+  --button-bg: #00F7FF;
   --button-text: #1F2937;
   --button-hover-bg: #8B5CF6;
   --footer-bg: #111827;
@@ -34,7 +34,7 @@
 }
 
 body {
-  font-family: 'Neue Metana', 'JetBrains Mono', monospace;
+  font-family: 'JetBrains Mono', monospace;
   background-color: var(--bg-color);
   color: var(--text-color);
   line-height: 1.6;
@@ -44,9 +44,10 @@ body {
 }
 
 h1, h2, h3 {
-  font-family: 'Neue Metana', 'JetBrains Mono', monospace;
+  font-family: 'Neue Metana', monospace;
   font-weight: 800;
   color: var(--header-color);
+  letter-spacing: -0.025em;
 }
 
 .section {
@@ -56,74 +57,68 @@ h1, h2, h3 {
   transition: background-color 0.3s;
 }
 
-/* Temporary Grey Gradients (Light Mode) */
-:root.light #home {
-  background-color: transparent; /* Transparent for video */
-}
-:root.light #book {
-  background-color: transparent; /* Transparent for video */
+/* Neon Blue Gradients (Light Mode) */
+:root.light #home, :root.light #book {
+  background-color: transparent; /* Video visible */
 }
 :root.light #about {
-  background-color: rgba(0, 0, 0, 0.6); /* Dark grey */
+  background-color: rgba(0, 247, 255, 0.1); /* Neon blue */
 }
 :root.light #success {
-  background-color: rgba(0, 0, 0, 0.5);
+  background-color: rgba(0, 212, 255, 0.09);
 }
 :root.light #services {
-  background-color: rgba(0, 0, 0, 0.4);
+  background-color: rgba(0, 183, 235, 0.08);
 }
 :root.light #subscribe {
-  background-color: rgba(0, 0, 0, 0.3);
+  background-color: rgba(0, 183, 235, 0.07);
 }
 :root.light #team {
-  background-color: rgba(0, 0, 0, 0.2);
+  background-color: rgba(0, 183, 235, 0.06);
 }
 :root.light #approach {
-  background-color: rgba(0, 0, 0, 0.1);
+  background-color: rgba(0, 183, 235, 0.05);
 }
 :root.light #why-us {
-  background-color: rgba(0, 0, 0, 0.05);
+  background-color: rgba(0, 183, 235, 0.04);
 }
 :root.light #contact {
-  background-color: rgba(0, 0, 0, 0.03);
+  background-color: rgba(0, 183, 235, 0.03);
 }
 :root.light #map-section {
-  background-color: rgba(0, 0, 0, 0.01); /* Light grey, Earth-like */
+  background-color: rgba(0, 183, 235, 0.02); /* Light neon blue */
 }
 
-/* Temporary Grey Gradients (Dark Mode) */
-:root.dark #home {
-  background-color: transparent; /* Transparent for video */
-}
-:root.dark #book {
-  background-color: transparent; /* Transparent for video */
+/* Neon Blue Gradients (Dark Mode) */
+:root.dark #home, :root.dark #book {
+  background-color: transparent; /* Video visible */
 }
 :root.dark #about {
-  background-color: rgba(255, 255, 255, 0.6); /* Light grey */
+  background-color: rgba(0, 247, 255, 0.1); /* Neon blue with Martian hint */
 }
 :root.dark #success {
-  background-color: rgba(255, 255, 255, 0.5);
+  background-color: rgba(0, 212, 255, 0.09);
 }
 :root.dark #services {
-  background-color: rgba(255, 255, 255, 0.4);
+  background-color: rgba(0, 183, 235, 0.08);
 }
 :root.dark #subscribe {
-  background-color: rgba(255, 255, 255, 0.3);
+  background-color: rgba(0, 183, 235, 0.07);
 }
 :root.dark #team {
-  background-color: rgba(255, 255, 255, 0.2);
+  background-color: rgba(0, 183, 235, 0.06);
 }
 :root.dark #approach {
-  background-color: rgba(255, 255, 255, 0.1);
+  background-color: rgba(0, 183, 235, 0.05);
 }
 :root.dark #why-us {
-  background-color: rgba(255, 255, 255, 0.05);
+  background-color: rgba(0, 183, 235, 0.04);
 }
 :root.dark #contact {
-  background-color: rgba(255, 255, 255, 0.03);
+  background-color: rgba(0, 183, 235, 0.03);
 }
 :root.dark #map-section {
-  background-color: rgba(255, 255, 255, 0.01); /* Very light grey, Earth-like */
+  background-color: rgba(0, 183, 235, 0.02); /* Light neon blue */
 }
 
 .container {
@@ -133,12 +128,19 @@ h1, h2, h3 {
 .logo {
   overflow: hidden;
   white-space: nowrap;
+  transition: transform 0.3s ease, text-shadow 0.3s ease;
+}
+
+.logo:hover.glow {
+  transform: rotate(2deg);
+  text-shadow: 0 0 10px var(--accent-color), 0 0 20px var(--accent-color);
 }
 
 .btn {
-  transition: background-color 0.3s, transform 0.2s, color 0.3s;
+  transition: all 0.3s ease;
   background-color: var(--button-bg);
   color: var(--button-text);
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
 }
 
 .btn:hover {
@@ -146,8 +148,14 @@ h1, h2, h3 {
   transform: scale(1.05);
 }
 
+.btn:hover.pulse {
+  box-shadow: 0 0 20px var(--accent-color);
+  animation: pulse 1.5s infinite;
+}
+
 #map {
   height: 500px;
+  border-radius: 8px;
 }
 
 .form-input {
@@ -158,23 +166,25 @@ h1, h2, h3 {
   padding: 12px;
   width: 100%;
   box-sizing: border-box;
-  transition: border-color 0.3s, background-color 0.3s, color 0.3s;
+  transition: all 0.3s ease;
 }
 
 .form-input:focus {
   border-color: var(--accent-color);
   outline: none;
+  box-shadow: 0 0 10px var(--accent-color);
 }
 
+/* Fade-in Animation */
 .fade-in {
   opacity: 0;
-  transform: translateY(30px);
+  transform: translateY(30px) scale(0.95);
   transition: opacity 0.6s ease, transform 0.6s ease;
 }
 
 .fade-in.visible {
   opacity: 1;
-  transform: translateY(0);
+  transform: translateY(0) scale(1);
 }
 
 /* Fixed Background Video */
@@ -183,26 +193,27 @@ h1, h2, h3 {
   top: 0;
   left: 0;
   width: 100%;
-  height: 100%;
-  z-index: -1;
+  height: 100vh;
+  z-index: -2;
+  overflow: hidden;
 }
 
-.video-background, .youtube-background {
+.video-background, .youtube-background, .fallback-image {
   position: absolute;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
   object-fit: cover;
-  opacity: 0.5;
+  opacity: 0.7;
   filter: brightness(0.9);
 }
 
-.youtube-background {
+.youtube-background, .fallback-image {
   display: none;
 }
 
-.youtube-background.active {
+.youtube-background.active, .fallback-image.active {
   display: block;
 }
 
@@ -212,12 +223,8 @@ h1, h2, h3 {
   left: 0;
   width: 100%;
   height: 100%;
-  background: rgba(255, 255, 255, 0.3);
+  background: radial-gradient(circle, rgba(0, 247, 255, 0.05) 0%, rgba(0, 0, 0, 0.05) 70%);
   transition: background 0.3s;
-}
-
-:root.dark .video-overlay {
-  background: rgba(31, 41, 55, 0.3);
 }
 
 /* Navigation Styling */
@@ -231,10 +238,35 @@ nav {
 }
 
 nav a {
-  transition: color 0.3s;
+  position: relative;
+  transition: color 0.3s ease;
 }
 
-/* Typing Animation with Cursor */
+nav a:hover {
+  color: var(--accent-color);
+}
+
+nav a.underline-slide::after {
+  content: '';
+  position: absolute;
+  width: 0;
+  height: 2px;
+  bottom: -2px;
+  left: 0;
+  background-color: var(--accent-color);
+  transition: width 0.3s ease;
+}
+
+nav a:hover.underline-slide::after {
+  width: 100%;
+}
+
+/* Neon Glow */
+.neon-glow {
+  text-shadow: 0 0 5px var(--accent-color), 0 0 10px var(--accent-color);
+}
+
+/* Typing Animation with Neon Cursor */
 .typing-text {
   display: inline-block;
   overflow: hidden;
@@ -248,9 +280,10 @@ nav a {
   position: absolute;
   right: -5px;
   color: var(--accent-color);
-  animation: blink 0.7s infinite;
+  animation: blink 0.7s infinite, pulse 1.5s infinite;
 }
 
+/* Animations */
 @keyframes typing {
   from { width: 0; }
   to { width: 100%; }
@@ -261,22 +294,48 @@ nav a {
   50% { opacity: 0; }
 }
 
-/* Dark Mode Background Texture */
+@keyframes pulse {
+  0% { box-shadow: 0 0 0 0 rgba(0, 247, 255, 0.7); }
+  70% { box-shadow: 0 0 0 10px rgba(0, 247, 255, 0); }
+  100% { box-shadow: 0 0 0 0 rgba(0, 247, 255, 0); }
+}
+
+/* Dark Mode Starry Background with Neon Particles */
 :root.dark body {
   background-image: url('data:image/svg+xml,%3Csvg width="100" height="100" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"%3E%3Ccircle cx="10" cy="10" r="1" fill="%23E5E7EB" /%3E%3Ccircle cx="50" cy="50" r="1" fill="%23E5E7EB" /%3E%3Ccircle cx="90" cy="90" r="1" fill="%23E5E7EB" /%3E%3C/svg%3E');
   background-size: 50px 50px;
+  position: relative;
+}
+
+:root.dark body::before {
+  content: '';
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: url('data:image/svg+xml,%3Csvg width="10" height="10" viewBox="0 0 10 10" xmlns="http://www.w3.org/2000/svg"%3E%3Ccircle cx="5" cy="5" r="0.5" fill="%2300F7FF" /%3E%3C/svg%3E');
+  background-size: 20px 20px;
+  opacity: 0.3;
+  animation: particle-drift 20s linear infinite;
+}
+
+@keyframes particle-drift {
+  0% { background-position: 0 0; }
+  100% { background-position: 20px 20px; }
 }
 
 /* Links and Hover Effects */
 a {
   color: var(--accent-color);
-  transition: color 0.3s;
+  transition: color 0.3s ease;
 }
 
 a:hover {
   color: var(--secondary-accent);
 }
 
+/* Responsive Design */
 @media (max-width: 768px) {
   .section {
     padding: 40px 0;
