@@ -12,7 +12,6 @@
   --header-color: #1E3A8A;
   --accent-color: #14B8A6;
   --secondary-accent: #8B5CF6;
-  --section-bg: #F9FAFB;
   --button-bg: #1E3A8A;
   --button-text: #FFFFFF;
   --button-hover-bg: #14B8A6;
@@ -27,7 +26,6 @@
   --header-color: #14B8A6;
   --accent-color: #8B5CF6;
   --secondary-accent: #EF4444;
-  --section-bg: #374151;
   --button-bg: #14B8A6;
   --button-text: #1F2937;
   --button-hover-bg: #8B5CF6;
@@ -54,78 +52,78 @@ h1, h2, h3 {
 .section {
   padding: 80px 0;
   position: relative;
-  z-index: 1;
+  z-index: 10;
   transition: background-color 0.3s;
 }
 
-/* Section Backgrounds (Light Mode) */
+/* Temporary Grey Gradients (Light Mode) */
 :root.light #home {
-  background-color: rgba(30, 58, 138, 0.8); /* Dark blue, space-like */
+  background-color: transparent; /* Transparent for video */
 }
 :root.light #book {
-  background-color: rgba(20, 184, 166, 0.7); /* Teal */
+  background-color: transparent; /* Transparent for video */
 }
 :root.light #about {
-  background-color: rgba(139, 92, 246, 0.6); /* Purple */
+  background-color: rgba(0, 0, 0, 0.6); /* Dark grey */
 }
 :root.light #success {
-  background-color: rgba(239, 68, 68, 0.5); /* Red */
+  background-color: rgba(0, 0, 0, 0.5);
 }
 :root.light #services {
-  background-color: rgba(20, 184, 166, 0.4); /* Teal, lighter */
+  background-color: rgba(0, 0, 0, 0.4);
 }
 :root.light #subscribe {
-  background-color: rgba(139, 92, 246, 0.3); /* Purple, lighter */
+  background-color: rgba(0, 0, 0, 0.3);
 }
 :root.light #team {
-  background-color: rgba(239, 68, 68, 0.2); /* Red, lighter */
+  background-color: rgba(0, 0, 0, 0.2);
 }
 :root.light #approach {
-  background-color: rgba(20, 184, 166, 0.1); /* Teal, very light */
+  background-color: rgba(0, 0, 0, 0.1);
 }
 :root.light #why-us {
-  background-color: rgba(139, 92, 246, 0.05); /* Purple, almost transparent */
+  background-color: rgba(0, 0, 0, 0.05);
 }
 :root.light #contact {
-  background-color: rgba(239, 68, 68, 0.03); /* Red, Earth-like */
+  background-color: rgba(0, 0, 0, 0.03);
 }
 :root.light #map-section {
-  background-color: rgba(255, 255, 255, 0.01); /* Nearly transparent, Earth-like */
+  background-color: rgba(0, 0, 0, 0.01); /* Light grey, Earth-like */
 }
 
-/* Section Backgrounds (Dark Mode) */
+/* Temporary Grey Gradients (Dark Mode) */
 :root.dark #home {
-  background-color: rgba(31, 41, 55, 0.8); /* Dark gray, space-like */
+  background-color: transparent; /* Transparent for video */
 }
 :root.dark #book {
-  background-color: rgba(139, 92, 246, 0.7); /* Purple */
+  background-color: transparent; /* Transparent for video */
 }
 :root.dark #about {
-  background-color: rgba(20, 184, 166, 0.6); /* Teal */
+  background-color: rgba(255, 255, 255, 0.6); /* Light grey */
 }
 :root.dark #success {
-  background-color: rgba(239, 68, 68, 0.5); /* Red */
+  background-color: rgba(255, 255, 255, 0.5);
 }
 :root.dark #services {
-  background-color: rgba(139, 92, 246, 0.4); /* Purple, lighter */
+  background-color: rgba(255, 255, 255, 0.4);
 }
 :root.dark #subscribe {
-  background-color: rgba(20, 184, 166, 0.3); /* Teal, lighter */
+  background-color: rgba(255, 255, 255, 0.3);
 }
 :root.dark #team {
-  background-color: rgba(239, 68, 68, 0.2); /* Red, lighter */
+  background-color: rgba(255, 255, 255, 0.2);
 }
 :root.dark #approach {
-  background-color: rgba(139, 92, 246, 0.1); /* Purple, very light */
+  background-color: rgba(255, 255, 255, 0.1);
 }
 :root.dark #why-us {
-  background-color: rgba(20, 184, 166, 0.05); /* Teal, almost transparent */
+  background-color: rgba(255, 255, 255, 0.05);
 }
 :root.dark #contact {
-  background-color: rgba(239, 68, 68, 0.03); /* Red, Earth-like */
+  background-color: rgba(255, 255, 255, 0.03);
 }
 :root.dark #map-section {
-  background-color: rgba(31, 41, 55, 0.01); /* Nearly transparent, Earth-like */
+  background-color: rgba(255, 255, 255, 0.01); /* Very light grey, Earth-like */
 }
 
 .container {
@@ -179,7 +177,16 @@ h1, h2, h3 {
   transform: translateY(0);
 }
 
-/* Video and YouTube Background */
+/* Fixed Background Video */
+.background-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: -1;
+}
+
 .video-background, .youtube-background {
   position: absolute;
   top: 0;
@@ -187,7 +194,6 @@ h1, h2, h3 {
   width: 100%;
   height: 100%;
   object-fit: cover;
-  z-index: -1;
   opacity: 0.5;
   filter: brightness(0.9);
 }
@@ -206,13 +212,26 @@ h1, h2, h3 {
   left: 0;
   width: 100%;
   height: 100%;
-  background: rgba(255, 255, 255, 0.6);
-  z-index: -1;
+  background: rgba(255, 255, 255, 0.3);
   transition: background 0.3s;
 }
 
 :root.dark .video-overlay {
-  background: rgba(31, 41, 55, 0.6);
+  background: rgba(31, 41, 55, 0.3);
+}
+
+/* Navigation Styling */
+nav {
+  background-color: rgba(255, 255, 255, 0.95);
+  transition: background-color 0.3s;
+}
+
+:root.dark nav {
+  background-color: rgba(31, 41, 55, 0.95);
+}
+
+nav a {
+  transition: color 0.3s;
 }
 
 /* Typing Animation with Cursor */
@@ -274,5 +293,13 @@ a:hover {
   .btn {
     padding: 12px 24px;
     font-size: 1rem;
+  }
+  nav .container {
+    flex-direction: column;
+    gap: 1rem;
+    padding: 1rem;
+  }
+  nav .logo {
+    margin-bottom: 0.5rem;
   }
 }
