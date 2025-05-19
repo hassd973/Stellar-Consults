@@ -1,9 +1,10 @@
 /* Light Mode (Default) */
 :root.light {
   --bg-color: #FFFFFF;
-  --text-color: #1A1A1A;
-  --header-color: #1A1A1A;
+  --text-color: #000000; /* High contrast for readability */
+  --header-color: #000000;
   --accent-color: #4A4A4A;
+  --glow-color: #00F7FF; /* Glowing blue */
   --button-bg: #1A1A1A;
   --button-text: #FFFFFF;
   --button-hover-bg: #4A4A4A;
@@ -14,9 +15,10 @@
 /* Dark Mode */
 :root.dark {
   --bg-color: #1A1A1A;
-  --text-color: #E5E5E5;
-  --header-color: #E5E5E5;
+  --text-color: #FFFFFF; /* High contrast for readability */
+  --header-color: #FFFFFF;
   --accent-color: #B3B3B3;
+  --glow-color: #00F7FF;
   --button-bg: #E5E5E5;
   --button-text: #1A1A1A;
   --button-hover-bg: #B3B3B3;
@@ -48,68 +50,74 @@ h1, h2, h3 {
   transition: background-color 0.3s;
 }
 
-/* Monochromatic Gradients (Light Mode) */
-:root.light #home, :root.light #book {
-  background-color: transparent; /* Video visible */
+/* Very Transparent Grey Gradients (Light Mode) */
+:root.light #home {
+  background-color: transparent; /* Video fully visible */
 }
-:root.light #about {
-  background-color: rgba(0, 0, 0, 0.1);
-}
-:root.light #success {
-  background-color: rgba(0, 0, 0, 0.09);
-}
-:root.light #services {
+:root.light #book {
   background-color: rgba(0, 0, 0, 0.08);
 }
-:root.light #subscribe {
+:root.light #about {
   background-color: rgba(0, 0, 0, 0.07);
 }
-:root.light #team {
+:root.light #success {
   background-color: rgba(0, 0, 0, 0.06);
 }
-:root.light #approach {
+:root.light #services {
   background-color: rgba(0, 0, 0, 0.05);
 }
-:root.light #why-us {
+:root.light #subscribe {
   background-color: rgba(0, 0, 0, 0.04);
 }
-:root.light #contact {
+:root.light #team {
   background-color: rgba(0, 0, 0, 0.03);
 }
-:root.light #map-section {
+:root.light #approach {
   background-color: rgba(0, 0, 0, 0.02);
 }
+:root.light #why-us {
+  background-color: rgba(0, 0, 0, 0.015);
+}
+:root.light #contact {
+  background-color: rgba(0, 0, 0, 0.01);
+}
+:root.light #map-section {
+  background-color: rgba(0, 0, 0, 0.005);
+}
 
-/* Monochromatic Gradients (Dark Mode) */
-:root.dark #home, :root.dark #book {
-  background-color: transparent; /* Video visible */
+/* Very Transparent Grey Gradients (Dark Mode) */
+:root.dark #home {
+  background-color: transparent; /* Video fully visible */
 }
-:root.dark #about {
-  background-color: rgba(255, 255, 255, 0.1);
-}
-:root.dark #success {
-  background-color: rgba(255, 255, 255, 0.09);
-}
-:root.dark #services {
+:root.dark #book {
   background-color: rgba(255, 255, 255, 0.08);
 }
-:root.dark #subscribe {
+:root.dark #about {
   background-color: rgba(255, 255, 255, 0.07);
 }
-:root.dark #team {
+:root.dark #success {
   background-color: rgba(255, 255, 255, 0.06);
 }
-:root.dark #approach {
+:root.dark #services {
   background-color: rgba(255, 255, 255, 0.05);
 }
-:root.dark #why-us {
+:root.dark #subscribe {
   background-color: rgba(255, 255, 255, 0.04);
 }
-:root.dark #contact {
+:root.dark #team {
   background-color: rgba(255, 255, 255, 0.03);
 }
-:root.dark #map-section {
+:root.dark #approach {
   background-color: rgba(255, 255, 255, 0.02);
+}
+:root.dark #why-us {
+  background-color: rgba(255, 255, 255, 0.015);
+}
+:root.dark #contact {
+  background-color: rgba(255, 255, 255, 0.01);
+}
+:root.dark #map-section {
+  background-color: rgba(255, 255, 255, 0.005);
 }
 
 .container {
@@ -118,23 +126,20 @@ h1, h2, h3 {
 
 .logo {
   white-space: nowrap;
-  transition: opacity 0.3s ease;
-}
-
-.logo:hover {
-  opacity: 0.8;
+  transition: box-shadow 0.3s ease;
 }
 
 .btn {
-  transition: background-color 0.3s ease, border-bottom 0.3s ease;
+  transition: background-color 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
   background-color: var(--button-bg);
   color: var(--button-text);
   border: 1px solid var(--input-border);
 }
 
-.btn:hover {
+.btn:hover.glow-blue {
+  box-shadow: 0 0 10px var(--glow-color);
+  border-color: var(--glow-color);
   background-color: var(--button-hover-bg);
-  border-bottom: 2px solid var(--accent-color);
 }
 
 #map {
@@ -149,7 +154,7 @@ h1, h2, h3 {
   padding: 12px;
   width: 100%;
   box-sizing: border-box;
-  transition: border-color 0.3s ease;
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
   font-family: 'JetBrains Mono', monospace;
 }
 
@@ -157,8 +162,9 @@ h1, h2, h3 {
   color: var(--accent-color);
 }
 
-.form-input:focus {
-  border-color: var(--accent-color);
+.form-input:focus.glow-blue {
+  border-color: var(--glow-color);
+  box-shadow: 0 0 10px var(--glow-color);
   outline: none;
 }
 
@@ -191,6 +197,7 @@ h1, h2, h3 {
   height: 100%;
   object-fit: cover;
   opacity: 0.9;
+  transition: opacity 0.5s ease;
 }
 
 .youtube-background, .fallback-image {
@@ -207,7 +214,7 @@ h1, h2, h3 {
   left: 0;
   width: 100%;
   height: 100%;
-  background: rgba(0, 0, 0, 0.03);
+  background: rgba(0, 0, 0, 0.02);
   transition: background 0.3s;
 }
 
@@ -222,11 +229,29 @@ nav {
 }
 
 nav a {
-  transition: border-bottom 0.3s ease;
+  transition: box-shadow 0.3s ease, border-color 0.3s ease;
 }
 
-nav a:hover {
-  border-bottom: 1px solid var(--accent-color);
+nav a:hover.glow-blue {
+  box-shadow: 0 0 10px var(--glow-color);
+  border-bottom: 1px solid var(--glow-color);
+}
+
+/* Services Section Interactivity */
+.service-item {
+  transition: background-color 0.3s ease, box-shadow 0.3s ease;
+  padding: 4px 8px;
+  border-radius: 2px;
+}
+
+.service-item:hover.glow-blue {
+  background-color: rgba(0, 247, 255, 0.1);
+  box-shadow: 0 0 10px var(--glow-color);
+}
+
+.service-item.selected {
+  background-color: rgba(0, 247, 255, 0.2);
+  box-shadow: 0 0 15px var(--glow-color);
 }
 
 /* Typewriter Typing Animation */
@@ -265,15 +290,19 @@ nav a:hover {
 /* Links and Hover Effects */
 a {
   color: var(--text-color);
-  transition: border-bottom 0.3s ease;
+  transition: box-shadow 0.3s ease, border-color 0.3s ease;
 }
 
-a:hover {
-  border-bottom: 1px solid var(--accent-color);
+a:hover.glow-blue {
+  box-shadow: 0 0 10px var(--glow-color);
+  border-bottom: 1px solid var(--glow-color);
 }
 
-/* Responsive Design */
+/* Mobile Readability */
 @media (max-width: 768px) {
+  body {
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5); /* Improve text contrast over video */
+  }
   .section {
     padding: 60px 0;
   }
@@ -288,7 +317,7 @@ a:hover {
   }
   .btn {
     padding: 10px 20px;
-    font-size: 1rem;
+    font-size: 1.1rem;
   }
   nav .container {
     flex-direction: column;
@@ -300,5 +329,8 @@ a:hover {
   }
   .form-input, .btn {
     font-size: 1.1rem;
+  }
+  .service-item {
+    padding: 6px 10px;
   }
 }
