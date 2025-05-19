@@ -4,7 +4,7 @@
   --text-color: #000000;
   --header-color: #000000;
   --accent-color: #4A4A4A;
-  --glow-color: #00F7FF;
+  --glow-color: #39FF14;
   --button-bg: #1A1A1A;
   --button-text: #FFFFFF;
   --button-hover-bg: #4A4A4A;
@@ -18,7 +18,7 @@
   --text-color: #FFFFFF;
   --header-color: #FFFFFF;
   --accent-color: #B3B3B3;
-  --glow-color: #00F7FF;
+  --glow-color: #39FF14;
   --button-bg: #E5E5E5;
   --button-text: #1A1A1A;
   --button-hover-bg: #B3B3B3;
@@ -255,12 +255,12 @@ nav a:hover {
 }
 
 .service-item:hover, .success-item:hover, .team-item:hover, .resource-item:hover {
-  background-color: rgba(0, 247, 255, 0.1);
+  background-color: rgba(57, 255, 20, 0.1);
   box-shadow: 0 0 10px var(--glow-color);
 }
 
 .service-item.selected, .success-item.selected, .team-item.selected {
-  background-color: rgba(0, 247, 255, 0.2);
+  background-color: rgba(57, 255, 20, 0.2);
   box-shadow: 0 0 15px var(--glow-color);
 }
 
