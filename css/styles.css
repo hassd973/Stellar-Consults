@@ -10,7 +10,7 @@
   --button-hover-bg: #4A4A4A;
   --footer-bg: #F5F5F5;
   --input-border: #E5E5E5;
-  --nav-bg: rgba(255, 255, 255, 0.98);
+  --nav-bg: rgba(255, 255, 255, 0.95);
 }
 
 /* Dark Mode */
@@ -25,75 +25,88 @@
   --button-hover-bg: #B3B3B3;
   --footer-bg: #0F0F0F;
   --input-border: #4A4A4A;
-  --nav-bg: rgba(26, 26, 26, 0.98);
+  --nav-bg: rgba(26, 26, 26, 0.95);
 }
 
 body {
   font-family: 'JetBrains Mono', monospace;
   background-color: var(--bg-color);
   color: var(--text-color);
-  line-height: 1.6;
+  line-height: 1.4;
   margin: 0;
   padding: 0;
   transition: background-color 0.3s ease, color 0.3s ease;
-  font-size: calc(1.2vw + 0.9rem);
+  font-size: 1rem;
 }
 
 h1, h2, h3 {
   font-family: 'JetBrains Mono', monospace;
-  font-weight: 700;
+  font-weight: 600;
   color: var(--header-color);
-  letter-spacing: 0.02em;
-  font-size: calc(1.8vw + 1.2rem);
+  letter-spacing: 0.01em;
+  overflow-wrap: break-word;
+  word-break: break-word;
+}
+
+p {
+  font-weight: 400;
+  overflow-wrap: break-word;
+  word-break: break-word;
 }
 
 h1:hover, h2:hover, p:hover {
-  text-shadow: 0 0 5px var(--glow-color);
-  transition: text-shadow 0.3s ease;
+  text-shadow: 0 0 4px var(--glow-color);
+  transition: text-shadow 0.2s ease;
 }
 
 .section {
-  padding: 120px 0;
+  padding: 80px 0;
   position: relative;
   z-index: 10;
   background-color: var(--bg-color);
   transition: background-color 0.3s ease;
 }
 
+#home {
+  padding-top: 0;
+}
+
 .container {
   max-width: 960px;
   margin: 0 auto;
-  padding: 0 1.5rem;
+  padding: 0 1rem;
   text-align: center;
 }
 
 .logo {
-  transition: box-shadow 0.3s ease;
-  color: var(--text-color);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
 .logo:hover {
-  box-shadow: 0 0 10px var(--glow-color);
+  transform: scale(1.05);
+  box-shadow: 0 0 8px var(--glow-color);
 }
 
 .btn {
   background-color: var(--button-bg);
   color: var(--button-text);
   border: 1px solid var(--input-border);
-  transition: all 0.3s ease;
-  min-width: 120px;
+  transition: all 0.2s ease;
+  min-width: 100px;
+  transform: scale(1);
 }
 
 .btn:hover {
-  box-shadow: 0 0 10px var(--glow-color);
+  box-shadow: 0 0 8px var(--glow-color);
   border-color: var(--glow-color);
   background-color: var(--button-hover-bg);
+  transform: scale(1.05);
 }
 
 #map {
   height: 400px;
   border: 1px solid var(--input-border);
-  transition: border-color 0.3s ease;
+  transition: border-color 0.2s ease;
 }
 
 #map:hover {
@@ -104,11 +117,11 @@ h1:hover, h2:hover, p:hover {
   background-color: var(--bg-color);
   border: 1px solid var(--input-border);
   color: var(--text-color);
-  padding: 12px;
+  padding: 10px;
   width: 100%;
   box-sizing: border-box;
   font-family: 'JetBrains Mono', monospace;
-  transition: all 0.3s ease;
+  transition: all 0.2s ease;
 }
 
 .form-input::placeholder {
@@ -117,18 +130,23 @@ h1:hover, h2:hover, p:hover {
 
 .form-input:focus {
   border-color: var(--glow-color);
-  box-shadow: 0 0 10px var(--glow-color);
+  box-shadow: 0 0 8px var(--glow-color);
   outline: none;
 }
 
 /* Video Box */
 .video-box {
   position: relative;
-  width: 100%;
-  max-width: 960px;
-  margin: 0 auto;
+  width: 100vw;
+  max-width: none;
+  margin: 0;
   aspect-ratio: 16 / 9;
   overflow: hidden;
+  transition: box-shadow 0.2s ease;
+}
+
+.video-box:hover {
+  box-shadow: 0 0 8px var(--glow-color);
 }
 
 .video-background, .youtube-background, .fallback-image {
@@ -160,20 +178,20 @@ h1:hover, h2:hover, p:hover {
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
-  gap: 1rem;
+  gap: 0.75rem;
 }
 
 .text-bubble {
   background: linear-gradient(135deg, rgba(0, 0, 0, 0.05), rgba(0, 0, 0, 0.02));
   border: 1px solid var(--input-border);
-  padding: 10px 20px;
+  padding: 8px 16px;
   text-align: center;
   text-decoration: none;
   color: var(--text-color);
-  font-size: 1rem;
-  transition: all 0.3s ease;
+  font-size: 0.9rem;
+  transition: all 0.2s ease;
   opacity: 0;
-  animation: fadeInBubble 0.5s ease forwards;
+  animation: fadeInBubble 0.4s ease forwards;
 }
 
 .text-bubble:nth-child(1) { animation-delay: 0.1s; }
@@ -183,19 +201,20 @@ h1:hover, h2:hover, p:hover {
 .text-bubble:nth-child(5) { animation-delay: 0.5s; }
 
 .text-bubble:hover {
-  box-shadow: 0 0 10px var(--glow-color);
+  box-shadow: 0 0 8px var(--glow-color);
   border-color: var(--glow-color);
+  transform: scale(1.05);
 }
 
 @keyframes fadeInBubble {
-  from { opacity: 0; }
-  to { opacity: 1; }
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
 }
 
 /* Fade-in Animation */
 .fade-in {
   opacity: 0;
-  transition: opacity 0.5s ease;
+  transition: opacity 0.4s ease;
 }
 
 .fade-in.visible {
@@ -210,28 +229,30 @@ nav {
 
 nav a {
   color: var(--text-color);
-  transition: all 0.3s ease;
+  transition: all 0.2s ease;
 }
 
 nav a:hover {
-  box-shadow: 0 0 10px var(--glow-color);
+  box-shadow: 0 0 8px var(--glow-color);
   border-bottom: 1px solid var(--glow-color);
+  transform: scale(1.05);
 }
 
 /* Interactive Items */
 .service-item, .success-item, .team-item, .resource-item {
-  transition: all 0.3s ease;
+  transition: all 0.2s ease;
   padding: 4px 8px;
 }
 
 .service-item:hover, .success-item:hover, .team-item:hover, .resource-item:hover {
   background-color: rgba(57, 255, 20, 0.1);
-  box-shadow: 0 0 10px var(--glow-color);
+  box-shadow: 0 0 8px var(--glow-color);
+  transform: scale(1.02);
 }
 
 .service-item.selected, .success-item.selected, .team-item.selected {
-  background-color: rgba(57, 255, 20, 0.2);
-  box-shadow: 0 0 15px var(--glow-color);
+  background-color: rgba(57, 255, 20, 0.15);
+  box-shadow: 0 0 12px var(--glow-color);
 }
 
 /* Typewriter Animation */
@@ -239,7 +260,7 @@ nav a:hover {
   display: inline-block;
   overflow: hidden;
   white-space: nowrap;
-  animation: typing 2s steps(15, end) forwards;
+  animation: typing 1.5s steps(15, end) forwards;
   position: relative;
 }
 
@@ -248,7 +269,7 @@ nav a:hover {
   position: absolute;
   right: -5px;
   color: var(--accent-color);
-  animation: blink 0.7s infinite;
+  animation: blink 0.6s infinite;
 }
 
 @keyframes typing {
@@ -270,11 +291,11 @@ nav a:hover {
 /* Links */
 a {
   color: var(--text-color);
-  transition: all 0.3s ease;
+  transition: all 0.2s ease;
 }
 
 a:hover {
-  box-shadow: 0 0 10px var(--glow-color);
+  box-shadow: 0 0 8px var(--glow-color);
   border-bottom: 1px solid var(--glow-color);
 }
 
@@ -285,24 +306,82 @@ footer {
   transition: background-color 0.3s ease, color 0.3s ease;
 }
 
+/* Starfield Canvas */
+#starfield {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100vh;
+  z-index: -3;
+  display: block;
+}
+
 /* Mobile */
 @media (max-width: 640px) {
   body {
-    font-size: 0.95rem;
+    font-size: 0.9rem;
   }
-  h1 { font-size: 2.2rem; }
-  h2 { font-size: 1.8rem; }
-  h3 { font-size: 1.4rem; }
-  .section { padding: 80px 0; }
-  .container { padding: 0 1.5rem; }
-  .btn { padding: 12px 24px; font-size: 0.95rem; min-width: 100px; }
-  nav .container { flex-direction: column; gap: 0.5rem; padding: 1rem; }
-  nav .logo { margin-bottom: 0.5rem; }
-  .form-input, .btn { font-size: 0.95rem; }
-  .service-item, .success-item, .team-item, .resource-item { padding: 6px 10px; }
-  .video-box { padding: 0 1.5rem; }
-  .text-bubble-container { flex-direction: column; align-items: center; }
-  .text-bubble { width: 100%; max-width: 200px; font-size: 0.9rem; }
-  ul { padding-left: 1.5rem; }
-  li { text-align: left; }
+  h1 {
+    font-size: 1.8rem;
+  }
+  h2 {
+    font-size: 1.6rem;
+  }
+  h3 {
+    font-size: 1.3rem;
+  }
+  p {
+    font-size: 0.85rem;
+  }
+  #home {
+    padding-top: 80px;
+    min-height: 85vh;
+  }
+  .section {
+    padding: 60px 0;
+  }
+  .container {
+    padding: 0 1rem;
+  }
+  .btn {
+    padding: 10px 20px;
+    font-size: 0.9rem;
+    min-width: 90px;
+  }
+  nav {
+    padding: 0.5rem 0;
+  }
+  nav .container {
+    flex-direction: column;
+    gap: 0.5rem;
+    padding: 0.5rem;
+  }
+  nav .logo {
+    margin-bottom: 0.5rem;
+  }
+  .form-input, .btn {
+    font-size: 0.9rem;
+  }
+  .service-item, .success-item, .team-item, .resource-item {
+    padding: 5px 8px;
+  }
+  .video-box {
+    padding: 0;
+  }
+  .text-bubble-container {
+    flex-direction: column;
+    align-items: center;
+  }
+  .text-bubble {
+    width: 100%;
+    max-width: 180px;
+    font-size: 0.85rem;
+  }
+  ul {
+    padding-left: 1rem;
+  }
+  li {
+    text-align: left;
+  }
 }
