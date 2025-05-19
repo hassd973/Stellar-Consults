@@ -27,18 +27,14 @@
     </div>
   </nav>
 
-  <!-- Hero Section with Video Box and Text Bubbles -->
+  <!-- Hero Section with Spline Canvas and Text Bubbles -->
   <section id="home" class="section fade-in relative text-center min-h-[80vh] flex items-center justify-center">
     <div class="container mx-auto px-4 max-w-3xl relative z-10">
       <h1 class="text-4xl font-semibold mb-4 tracking-tight"><span class="typing-text">Stellar Consults</span> 🚀</h1>
       <p class="text-lg font-normal mb-6 leading-relaxed">Welcome to Stellar Consults, where we are passionately committed to transforming the healthcare landscape through innovative, state-of-the-art digital solutions meticulously crafted for dental and medical practices. Our visionary approach is designed to propel your practice into the future, equipping you with the tools and strategies needed to excel in 2025 and beyond. By harnessing the latest technological advancements, we empower healthcare professionals to achieve extraordinary levels of efficiency, productivity, and patient satisfaction, ensuring your practice not only meets but exceeds the demands of a rapidly evolving industry.</p>
-      <div class="video-box mb-6">
-        <video class="video-background" autoplay muted loop playsinline>
-          <source src="/assets/videos/background.mp4" type="video/mp4">
-        </video>
-        <iframe class="youtube-background hidden" src="https://www.youtube.com/embed/-46vRLS_3LE?autoplay=1&mute=1&loop=1&playlist=-46vRLS_3LE&controls=0&showinfo=0&rel=0" frameborder="0" allow="autoplay; encrypted-media" loading="lazy" allowfullscreen></iframe>
+      <div class="spline-box mb-6">
+        <canvas id="spline-canvas"></canvas>
         <img class="fallback-image hidden" src="/assets/images/fallback.jpg" alt="Fallback Background">
-        <div class="video-overlay"></div>
       </div>
       <a href="#book" class="btn inline-block px-5 py-2 text-sm font-medium">Book Now 📅</a>
       <div class="text-bubble-container mt-8 flex flex-wrap justify-center gap-3">
@@ -202,6 +198,7 @@
   </footer>
 
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+  <script src="https://unpkg.com/@splinetool/runtime/build/runtime.js"></script>
   <script src="/js/scripts.js"></script>
 </body>
 </html>
