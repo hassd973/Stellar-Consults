@@ -13,20 +13,20 @@ document.addEventListener('DOMContentLoaded', () => {
   const canvas = document.getElementById('starfield');
   const ctx = canvas.getContext('2d');
   canvas.width = window.innerWidth;
-  canvas.height = window.innerHeight; // Full viewport height for #home
+  canvas.height = window.innerHeight;
 
   const stars = [];
-  const numStars = 100;
+  const numStars = 50;
   const greyShades = ['#000000', '#4A4A4A', '#7A7A7A', '#B3B3B3'];
 
   class Star {
     constructor() {
       this.x = Math.random() * canvas.width;
       this.y = Math.random() * canvas.height;
-      this.radius = Math.random() * 1 + 0.5; // 0.5–1.5px
+      this.radius = Math.random() * 1 + 0.5;
       this.color = greyShades[Math.floor(Math.random() * greyShades.length)];
-      this.vx = (Math.random() - 0.5) * 0.3;
-      this.vy = (Math.random() - 0.5) * 0.3;
+      this.vx = (Math.random() - 0.5) * 0.2;
+      this.vy = (Math.random() - 0.5) * 0.2;
       this.opacity = 0.5 + Math.random() * 0.5;
       this.pulseSpeed = 0.01 + Math.random() * 0.02;
       this.pulseDirection = 1;
@@ -78,7 +78,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const fallbackImage = document.querySelector('.fallback-image');
   const videoSource = video.querySelector('source');
   let retryCount = 0;
-  const maxRetries = 5;
+  const maxRetries = 3;
 
   const debugVideo = () => {
     console.log('Video Debug Info:');
@@ -89,7 +89,6 @@ document.addEventListener('DOMContentLoaded', () => {
     console.log('Retry Count:', retryCount);
     console.log('Network State:', video.networkState);
     console.log('Ready State:', video.readyState);
-    console.log('Window Width:', window.innerWidth);
   };
 
   const tryVideoPlayback = () => {
@@ -144,7 +143,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // Mobile Video Fade
   const homeSection = document.querySelector('#home');
-  const isMobile = window.innerWidth <= 768;
+  const isMobile = window.innerWidth <= 640;
   if (isMobile) {
     const observer = new IntersectionObserver(
       (entries) => {
