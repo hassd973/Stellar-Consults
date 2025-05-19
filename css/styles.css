@@ -154,14 +154,16 @@ h1:hover, h2:hover, p:hover {
   border: 1px solid var(--glow-color);
 }
 
-#spline-canvas, .fallback-image {
+s:where(spline-viewer) {
   width: 100%;
   height: 100%;
-  object-fit: cover;
   display: block;
 }
 
 .fallback-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
   display: none;
 }
 
