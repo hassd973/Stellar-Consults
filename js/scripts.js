@@ -6,26 +6,27 @@ document.addEventListener('DOMContentLoaded', () => {
   }).addTo(map);
   L.marker([40.7128, -74.0060])
     .addTo(map)
-    .bindPopup('Stellar Consults<br>285 Fulton St Fl 85, New York, NY 10007')
+    .bindPopup('Stellar Consults<br>Servcorp One World Trade Center, 285 Fulton St Fl 85, New York, NY 10007')
     .openPopup();
 
-  // Starfield Animation
+  // Starfield Animation (Landing Page Only)
   const canvas = document.getElementById('starfield');
   const ctx = canvas.getContext('2d');
   canvas.width = window.innerWidth;
-  canvas.height = window.innerHeight;
+  canvas.height = window.innerHeight; // Full viewport height for #home
 
   const stars = [];
-  const numStars = 150;
+  const numStars = 100;
+  const greyShades = ['#000000', '#4A4A4A', '#7A7A7A', '#B3B3B3'];
 
   class Star {
     constructor() {
       this.x = Math.random() * canvas.width;
       this.y = Math.random() * canvas.height;
-      this.radius = Math.random() * 2 + 1;
-      this.color = Math.random() > 0.5 ? '#FF5555' : '#00F7FF';
-      this.vx = (Math.random() - 0.5) * 0.5;
-      this.vy = (Math.random() - 0.5) * 0.5;
+      this.radius = Math.random() * 1 + 0.5; // 0.5–1.5px
+      this.color = greyShades[Math.floor(Math.random() * greyShades.length)];
+      this.vx = (Math.random() - 0.5) * 0.3;
+      this.vy = (Math.random() - 0.5) * 0.3;
       this.opacity = 0.5 + Math.random() * 0.5;
       this.pulseSpeed = 0.01 + Math.random() * 0.02;
       this.pulseDirection = 1;
