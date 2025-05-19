@@ -15,10 +15,19 @@ document.addEventListener('DOMContentLoaded', () => {
   const fallbackImage = document.querySelector('.fallback-image');
   const videoSource = video.querySelector('source');
   let retryCount = 0;
-  const maxRetries = 3;
+  const maxRetries = 5;
+
+  const debugVideo = () => {
+    console.log('Video Debug Info:');
+    console.log('Source:', videoSource.src);
+    console.log('Video Element:', video);
+    console.log('Current Retry Count:', retryCount);
+    console.log('Network State:', video.networkState);
+    console.log('Ready State:', video.readyState);
+  };
 
   const tryVideoPlayback = () => {
-    console.log('Attempting to load video:', videoSource.src);
+    console.log(`Attempting to load video: ${videoSource.src}`);
     video.load();
     const playPromise = video.play();
     if (playPromise !== undefined) {
@@ -29,6 +38,7 @@ document.addEventListener('DOMContentLoaded', () => {
         .catch((error) => {
           console.error('Video playback failed:', error);
           retryCount++;
+          debugVideo();
           if (retryCount < maxRetries) {
             console.log(`Retrying video playback (${retryCount}/${maxRetries})`);
             setTimeout(tryVideoPlayback, 1000);
@@ -36,7 +46,6 @@ document.addEventListener('DOMContentLoaded', () => {
             console.log('Switching to YouTube fallback');
             video.classList.add('hidden');
             youtubeIframe.classList.add('active');
-            // Check YouTube iframe load
             youtubeIframe.addEventListener('error', () => {
               console.error('YouTube iframe failed to load');
               youtubeIframe.classList.remove('active');
@@ -51,6 +60,7 @@ document.addEventListener('DOMContentLoaded', () => {
   video.addEventListener('error', (e) => {
     console.error('Video failed to load:', videoSource.src, e);
     retryCount++;
+    debugVideo();
     if (retryCount < maxRetries) {
       console.log(`Retrying video load (${retryCount}/${maxRetries})`);
       setTimeout(tryVideoPlayback, 1000);
@@ -61,7 +71,8 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   });
 
-  // Attempt to play video
+  // Attempt to play video and debug
+  debugVideo();
   tryVideoPlayback();
 
   // Fade-in animation on scroll
@@ -78,7 +89,7 @@ document.addEventListener('DOMContentLoaded', () => {
   );
   sections.forEach((section) => observer.observe(section));
 
-  // Typing animation with neon cursor
+  // Typewriter animation
   const typingText = document.querySelector('.typing-text');
   typingText.style.width = '0';
   setTimeout(() => {
