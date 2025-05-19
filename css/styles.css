@@ -8,8 +8,9 @@
   --button-bg: #1A1A1A;
   --button-text: #FFFFFF;
   --button-hover-bg: #4A4A4A;
-  --footer-bg: #1A1A1A;
+  --footer-bg: #F5F5F5;
   --input-border: #E5E5E5;
+  --nav-bg: rgba(255, 255, 255, 0.98);
 }
 
 /* Dark Mode */
@@ -24,17 +25,18 @@
   --button-hover-bg: #B3B3B3;
   --footer-bg: #0F0F0F;
   --input-border: #4A4A4A;
+  --nav-bg: rgba(26, 26, 26, 0.98);
 }
 
 body {
   font-family: 'JetBrains Mono', monospace;
   background-color: var(--bg-color);
   color: var(--text-color);
-  line-height: 1.8;
+  line-height: 1.6;
   margin: 0;
   padding: 0;
   transition: background-color 0.3s ease, color 0.3s ease;
-  font-size: calc(1.5vw + 1rem);
+  font-size: calc(1.2vw + 0.9rem);
 }
 
 h1, h2, h3 {
@@ -42,7 +44,7 @@ h1, h2, h3 {
   font-weight: 700;
   color: var(--header-color);
   letter-spacing: 0.02em;
-  font-size: calc(2vw + 1.5rem);
+  font-size: calc(1.8vw + 1.2rem);
 }
 
 h1:hover, h2:hover, p:hover {
@@ -54,42 +56,20 @@ h1:hover, h2:hover, p:hover {
   padding: 120px 0;
   position: relative;
   z-index: 10;
+  background-color: var(--bg-color);
   transition: background-color 0.3s ease;
 }
 
-/* Transparent Gradients */
-:root.light #home { background-color: transparent; }
-:root.light #book { background-color: rgba(0, 0, 0, 0.08); }
-:root.light #about { background-color: rgba(0, 0, 0, 0.07); }
-:root.light #success { background-color: rgba(0, 0, 0, 0.06); }
-:root.light #services { background-color: rgba(0, 0, 0, 0.05); }
-:root.light #subscribe { background-color: rgba(0, 0, 0, 0.04); }
-:root.light #team { background-color: rgba(0, 0, 0, 0.03); }
-:root.light #approach { background-color: rgba(0, 0, 0, 0.02); }
-:root.light #why-us { background-color: rgba(0, 0, 0, 0.015); }
-:root.light #resources { background-color: rgba(0, 0, 0, 0.012); }
-:root.light #contact { background-color: rgba(0, 0, 0, 0.01); }
-:root.light #map-section { background-color: rgba(0, 0, 0, 0.005); }
-
-:root.dark #home { background-color: transparent; }
-:root.dark #book { background-color: rgba(255, 255, 255, 0.08); }
-:root.dark #about { background-color: rgba(255, 255, 255, 0.07); }
-:root.dark #success { background-color: rgba(255, 255, 255, 0.06); }
-:root.dark #services { background-color: rgba(255, 255, 255, 0.05); }
-:root.dark #subscribe { background-color: rgba(255, 255, 255, 0.04); }
-:root.dark #team { background-color: rgba(255, 255, 255, 0.03); }
-:root.dark #approach { background-color: rgba(255, 255, 255, 0.02); }
-:root.dark #why-us { background-color: rgba(255, 255, 255, 0.015); }
-:root.dark #resources { background-color: rgba(255, 255, 255, 0.012); }
-:root.dark #contact { background-color: rgba(255, 255, 255, 0.01); }
-:root.dark #map-section { background-color: rgba(255, 255, 255, 0.005); }
-
 .container {
   max-width: 960px;
+  margin: 0 auto;
+  padding: 0 1.5rem;
+  text-align: center;
 }
 
 .logo {
   transition: box-shadow 0.3s ease;
+  color: var(--text-color);
 }
 
 .logo:hover {
@@ -101,13 +81,13 @@ h1:hover, h2:hover, p:hover {
   color: var(--button-text);
   border: 1px solid var(--input-border);
   transition: all 0.3s ease;
+  min-width: 120px;
 }
 
 .btn:hover {
   box-shadow: 0 0 10px var(--glow-color);
   border-color: var(--glow-color);
   background-color: var(--button-hover-bg);
-  transform: scale(1.05);
 }
 
 #map {
@@ -150,7 +130,7 @@ h1:hover, h2:hover, p:hover {
 }
 
 .text-bubble {
-  background: linear-gradient(135deg, rgba(0, 0, 0, 0.1), rgba(0, 0, 0, 0.05));
+  background: linear-gradient(135deg, rgba(0, 0, 0, 0.05), rgba(0, 0, 0, 0.02));
   border: 1px solid var(--input-border);
   padding: 10px 20px;
   text-align: center;
@@ -171,18 +151,17 @@ h1:hover, h2:hover, p:hover {
 .text-bubble:hover {
   box-shadow: 0 0 10px var(--glow-color);
   border-color: var(--glow-color);
-  transform: scale(1.05);
 }
 
 @keyframes fadeInBubble {
-  from { opacity: 0; transform: translateY(10px); }
-  to { opacity: 1; transform: translateY(0); }
+  from { opacity: 0; }
+  to { opacity: 1; }
 }
 
 /* Fade-in Animation */
 .fade-in {
   opacity: 0;
-  transition: opacity 1s ease;
+  transition: opacity 0.5s ease;
 }
 
 .fade-in.visible {
@@ -230,15 +209,12 @@ h1:hover, h2:hover, p:hover {
 
 /* Navigation */
 nav {
-  background-color: rgba(255, 255, 255, 0.98);
+  background-color: var(--nav-bg);
   transition: background-color 0.3s ease;
 }
 
-:root.dark nav {
-  background-color: rgba(26, 26, 26, 0.98);
-}
-
 nav a {
+  color: var(--text-color);
   transition: all 0.3s ease;
 }
 
@@ -251,7 +227,6 @@ nav a:hover {
 .service-item, .success-item, .team-item, .resource-item {
   transition: all 0.3s ease;
   padding: 4px 8px;
-  border-radius: 2px;
 }
 
 .service-item:hover, .success-item:hover, .team-item:hover, .resource-item:hover {
@@ -308,23 +283,31 @@ a:hover {
   border-bottom: 1px solid var(--glow-color);
 }
 
+/* Footer */
+footer {
+  background-color: var(--footer-bg);
+  color: var(--text-color);
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
 /* Mobile */
-@media (max-width: 768px) {
+@media (max-width: 640px) {
   body {
-    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
-    font-size: 1.1rem;
+    font-size: 0.95rem;
   }
-  h1 { font-size: 2.8rem; }
-  h2 { font-size: 2rem; }
-  h3 { font-size: 1.5rem; }
+  h1 { font-size: 2.2rem; }
+  h2 { font-size: 1.8rem; }
+  h3 { font-size: 1.4rem; }
   .section { padding: 80px 0; }
   .container { padding: 0 1.5rem; }
-  .btn { padding: 12px 24px; font-size: 1.1rem; }
-  nav .container { flex-direction: column; gap: 1rem; padding: 1rem; }
+  .btn { padding: 12px 24px; font-size: 0.95rem; min-width: 100px; }
+  nav .container { flex-direction: column; gap: 0.5rem; padding: 1rem; }
   nav .logo { margin-bottom: 0.5rem; }
-  .form-input, .btn { font-size: 1.1rem; }
+  .form-input, .btn { font-size: 0.95rem; }
   .service-item, .success-item, .team-item, .resource-item { padding: 6px 10px; }
   .video-overlay { background: rgba(0, 0, 0, 0.1); }
   .text-bubble-container { flex-direction: column; align-items: center; }
-  .text-bubble { width: 100%; max-width: 250px; }
+  .text-bubble { width: 100%; max-width: 200px; font-size: 0.9rem; }
+  ul { padding-left: 1.5rem; }
+  li { text-align: left; }
 }
