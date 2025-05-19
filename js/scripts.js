@@ -29,7 +29,7 @@ document.addEventListener('DOMContentLoaded', () => {
     constructor() {
       this.x = Math.random() * starfieldCanvas.width;
       this.y = Math.random() * starfieldCanvas.height;
-      this.radius = Math.random() * 2 + 2.5;
+      this.radius = Math.random() * 2 + 3;
       this.vx = (Math.random() - 0.5) * 0.2;
       this.vy = (Math.random() - 0.5) * 0.2;
       this.opacity = 0.7 + Math.random() * 0.3;
@@ -50,7 +50,7 @@ document.addEventListener('DOMContentLoaded', () => {
       starfieldCtx.fillStyle = this.color;
       starfieldCtx.globalAlpha = this.opacity;
       starfieldCtx.shadowColor = this.color;
-      starfieldCtx.shadowBlur = 12;
+      starfieldCtx.shadowBlur = 15;
       starfieldCtx.fill();
       starfieldCtx.shadowBlur = 0;
       starfieldCtx.globalAlpha = 1;
@@ -103,35 +103,32 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   });
 
-  // Spline Initialization
-  const splineCanvas = document.getElementById('spline-canvas');
+  // Spline Viewer Error Handling
+  const splineViewer = document.querySelector('spline-viewer');
   const fallbackImage = document.querySelector('.fallback-image');
-  let splineApp;
 
-  try {
-    splineApp = new SplineApplication(splineCanvas, 'https://prod.spline.design/ejMWcGxXRWgS7POl/scene.splinecode');
-    console.log('Spline initialized:', splineCanvas);
-    splineApp.addEventListener('error', (e) => {
-      console.error('Spline load error:', e);
-      splineCanvas.style.display = 'none';
+  splineViewer.addEventListener('load', () => {
+    console.log('Spline viewer loaded successfully');
+  });
+
+  splineViewer.addEventListener('error', (e) => {
+    console.error('Spline viewer error:', e);
+    splineViewer.style.display = 'none';
+    fallbackImage.classList.remove('hidden');
+    fallbackImage.classList.add('active');
+    console.log('Switched to image fallback');
+  });
+
+  // Fallback if Spline fails to load within 5 seconds
+  setTimeout(() => {
+    if (!splineViewer.shadowRoot || !splineViewer.shadowRoot.querySelector('canvas')) {
+      console.warn('Spline viewer failed to initialize within 5 seconds');
+      splineViewer.style.display = 'none';
       fallbackImage.classList.remove('hidden');
       fallbackImage.classList.add('active');
       console.log('Switched to image fallback');
-    });
-    splineApp.load().then(() => {
-      console.log('Spline scene loaded successfully');
-    }).catch(e => {
-      console.error('Spline load failed:', e);
-      splineCanvas.style.display = 'none';
-      fallbackImage.classList.remove('hidden');
-      fallbackImage.classList.add('active');
-    });
-  } catch (e) {
-    console.error('Spline initialization failed:', e);
-    splineCanvas.style.display = 'none';
-    fallbackImage.classList.remove('hidden');
-    fallbackImage.classList.add('active');
-  }
+    }
+  }, 5000);
 
   // Dynamic Nav Padding
   const nav = document.querySelector('nav');
