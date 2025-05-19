@@ -9,26 +9,27 @@ document.addEventListener('DOMContentLoaded', () => {
     .bindPopup('Stellar Consults<br>Servcorp One World Trade Center, 285 Fulton St Fl 85, New York, NY 10007')
     .openPopup();
 
-  // Starfield Animation (Landing Page Only)
+  // Starfield Animation
   const canvas = document.getElementById('starfield');
   const ctx = canvas.getContext('2d');
   canvas.width = window.innerWidth;
   canvas.height = window.innerHeight;
+  console.log('Starfield initialized: width=', canvas.width, 'height=', canvas.height);
 
   const stars = [];
-  const numStars = 40;
-  const lightModeColors = ['#000000', '#4A4A4A', '#7A7A7A', '#B3B3B3'];
-  const darkModeColors = ['#FFFFFF', '#4A4A4A', '#7A7A7A', '#B3B3B3'];
+  const numStars = 50;
+  const lightModeColors = ['#000000', '#333333', '#666666'];
+  const darkModeColors = ['#FFFFFF', '#CCCCCC', '#999999'];
 
   class Star {
     constructor() {
       this.x = Math.random() * canvas.width;
       this.y = Math.random() * canvas.height;
-      this.radius = Math.random() * 1.3 + 0.7;
-      this.vx = (Math.random() - 0.5) * 0.15;
-      this.vy = (Math.random() - 0.5) * 0.15;
-      this.opacity = 0.7 + Math.random() * 0.3;
-      this.pulseSpeed = 0.015 + Math.random() * 0.025;
+      this.radius = Math.random() * 1.5 + 1.5;
+      this.vx = (Math.random() - 0.5) * 0.2;
+      this.vy = (Math.random() - 0.5) * 0.2;
+      this.opacity = 0.6 + Math.random() * 0.4;
+      this.pulseSpeed = 0.02 + Math.random() * 0.03;
       this.pulseDirection = 1;
       this.updateColor();
     }
@@ -45,7 +46,7 @@ document.addEventListener('DOMContentLoaded', () => {
       ctx.fillStyle = this.color;
       ctx.globalAlpha = this.opacity;
       ctx.shadowColor = this.color;
-      ctx.shadowBlur = 4;
+      ctx.shadowBlur = 8;
       ctx.fill();
       ctx.shadowBlur = 0;
       ctx.globalAlpha = 1;
@@ -58,7 +59,7 @@ document.addEventListener('DOMContentLoaded', () => {
       if (this.y < 0 || this.y > canvas.height) this.vy *= -1;
 
       this.opacity += this.pulseSpeed * this.pulseDirection;
-      if (this.opacity > 1 || this.opacity < 0.7) this.pulseDirection *= -1;
+      if (this.opacity > 1 || this.opacity < 0.6) this.pulseDirection *= -1;
     }
   }
 
@@ -72,6 +73,7 @@ document.addEventListener('DOMContentLoaded', () => {
       star.update();
       star.draw();
     });
+    console.log('Animating stars:', stars.length);
     requestAnimationFrame(animateStars);
   }
 
@@ -80,7 +82,19 @@ document.addEventListener('DOMContentLoaded', () => {
   window.addEventListener('resize', () => {
     canvas.width = window.innerWidth;
     canvas.height = window.innerHeight;
+    console.log('Canvas resized: width=', canvas.width, 'height=', canvas.height);
   });
+
+  // Dynamic Nav Padding
+  const nav = document.querySelector('nav');
+  const homeSection = document.querySelector('#home');
+  function updateHomePadding() {
+    const navHeight = nav.getBoundingClientRect().height;
+    homeSection.style.paddingTop = `${navHeight + 20}px`;
+    console.log('Nav height:', navHeight, 'Home padding-top:', homeSection.style.paddingTop);
+  }
+  updateHomePadding();
+  window.addEventListener('resize', updateHomePadding);
 
   // Video Playback
   const video = document.querySelector('.video-background');
@@ -133,7 +147,6 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   };
 
-  // Add multiple interaction events for mobile
   document.addEventListener('click', playVideoOnInteraction);
   document.addEventListener('touchstart', playVideoOnInteraction);
   document.addEventListener('scroll', playVideoOnInteraction, { once: true });
@@ -150,7 +163,6 @@ document.addEventListener('DOMContentLoaded', () => {
     video.play();
   });
 
-  // Retry playback after 1s if initial attempt fails
   setTimeout(() => {
     if (video.paused) {
       console.log('Initial playback failed, retrying...');
@@ -222,7 +234,6 @@ document.addEventListener('DOMContentLoaded', () => {
     html.classList.add(newTheme);
     localStorage.setItem('theme', newTheme);
     themeToggle.textContent = newTheme === 'light' ? 'Toggle Dark Mode' : 'Toggle Light Mode';
-    // Update star colors on theme change
     stars.forEach(star => star.updateColor());
   });
 });
