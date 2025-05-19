@@ -12,6 +12,10 @@ document.addEventListener('DOMContentLoaded', () => {
   // Starfield Animation
   const canvas = document.getElementById('starfield');
   const ctx = canvas.getContext('2d');
+  if (!ctx) {
+    console.error('Canvas context not supported');
+    return;
+  }
   canvas.width = window.innerWidth;
   canvas.height = window.innerHeight;
   console.log('Starfield initialized: width=', canvas.width, 'height=', canvas.height);
@@ -25,10 +29,10 @@ document.addEventListener('DOMContentLoaded', () => {
     constructor() {
       this.x = Math.random() * canvas.width;
       this.y = Math.random() * canvas.height;
-      this.radius = Math.random() * 1.5 + 1.5;
+      this.radius = Math.random() * 2 + 2;
       this.vx = (Math.random() - 0.5) * 0.2;
       this.vy = (Math.random() - 0.5) * 0.2;
-      this.opacity = 0.6 + Math.random() * 0.4;
+      this.opacity = 0.7 + Math.random() * 0.3;
       this.pulseSpeed = 0.02 + Math.random() * 0.03;
       this.pulseDirection = 1;
       this.updateColor();
@@ -46,10 +50,11 @@ document.addEventListener('DOMContentLoaded', () => {
       ctx.fillStyle = this.color;
       ctx.globalAlpha = this.opacity;
       ctx.shadowColor = this.color;
-      ctx.shadowBlur = 8;
+      ctx.shadowBlur = 10;
       ctx.fill();
       ctx.shadowBlur = 0;
       ctx.globalAlpha = 1;
+      console.log('Drawing star: x=', this.x, 'y=', this.y, 'color=', this.color);
     }
 
     update() {
@@ -59,7 +64,7 @@ document.addEventListener('DOMContentLoaded', () => {
       if (this.y < 0 || this.y > canvas.height) this.vy *= -1;
 
       this.opacity += this.pulseSpeed * this.pulseDirection;
-      if (this.opacity > 1 || this.opacity < 0.6) this.pulseDirection *= -1;
+      if (this.opacity > 1 || this.opacity < 0.7) this.pulseDirection *= -1;
     }
   }
 
@@ -69,6 +74,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
   function animateStars() {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
+    // Test canvas rendering
+    ctx.fillStyle = 'rgba(255, 0, 0, 0.1)';
+    ctx.fillRect(0, 0, 100, 100);
     stars.forEach(star => {
       star.update();
       star.draw();
@@ -83,6 +91,10 @@ document.addEventListener('DOMContentLoaded', () => {
     canvas.width = window.innerWidth;
     canvas.height = window.innerHeight;
     console.log('Canvas resized: width=', canvas.width, 'height=', canvas.height);
+    stars.forEach(star => {
+      star.x = Math.random() * canvas.width;
+      star.y = Math.random() * canvas.height;
+    });
   });
 
   // Dynamic Nav Padding
@@ -129,19 +141,25 @@ document.addEventListener('DOMContentLoaded', () => {
           debugVideo();
           console.log('Switching to YouTube fallback');
           video.classList.add('hidden');
+          youtubeIframe.classList.remove('hidden');
           youtubeIframe.classList.add('active');
-          youtubeIframe.addEventListener('error', () => {
-            console.error('YouTube iframe failed');
-            youtubeIframe.classList.remove('active');
-            fallbackImage.classList.add('active');
-          }, { once: true });
         });
     }
   };
 
+  // YouTube Iframe Error Handling
+  youtubeIframe.onerror = (e) => {
+    console.error('YouTube iframe error:', e);
+    youtubeIframe.classList.remove('active');
+    youtubeIframe.classList.add('hidden');
+    fallbackImage.classList.remove('hidden');
+    fallbackImage.classList.add('active');
+    console.log('Switched to image fallback');
+  };
+
   // User Interaction Fallback
   const playVideoOnInteraction = () => {
-    if (video.paused) {
+    if (video.paused && !youtubeIframe.classList.contains('active')) {
       console.log('Retrying video playback on user interaction');
       tryVideoPlayback();
     }
@@ -155,6 +173,7 @@ document.addEventListener('DOMContentLoaded', () => {
     console.error('Video error:', videoSource.src, e);
     debugVideo();
     video.classList.add('hidden');
+    youtubeIframe.classList.remove('hidden');
     youtubeIframe.classList.add('active');
   });
 
@@ -164,7 +183,7 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 
   setTimeout(() => {
-    if (video.paused) {
+    if (video.paused && !youtubeIframe.classList.contains('active')) {
       console.log('Initial playback failed, retrying...');
       tryVideoPlayback();
     }
@@ -235,5 +254,6 @@ document.addEventListener('DOMContentLoaded', () => {
     localStorage.setItem('theme', newTheme);
     themeToggle.textContent = newTheme === 'light' ? 'Toggle Dark Mode' : 'Toggle Light Mode';
     stars.forEach(star => star.updateColor());
+    console.log('Theme switched to:', newTheme);
   });
 });
