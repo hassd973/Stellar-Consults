@@ -9,74 +9,51 @@ document.addEventListener('DOMContentLoaded', () => {
     .bindPopup('Stellar Consults<br>Servcorp One World Trade Center, 285 Fulton St Fl 85, New York, NY 10007')
     .openPopup();
 
+  // Ensure Video Playback
+  const video = document.querySelector('.video-background');
+  video.load();
+  video.play().catch((error) => {
+    console.error('Video playback failed:', error);
+    video.play(); // Retry playback
+  });
+  video.addEventListener('error', () => {
+    console.error('Video failed to load');
+    video.src = '/assets/videos/background.mp4'; // Fallback to default
+    video.load();
+    video.play();
+  });
+
   // Fade-in animation on scroll
   const sections = document.querySelectorAll('.fade-in');
   const observer = new IntersectionObserver((entries) => {
-    entries.forEach(entry => {
+    entries.forEach((entry) => {
       if (entry.isIntersecting) {
         entry.target.classList.add('visible');
       }
     });
   }, { threshold: 0.1 });
-  sections.forEach(section => observer.observe(section));
+  sections.forEach((section) => observer.observe(section));
 
-  // Trigger typing animation for hero title
+  // Typing animation with terminal cursor
   const typingText = document.querySelector('.typing-text');
   typingText.style.width = '0';
   setTimeout(() => {
     typingText.style.width = '100%';
+    typingText.classList.add('cursor-blink');
   }, 100);
+
+  // Light/Dark Mode Toggle
+  const themeToggle = document.getElementById('theme-toggle');
+  const html = document.documentElement;
+  const currentTheme = localStorage.getItem('theme') || 'light';
+  html.classList.add(currentTheme);
+  themeToggle.textContent = currentTheme === 'light' ? 'Toggle Dark Mode' : 'Toggle Light Mode';
+
+  themeToggle.addEventListener('click', () => {
+    const newTheme = html.classList.contains('light') ? 'dark' : 'light';
+    html.classList.remove('light', 'dark');
+    html.classList.add(newTheme);
+    localStorage.setItem('theme', newTheme);
+    themeToggle.textContent = newTheme === 'light' ? 'Toggle Dark Mode' : 'Toggle Light Mode';
+  });
 });
-
-// Load custom font
-function loadCustomFont(event) {
-  const file = event.target.files[0];
-  if (!file || !file.name.match(/\.(ttf|woff|woff2)$/)) {
-    alert('Please upload a valid font file (.ttf, .woff, or .woff2).');
-    return;
-  }
-
-  const reader = new FileReader();
-  reader.onload = function(e) {
-    const fontData = e.target.result;
-    const fontFace = new FontFace('Neue Metana', `url(${fontData})`);
-    fontFace.load().then((loadedFace) => {
-      document.fonts.add(loadedFace);
-      document.body.style.fontFamily = "'Neue Metana', 'Nunito Sans', sans-serif";
-      const styleSheet = document.styleSheets[0];
-      styleSheet.insertRule(`
-        h1, h2, h3 {
-          font-family: 'Neue Metana', 'Nunito Sans', sans-serif;
-          font-weight: 600;
-        }
-      `, styleSheet.cssRules.length);
-    }).catch((error) => {
-      console.error('Error loading font:', error);
-      alert('Failed to load the font. Please try again.');
-    });
-  };
-  reader.readAsDataURL(file);
-}
-
-// Load custom video
-function loadCustomVideo(event) {
-  const file = event.target.files[0];
-  if (!file || !file.name.match(/\.mp4$/)) {
-    alert('Please upload a valid video file (.mp4).');
-    return;
-  }
-
-  const reader = new FileReader();
-  reader.onload = function(e) {
-    const videoData = e.target.result;
-    const videoSource = document.getElementById('video-source');
-    const videoElement = document.querySelector('.video-background');
-    videoSource.src = videoData;
-    videoElement.load();
-    videoElement.play().catch((error) => {
-      console.error('Error playing video:', error);
-      alert('Failed to play the video. Please try again.');
-    });
-  };
-  reader.readAsDataURL(file);
-}
