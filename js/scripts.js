@@ -24,6 +24,7 @@ document.addEventListener('DOMContentLoaded', () => {
     console.log('Current Retry Count:', retryCount);
     console.log('Network State:', video.networkState);
     console.log('Ready State:', video.readyState);
+    console.log('Window Width:', window.innerWidth);
   };
 
   const tryVideoPlayback = () => {
@@ -75,9 +76,32 @@ document.addEventListener('DOMContentLoaded', () => {
   debugVideo();
   tryVideoPlayback();
 
+  // Mobile Video Fade
+  const homeSection = document.querySelector('#home');
+  const isMobile = window.innerWidth <= 768;
+  if (isMobile) {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            video.style.opacity = '0.9';
+            youtubeIframe.style.opacity = '0.9';
+            fallbackImage.style.opacity = '0.9';
+          } else {
+            video.style.opacity = '0';
+            youtubeIframe.style.opacity = '0';
+            fallbackImage.style.opacity = '0';
+          }
+        });
+      },
+      { threshold: 0.1 }
+    );
+    observer.observe(homeSection);
+  }
+
   // Fade-in animation on scroll
   const sections = document.querySelectorAll('.fade-in');
-  const observer = new IntersectionObserver(
+  const sectionObserver = new IntersectionObserver(
     (entries) => {
       entries.forEach((entry) => {
         if (entry.isIntersecting) {
@@ -87,7 +111,7 @@ document.addEventListener('DOMContentLoaded', () => {
     },
     { threshold: 0.1 }
   );
-  sections.forEach((section) => observer.observe(section));
+  sections.forEach((section) => sectionObserver.observe(section));
 
   // Typewriter animation
   const typingText = document.querySelector('.typing-text');
@@ -96,6 +120,18 @@ document.addEventListener('DOMContentLoaded', () => {
     typingText.style.width = '100%';
     typingText.classList.add('cursor-blink');
   }, 100);
+
+  // Services Section Interactivity
+  const serviceItems = document.querySelectorAll('.service-item');
+  serviceItems.forEach((item) => {
+    item.addEventListener('click', () => {
+      const isSelected = item.classList.contains('selected');
+      serviceItems.forEach((i) => i.classList.remove('selected'));
+      if (!isSelected) {
+        item.classList.add('selected');
+      }
+    });
+  });
 
   // Light/Dark Mode Toggle
   const themeToggle = document.getElementById('theme-toggle');
