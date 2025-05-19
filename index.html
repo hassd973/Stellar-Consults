@@ -1,221 +1,176 @@
-<script type="text/javascript">
-        var gk_isXlsx = false;
-        var gk_xlsxFileLookup = {};
-        var gk_fileData = {};
-        function filledCell(cell) {
-          return cell !== '' && cell != null;
-        }
-        function loadFileData(filename) {
-        if (gk_isXlsx && gk_xlsxFileLookup[filename]) {
-            try {
-                var workbook = XLSX.read(gk_fileData[filename], { type: 'base64' });
-                var firstSheetName = workbook.SheetNames[0];
-                var worksheet = workbook.Sheets[firstSheetName];
-
-                // Convert sheet to JSON to filter blank rows
-                var jsonData = XLSX.utils.sheet_to_json(worksheet, { header: 1, blankrows: false, defval: '' });
-                // Filter out blank rows (rows where all cells are empty, null, or undefined)
-                var filteredData = jsonData.filter(row => row.some(filledCell));
-
-                // Heuristic to find the header row by ignoring rows with fewer filled cells than the next row
-                var headerRowIndex = filteredData.findIndex((row, index) =>
-                  row.filter(filledCell).length >= filteredData[index + 1]?.filter(filledCell).length
-                );
-                // Fallback
-                if (headerRowIndex === -1 || headerRowIndex > 25) {
-                  headerRowIndex = 0;
-                }
-
-                // Convert filtered JSON back to CSV
-                var csv = XLSX.utils.aoa_to_sheet(filteredData.slice(headerRowIndex)); // Create a new sheet from filtered array of arrays
-                csv = XLSX.utils.sheet_to_csv(csv, { header: 1 });
-                return csv;
-            } catch (e) {
-                console.error(e);
-                return "";
-            }
-        }
-        return gk_fileData[filename] || "";
-        }
-        </script><!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Stellar Consults 🌟</title>
   <script src="https://cdn.tailwindcss.com"></script>
-  <link href="https://fonts.googleapis.com/css2?family=Nunito+Sans:wght@300;400;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Nunito+Sans:wght@300;400;600;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
   <link rel="stylesheet" href="/css/styles.css">
 </head>
-<body>
+<body class="bg-white text-gray-900">
   <!-- Navigation Bar -->
-  <nav class="fixed top-0 w-full bg-white z-10 py-4 shadow-sm">
-    <div class="container mx-auto px-4 flex justify-center gap-6 flex-wrap">
-      <a href="#home" class="logo text-2xl font-bold text-black no-underline">Stellar Consults</a>
-      <a href="#home" class="text-black text-base font-normal hover:text-blue-600 hover:underline">Home</a>
-      <a href="#services" class="text-black text-base font-normal hover:text-blue-600 hover:underline">Services</a>
-      <a href="#about" class="text-black text-base font-normal hover:text-blue-600 hover:underline">About</a>
-      <a href="#contact" class="text-black text-base font-normal hover:text-blue-600 hover:underline">Contact</a>
+  <nav class="fixed top-0 w-full bg-white z-20 py-6 shadow-lg">
+    <div class="container mx-auto px-6 flex justify-center gap-8 flex-wrap">
+      <a href="#home" class="logo text-3xl font-extrabold text-blue-900 no-underline">Stellar Consults</a>
+      <a href="#home" class="text-gray-900 text-lg font-medium hover:text-teal-500 hover:underline">Home</a>
+      <a href="#services" class="text-gray-900 text-lg font-medium hover:text-teal-500 hover:underline">Services</a>
+      <a href="#about" class="text-gray-900 text-lg font-medium hover:text-teal-500 hover:underline">About</a>
+      <a href="#contact" class="text-gray-900 text-lg font-medium hover:text-teal-500 hover:underline">Contact</a>
     </div>
   </nav>
 
   <!-- Hero Section with Video Background -->
-  <section id="home" class="section fade-in pt-32 text-center relative overflow-hidden">
+  <section id="home" class="section fade-in relative text-center min-h-screen flex items-center justify-center">
     <video class="video-background" autoplay muted loop playsinline>
-      <source id="video-source" src="https://assets.mixkit.co/videos/preview/mixkit-astronaut-in-space-1255-large.mp4" type="video/mp4">
+      <source src="/assets/videos/background.mp4" type="video/mp4">
       Your browser does not support the video tag.
     </video>
     <div class="video-overlay"></div>
-    <div class="container mx-auto px-4 max-w-3xl">
-      <h1 class="text-5xl font-bold mb-4 tracking-tight"><span class="typing-text">Stellar Consults</span> 🌟</h1>
-      <p class="text-xl font-light mb-6 leading-relaxed">Transforming healthcare practices with timeless expertise, digitized for 2025.</p>
-      <p class="text-lg font-normal mb-6 leading-relaxed">Empowering Healthcare Excellence</p>
-      <a href="#book" class="btn inline-block px-6 py-3 text-black border border-gray-300 rounded text-base font-medium hover:bg-gray-200 hover:scale-105">Book Online 📅</a>
+    <div class="container mx-auto px-6 max-w-4xl relative z-10">
+      <h1 class="text-6xl font-extrabold text-blue-900 mb-6 tracking-tight"><span class="typing-text">Stellar Consults</span> 🌟</h1>
+      <p class="text-2xl font-light text-gray-800 mb-8 leading-relaxed">Transforming healthcare practices with timeless expertise, digitized for 2025.</p>
+      <p class="text-xl font-medium text-gray-800 mb-8 leading-relaxed">Empowering Healthcare Excellence</p>
+      <a href="#book" class="btn inline-block px-8 py-4 bg-blue-900 text-white rounded-lg text-lg font-semibold hover:bg-teal-500 hover:scale-105 transition-all">Book Online 📅</a>
     </div>
   </section>
 
   <!-- Book Online Section -->
-  <section id="book" class="section fade-in text-center">
-    <div class="container mx-auto px-4 max-w-3xl">
-      <h2 class="text-4xl font-semibold mb-4 tracking-tight">Book Online 📅</h2>
-      <p class="text-lg font-light mb-6 leading-relaxed">Built for your practice with seamless scheduling solutions.</p>
-      <a href="#contact" class="btn inline-block px-6 py-3 text-black border border-gray-300 rounded text-base font-medium hover:bg-gray-200 hover:scale-105">Schedule Now</a>
+  <section id="book" class="section fade-in text-center py-20">
+    <div class="container mx-auto px-6 max-w-4xl">
+      <h2 class="text-5xl font-bold text-blue-900 mb-6 tracking-tight">Book Online 📅</h2>
+      <p class="text-xl font-light text-gray-800 mb-8 leading-relaxed">Built for your practice with seamless scheduling solutions.</p>
+      <a href="#contact" class="btn inline-block px-8 py-4 bg-blue-900 text-white rounded-lg text-lg font-semibold hover:bg-teal-500 hover:scale-105 transition-all">Schedule Now</a>
     </div>
   </section>
 
   <!-- About Us Section -->
-  <section id="about" class="section fade-in text-center">
-    <div class="container mx-auto px-4 max-w-3xl">
-      <h2 class="text-4xl font-semibold mb-4 tracking-tight">About Us 🚀</h2>
-      <p class="text-xl font-light mb-6 leading-relaxed">Our mission is to help your practice improve efficiency, productivity, and profitability through optimized processes, systems, and talented teams.</p>
-      <p class="text-base font-normal leading-relaxed">Founded in 2017 by seasoned dental consultants, we have a proven track record of driving results for dental, medical, and wellness practices nationwide.</p>
+  <section id="about" class="section fade-in text-center py-20 bg-gray-50">
+    <div class="container mx-auto px-6 max-w-4xl">
+      <h2 class="text-5xl font-bold text-blue-900 mb-6 tracking-tight">About Us 🚀</h2>
+      <p class="text-xl font-light text-gray-800 mb-6 leading-relaxed">Our mission is to help your practice improve efficiency, productivity, and profitability through optimized processes, systems, and talented teams.</p>
+      <p class="text-lg font-medium text-gray-800 leading-relaxed">Founded in 2017 by seasoned dental consultants, we have a proven track record of driving results for dental, medical, and wellness practices nationwide.</p>
     </div>
   </section>
 
   <!-- Our Success Section -->
-  <section id="success" class="section fade-in text-center">
-    <div class="container mx-auto px-4 max-w-3xl">
-      <h2 class="text-4xl font-semibold mb-4 tracking-tight">Success 📊</h2>
-      <ul class="grid list-disc pl-5 mb-4 text-left max-w-md mx-auto text-base font-normal">
-        <li class="mb-2">26% average revenue increase for practices</li>
-        <li class="mb-2">33-50% productivity gains through workflow optimization</li>
-        <li class="mb-2">40%+ A/R reduction via revenue cycle management</li>
-        <li class="mb-2">30+ practices served across the U.S.</li>
-        <li class="mb-2">95% client retention rate</li>
-        <li class="mb-2">$1M - $5M average practice size range</li>
+  <section id="success" class="section fade-in text-center py-20">
+    <div class="container mx-auto px-6 max-w-4xl">
+      <h2 class="text-5xl font-bold text-blue-900 mb-6 tracking-tight">Success 📊</h2>
+      <ul class="grid list-disc pl-6 mb-6 text-left max-w-md mx-auto text-lg font-medium text-gray-800">
+        <li class="mb-4">26% average revenue increase for practices</li>
+        <li class="mb-4">33-50% productivity gains through workflow optimization</li>
+        <li class="mb-4">40%+ A/R reduction via revenue cycle management</li>
+        <li class="mb-4">30+ practices served across the U.S.</li>
+        <li class="mb-4">95% client retention rate</li>
+        <li class="mb-4">$1M - $5M average practice size range</li>
       </ul>
     </div>
   </section>
 
   <!-- Services Section -->
-  <section id="services" class="section fade-in text-center">
-    <div class="container mx-auto px-4 max-w-3xl">
-      <h2 class="text-4xl font-semibold mb-4 tracking-tight">Services We Offer 🛠️</h2>
-      <ul class="grid list-disc pl-5 mb-4 text-left max-w-md mx-auto text-base font-normal">
-        <li class="mb-2">Healthcare Operations Management Support</li>
-        <li class="mb-2">Leadership Coaching</li>
-        <li class="mb-2">Short & Long-Term Growth Evaluations</li>
-        <li class="mb-2">Structured Goal Planning with KPI Metrics</li>
-        <li class="mb-2">Virtual HR Services (Talent Acquisition, Compliance)</li>
-        <li class="mb-2">HRIS Implementation</li>
-        <li class="mb-2">Clinical Department Development</li>
-        <li class="mb-2">Buildout Guidance Plans</li>
-        <li class="mb-2">Financial Analysis & Reporting</li>
-        <li class="mb-2">Workflow Optimization</li>
-        <li class="mb-2">And Many More!</li>
+  <section id="services" class="section fade-in text-center py-20 bg-gray-50">
+    <div class="container mx-auto px-6 max-w-4xl">
+      <h2 class="text-5xl font-bold text-blue-900 mb-6 tracking-tight">Services We Offer 🛠️</h2>
+      <ul class="grid list-disc pl-6 mb-6 text-left max-w-md mx-auto text-lg font-medium text-gray-800">
+        <li class="mb-4">Healthcare Operations Management Support</li>
+        <li class="mb-4">Leadership Coaching</li>
+        <li class="mb-4">Short & Long-Term Growth Evaluations</li>
+        <li class="mb-4">Structured Goal Planning with KPI Metrics</li>
+        <li class="mb-4">Virtual HR Services (Talent Acquisition, Compliance)</li>
+        <li class="mb-4">HRIS Implementation</li>
+        <li class="mb-4">Clinical Department Development</li>
+        <li class="mb-4">Buildout Guidance Plans</li>
+        <li class="mb-4">Financial Analysis & Reporting</li>
+        <li class="mb-4">Workflow Optimization</li>
+        <li class="mb-4">And Many More!</li>
       </ul>
     </div>
   </section>
 
   <!-- Subscribe Section -->
-  <section id="subscribe" class="section fade-in text-center">
-    <div class="container mx-auto px-4 max-w-3xl">
-      <h2 class="text-4xl font-semibold mb-4 tracking-tight">Subscribe 📬</h2>
-      <p class="text-lg font-light mb-6 leading-relaxed">Sign up to stay updated with our latest insights.</p>
+  <section id="subscribe" class="section fade-in text-center py-20">
+    <div class="container mx-auto px-6 max-w-4xl">
+      <h2 class="text-5xl font-bold text-blue-900 mb-6 tracking-tight">Subscribe 📬</h2>
+      <p class="text-xl font-light text-gray-800 mb-8 leading-relaxed">Sign up to stay updated with our latest insights.</p>
       <form class="max-w-md mx-auto flex flex-col gap-4">
-        <input type="email" placeholder="Email Address" class="form-input" required>
-        <button type="submit" class="btn px-6 py-3 text-black border border-gray-300 rounded text-base font-medium hover:bg-gray-200 hover:scale-105">Sign Up</button>
+        <input type="email" placeholder="Email Address" class="form-input px-4 py-3 border border-gray-300 rounded-lg text-lg text-gray-900 focus:border-teal-500 focus:outline-none" required>
+        <button type="submit" class="btn px-8 py-4 bg-blue-900 text-white rounded-lg text-lg font-semibold hover:bg-teal-500 hover:scale-105 transition-all">Sign Up</button>
       </form>
     </div>
   </section>
 
   <!-- Your Stellar Team Section -->
-  <section id="team" class="section fade-in text-center">
-    <div class="container mx-auto px-4 max-w-3xl">
-      <h2 class="text-4xl font-semibold mb-4 tracking-tight">Your Stellar Team 👩‍⚕️</h2>
-      <h3 class="text-2xl font-medium mb-4 tracking-tight">Our Experience</h3>
-      <ul class="list-disc pl-5 mb-4 text-left max-w-md mx-auto text-base font-normal">
-        <li class="mb-2">Led by experts with 10+ years in healthcare</li>
-        <li class="mb-2">Holistic approach to optimize your practice</li>
-        <li class="mb-2">Customized action plans for your needs</li>
-        <li class="mb-2">Hands-on staff coaching for implementation</li>
-        <li class="mb-2">Ongoing support with regular check-ins</li>
-        <li class="mb-2">Analytics-driven, patient-centered methodology</li>
-        <li class="mb-2">High client satisfaction ratings</li>
+  <section id="team" class="section fade-in text-center py-20 bg-gray-50">
+    <div class="container mx-auto px-6 max-w-4xl">
+      <h2 class="text-5xl font-bold text-blue-900 mb-6 tracking-tight">Your Stellar Team 👩‍⚕️</h2>
+      <h3 class="text-3xl font-semibold text-blue-900 mb-6 tracking-tight">Our Experience</h3>
+      <ul class="list-disc pl-6 mb-6 text-left max-w-md mx-auto text-lg font-medium text-gray-800">
+        <li class="mb-4">Led by experts with 10+ years in healthcare</li>
+        <li class="mb-4">Holistic approach to optimize your practice</li>
+        <li class="mb-4">Customized action plans for your needs</li>
+        <li class="mb-4">Hands-on staff coaching for implementation</li>
+        <li class="mb-4">Ongoing support with regular check-ins</li>
+        <li class="mb-4">Analytics-driven, patient-centered methodology</li>
+        <li class="mb-4">High client satisfaction ratings</li>
       </ul>
     </div>
   </section>
 
   <!-- Our Approach Section -->
-  <section id="approach" class="section fade-in text-center">
-    <div class="container mx-auto px-4 max-w-3xl">
-      <h2 class="text-4xl font-semibold mb-4 tracking-tight">Our Approach 🔍</h2>
-      <p class="text-lg font-light mb-6 leading-relaxed">Comprehensive consultations, detailed project plans, and structured timelines ensure your success.</p>
+  <section id="approach" class="section fade-in text-center py-20">
+    <div class="container mx-auto px-6 max-w-4xl">
+      <h2 class="text-5xl font-bold text-blue-900 mb-6 tracking-tight">Our Approach 🔍</h2>
+      <p class="text-xl font-light text-gray-800 mb-8 leading-relaxed">Comprehensive consultations, detailed project plans, and structured timelines ensure your success.</p>
     </div>
   </section>
 
   <!-- Why Us Section -->
-  <section id="why-us" class="section fade-in text-center">
-    <div class="container mx-auto px-4 max-w-3xl">
-      <h2 class="text-4xl font-semibold mb-4 tracking-tight">Why Us? 🤝</h2>
-      <p class="text-lg font-light mb-4 leading-relaxed">We’re selective with clients to provide dedicated guidance. Let’s create your success plan together.</p>
-      <p class="text-base font-normal leading-relaxed">Contact us for a free consultation to transform your practice!</p>
+  <section id="why-us" class="section fade-in text-center py-20 bg-gray-50">
+    <div class="container mx-auto px-6 max-w-4xl">
+      <h2 class="text-5xl font-bold text-blue-900 mb-6 tracking-tight">Why Us? 🤝</h2>
+      <p class="text-xl font-light text-gray-800 mb-6 leading-relaxed">We’re selective with clients to provide dedicated guidance. Let’s create your success plan together.</p>
+      <p class="text-lg font-medium text-gray-800 leading-relaxed">Contact us for a free consultation to transform your practice!</p>
     </div>
   </section>
 
   <!-- Contact Us Section -->
-  <section id="contact" class="section fade-in text-center">
-    <div class="container mx-auto px-4 max-w-3xl">
-      <h2 class="text-4xl font-semibold mb-4 tracking-tight">Contact Us 📞</h2>
-      <p class="text-lg font-light mb-4 leading-relaxed">Schedule a visit to our Lower Manhattan HQ or a virtual meeting.</p>
-      <p class="text-base font-normal mb-4 leading-relaxed">We travel nationwide to support your practice.</p>
-      <p class="text-base font-normal mb-4 leading-relaxed">Stellar Consults<br>Servcorp One World Trade Center, 285 Fulton St Fl 85, New York, NY 10007, USA<br>646-490-0576<br>info@stellarconsults.io</p>
-      <p class="text-base font-normal mb-4 leading-relaxed">Hours<br>Open today: 09:00 AM – 05:00 PM</p>
-      <p class="text-base font-normal mb-4 leading-relaxed">Drop us a line!</p>
+  <section id="contact" class="section fade-in text-center py-20">
+    <div class="container mx-auto px-6 max-w-4xl">
+      <h2 class="text-5xl font-bold text-blue-900 mb-6 tracking-tight">Contact Us 📞</h2>
+      <p class="text-xl font-light text-gray-800 mb-6 leading-relaxed">Schedule a visit to our Lower Manhattan HQ or a virtual meeting.</p>
+      <p class="text-lg font-medium text-gray-800 mb-6 leading-relaxed">We travel nationwide to support your practice.</p>
+      <p class="text-lg font-medium text-gray-800 mb-6 leading-relaxed">Stellar Consults<br>Servcorp One World Trade Center, 285 Fulton St Fl 85, New York, NY 10007, USA<br>646-490-0576<br>info@stellarconsults.io</p>
+      <p class="text-lg font-medium text-gray-800 mb-6 leading-relaxed">Hours<br>Open today: 09:00 AM – 05:00 PM</p>
+      <p class="text-lg font-medium text-gray-800 mb-6 leading-relaxed">Drop us a line!</p>
       <form class="max-w-md mx-auto flex flex-col gap-4">
-        <input type="text" placeholder="Name" class="form-input" required>
-        <input type="email" placeholder="Email*" class="form-input" required>
-        <textarea placeholder="Message" class="form-input h-24" required></textarea>
+        <input type="text" placeholder="Name" class="form-input px-4 py-3 border border-gray-300 rounded-lg text-lg text-gray-900 focus:border-teal-500 focus:outline-none" required>
+        <input type="email" placeholder="Email*" class="form-input px-4 py-3 border border-gray-300 rounded-lg text-lg text-gray-900 focus:border-teal-500 focus:outline-none" required>
+        <textarea placeholder="Message" class="form-input px-4 py-3 border border-gray-300 rounded-lg text-lg text-gray-900 focus:border-teal-500 focus:outline-none h-32" required></textarea>
         <div class="text-sm text-gray-500 text-center">This site is protected by reCAPTCHA and the Google Privacy Policy and Terms of Service apply.</div>
         <div class="flex gap-4 justify-center">
-          <button type="submit" class="btn px-6 py-3 text-black border border-gray-300 rounded text-base font-medium hover:bg-gray-200 hover:scale-105">Send</button>
-          <button type="button" class="btn px-6 py-3 text-black border border-gray-300 rounded text-base font-medium hover:bg-gray-200 hover:scale-105">Cancel</button>
+          <button type="submit" class="btn px-8 py-4 bg-blue-900 text-white rounded-lg text-lg font-semibold hover:bg-teal-500 hover:scale-105 transition-all">Send</button>
+          <button type="button" class="btn px-8 py-4 bg-gray-300 text-gray-900 rounded-lg text-lg font-semibold hover:bg-teal-500 hover:text-white hover:scale-105 transition-all">Cancel</button>
         </div>
       </form>
-      <p class="mt-4"><a href="#map" class="hover:underline text-blue-600">Get directions 📍</a></p>
+      <p class="mt-6"><a href="#map" class="text-teal-500 hover:underline text-lg font-medium">Get directions 📍</a></p>
     </div>
   </section>
 
   <!-- Map Section -->
-  <section id="map-section" class="section fade-in text-center">
-    <div class="container mx-auto px-4 max-w-3xl">
-      <h2 class="text-4xl font-semibold mb defenses4 tracking-tight">Our Location 📍</h2>
-      <div id="map" class="h-[400px] border border-gray-300 rounded"></div>
+  <section id="map-section" class="section fade-in text-center py-20 bg-gray-50">
+    <div class="container mx-auto px-6 max-w-4xl">
+      <h2 class="text-5xl font-bold text-blue-900 mb-6 tracking-tight">Our Location 📍</h2>
+      <div id="map" class="h-[500px] border border-gray-300 rounded-lg shadow-md"></div>
     </div>
   </section>
 
   <!-- Footer -->
-  <footer class="bg-white py-10 text-center border-t border-gray-300">
-    <div class="container mx-auto px-4">
-      <a href="#home" class="logo text-2xl font-bold text-black no-underline">Stellar Consults 🌟</a>
-      <p class="mt-4 text-sm text-black">Copyright © 2025 Stellar Consults - All Rights Reserved.</p>
-      <div class="mt-4 flex flex-col gap-2">
-        <label for="font-upload" class="text-sm text-blue-600 hover:underline cursor-pointer">Upload Custom Font (Neue Metana)</label>
-        <input type="file" id="font-upload" accept=".ttf,.woff,.woff2" class="hidden" onchange="loadCustomFont(event)">
-        <label for="video-upload" class="text-sm text-blue-600 hover:underline cursor-pointer">Upload Background Video</label>
-        <input type="file" id="video-upload" accept=".mp4" class="hidden" onchange="loadCustomVideo(event)">
-      </div>
+  <footer class="bg-blue-900 py-12 text-center text-white">
+    <div class="container mx-auto px-6">
+      <a href="#home" class="logo text-3xl font-extrabold text-white no-underline">Stellar Consults 🌟</a>
+      <p class="mt-4 text-sm">Copyright © 2025 Stellar Consults - All Rights Reserved.</p>
     </div>
   </footer>
 
