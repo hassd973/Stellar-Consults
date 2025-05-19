@@ -16,7 +16,7 @@ document.addEventListener('DOMContentLoaded', () => {
   canvas.height = window.innerHeight;
 
   const stars = [];
-  const numStars = 50;
+  const numStars = 40;
   const lightModeColors = ['#000000', '#4A4A4A', '#7A7A7A', '#B3B3B3'];
   const darkModeColors = ['#FFFFFF', '#4A4A4A', '#7A7A7A', '#B3B3B3'];
 
@@ -24,11 +24,11 @@ document.addEventListener('DOMContentLoaded', () => {
     constructor() {
       this.x = Math.random() * canvas.width;
       this.y = Math.random() * canvas.height;
-      this.radius = Math.random() * 1 + 0.5;
-      this.vx = (Math.random() - 0.5) * 0.2;
-      this.vy = (Math.random() - 0.5) * 0.2;
-      this.opacity = 0.5 + Math.random() * 0.5;
-      this.pulseSpeed = 0.01 + Math.random() * 0.02;
+      this.radius = Math.random() * 1.3 + 0.7;
+      this.vx = (Math.random() - 0.5) * 0.15;
+      this.vy = (Math.random() - 0.5) * 0.15;
+      this.opacity = 0.7 + Math.random() * 0.3;
+      this.pulseSpeed = 0.015 + Math.random() * 0.025;
       this.pulseDirection = 1;
       this.updateColor();
     }
@@ -43,9 +43,9 @@ document.addEventListener('DOMContentLoaded', () => {
       ctx.beginPath();
       ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
       ctx.fillStyle = this.color;
-      ctx.globalAlpha = this.opacity * 0.8;
+      ctx.globalAlpha = this.opacity;
       ctx.shadowColor = this.color;
-      ctx.shadowBlur = 3;
+      ctx.shadowBlur = 4;
       ctx.fill();
       ctx.shadowBlur = 0;
       ctx.globalAlpha = 1;
@@ -58,7 +58,7 @@ document.addEventListener('DOMContentLoaded', () => {
       if (this.y < 0 || this.y > canvas.height) this.vy *= -1;
 
       this.opacity += this.pulseSpeed * this.pulseDirection;
-      if (this.opacity > 1 || this.opacity < 0.5) this.pulseDirection *= -1;
+      if (this.opacity > 1 || this.opacity < 0.7) this.pulseDirection *= -1;
     }
   }
 
@@ -87,8 +87,6 @@ document.addEventListener('DOMContentLoaded', () => {
   const youtubeIframe = document.querySelector('.youtube-background');
   const fallbackImage = document.querySelector('.fallback-image');
   const videoSource = video.querySelector('source');
-  let retryCount = 0;
-  const maxRetries = 3;
 
   const debugVideo = () => {
     console.log('Video Debug Info:');
@@ -96,57 +94,69 @@ document.addEventListener('DOMContentLoaded', () => {
     console.log('Muted:', video.muted);
     console.log('Autoplay:', video.autoplay);
     console.log('Loop:', video.loop);
-    console.log('Retry Count:', retryCount);
+    console.log('Playsinline:', video.playsInline);
     console.log('Network State:', video.networkState);
     console.log('Ready State:', video.readyState);
+    console.log('Error:', video.error ? video.error.message : 'None');
   };
 
   const tryVideoPlayback = () => {
-    console.log(`Loading video: ${videoSource.src}`);
+    console.log(`Attempting to play video: ${videoSource.src}`);
     video.muted = true;
     video.loop = true;
+    video.playsInline = true;
     video.load();
     const playPromise = video.play();
     if (playPromise !== undefined) {
       playPromise
-        .then(() => console.log('Video started'))
+        .then(() => console.log('Video started successfully'))
         .catch((error) => {
-          console.error('Video failed:', error);
-          retryCount++;
+          console.error('Video playback failed:', error.message);
           debugVideo();
-          if (retryCount < maxRetries) {
-            console.log(`Retrying (${retryCount}/${maxRetries})`);
-            setTimeout(tryVideoPlayback, 1000);
-          } else {
-            console.log('Switching to YouTube');
-            video.classList.add('hidden');
-            youtubeIframe.classList.add('active');
-            youtubeIframe.addEventListener('error', () => {
-              console.error('YouTube failed');
-              youtubeIframe.classList.remove('active');
-              fallbackImage.classList.add('active');
-            });
-          }
+          console.log('Switching to YouTube fallback');
+          video.classList.add('hidden');
+          youtubeIframe.classList.add('active');
+          youtubeIframe.addEventListener('error', () => {
+            console.error('YouTube iframe failed');
+            youtubeIframe.classList.remove('active');
+            fallbackImage.classList.add('active');
+          }, { once: true });
         });
     }
   };
 
+  // User Interaction Fallback
+  const playVideoOnInteraction = () => {
+    if (video.paused) {
+      console.log('Retrying video playback on user interaction');
+      tryVideoPlayback();
+    }
+  };
+
+  // Add multiple interaction events for mobile
+  document.addEventListener('click', playVideoOnInteraction);
+  document.addEventListener('touchstart', playVideoOnInteraction);
+  document.addEventListener('scroll', playVideoOnInteraction, { once: true });
+
   video.addEventListener('error', (e) => {
     console.error('Video error:', videoSource.src, e);
-    retryCount++;
     debugVideo();
-    if (retryCount < maxRetries) {
-      setTimeout(tryVideoPlayback, 1000);
-    } else {
-      video.classList.add('hidden');
-      youtubeIframe.classList.add('active');
-    }
+    video.classList.add('hidden');
+    youtubeIframe.classList.add('active');
   });
 
   video.addEventListener('ended', () => {
     console.log('Video ended, restarting');
     video.play();
   });
+
+  // Retry playback after 1s if initial attempt fails
+  setTimeout(() => {
+    if (video.paused) {
+      console.log('Initial playback failed, retrying...');
+      tryVideoPlayback();
+    }
+  }, 1000);
 
   debugVideo();
   tryVideoPlayback();
