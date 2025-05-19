@@ -22,12 +22,12 @@
     </div>
   </nav>
 
-  <!-- Hero Section with Video Background -->
+  <!-- Hero Section with Video Background and YouTube Fallback -->
   <section id="home" class="section fade-in relative text-center min-h-screen flex items-center justify-center">
     <video class="video-background" autoplay muted loop playsinline>
       <source src="/assets/videos/background.mp4" type="video/mp4">
-      Your browser does not support the video tag.
     </video>
+    <iframe class="youtube-background hidden" src="https://www.youtube.com/embed/-46vRLS_3LE?autoplay=1&mute=1&loop=1&playlist=-46vRLS_3LE&controls=0&showinfo=0&rel=0" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
     <div class="video-overlay"></div>
     <div class="container mx-auto px-6 max-w-4xl relative z-10">
       <h1 class="text-6xl font-extrabold text-blue-900 mb-6 tracking-tight"><span class="typing-text">Stellar Consults</span> 🚀</h1>
@@ -47,7 +47,7 @@
   </section>
 
   <!-- About Us Section -->
-  <section id="about" class="section fade-in text-center py-20 bg-gray-50">
+  <section id="about" class="section fade-in text-center py-20">
     <div class="container mx-auto px-6 max-w-4xl">
       <h2 class="text-5xl font-bold text-blue-900 mb-6 tracking-tight">About Us 🚀</h2>
       <p class="text-xl font-light text-gray-800 mb-6 leading-relaxed">Our mission is to help your practice improve efficiency, productivity, and profitability through optimized processes, systems, and talented teams.</p>
@@ -71,7 +71,7 @@
   </section>
 
   <!-- Services Section -->
-  <section id="services" class="section fade-in text-center py-20 bg-gray-50">
+  <section id="services" class="section fade-in text-center py-20">
     <div class="container mx-auto px-6 max-w-4xl">
       <h2 class="text-5xl font-bold text-blue-900 mb-6 tracking-tight">Services We Offer 🛠️</h2>
       <ul class="grid list-disc pl-6 mb-6 text-left max-w-md mx-auto text-lg font-medium text-gray-800">
@@ -103,7 +103,7 @@
   </section>
 
   <!-- Your Stellar Team Section -->
-  <section id="team" class="section fade-in text-center py-20 bg-gray-50">
+  <section id="team" class="section fade-in text-center py-20">
     <div class="container mx-auto px-6 max-w-4xl">
       <h2 class="text-5xl font-bold text-blue-900 mb-6 tracking-tight">Your Stellar Team 👩‍⚕️</h2>
       <h3 class="text-3xl font-semibold text-blue-900 mb-6 tracking-tight">Our Experience</h3>
@@ -128,7 +128,7 @@
   </section>
 
   <!-- Why Us Section -->
-  <section id="why-us" class="section fade-in text-center py-20 bg-gray-50">
+  <section id="why-us" class="section fade-in text-center py-20">
     <div class="container mx-auto px-6 max-w-4xl">
       <h2 class="text-5xl font-bold text-blue-900 mb-6 tracking-tight">Why Us? 🤝</h2>
       <p class="text-xl font-light text-gray-800 mb-6 leading-relaxed">We’re selective with clients to provide dedicated guidance. Let’s create your success plan together.</p>
@@ -160,7 +160,7 @@
   </section>
 
   <!-- Map Section -->
-  <section id="map-section" class="section fade-in text-center py-20 bg-gray-50">
+  <section id="map-section" class="section fade-in text-center py-20">
     <div class="container mx-auto px-6 max-w-4xl">
       <h2 class="text-5xl font-bold text-blue-900 mb-6 tracking-tight">Our Location 📍</h2>
       <div id="map" class="h-[500px] border border-gray-300 rounded-lg shadow-md"></div>
