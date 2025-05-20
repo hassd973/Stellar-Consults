@@ -57,7 +57,7 @@ document.addEventListener('DOMContentLoaded', () => {
   if (savedTheme === 'dark') {
     body.classList.add('dark');
     body.classList.remove('bg-white', 'text-black');
-    body.classList.add('bg-gray-800', 'text-white');
+    body.classList.add('bg-gray-900', 'text-white');
   }
   updateSplineViewers();
 
@@ -67,7 +67,7 @@ document.addEventListener('DOMContentLoaded', () => {
     localStorage.setItem('theme', isDark ? 'dark' : 'light');
     body.classList.toggle('bg-white', !isDark);
     body.classList.toggle('text-black', !isDark);
-    body.classList.toggle('bg-gray-800', isDark);
+    body.classList.toggle('bg-gray-900', isDark);
     body.classList.toggle('text-white', isDark);
     location.reload();
   });
@@ -108,7 +108,7 @@ document.addEventListener('DOMContentLoaded', () => {
       stars.push({
         x: Math.random() * window.innerWidth,
         y: Math.random() * window.innerHeight,
-        radius: Math.random() * 1.0 + 1.0,
+        radius: Math.random() * 1.5 + 1.5,
         speed: Math.random() * 0.5 + 0.5,
         alpha: Math.random() * 0.3 + 0.7
       });
@@ -118,9 +118,10 @@ document.addEventListener('DOMContentLoaded', () => {
   function drawStar(x, y, radius, alpha) {
     ctx.save();
     ctx.beginPath();
+    ctx.lineJoin = 'miter';
     const spikes = 5;
     const outerRadius = radius;
-    const innerRadius = radius * 0.5;
+    const innerRadius = radius * 0.4;
     const isDark = document.body.classList.contains('dark');
     ctx.fillStyle = isDark
       ? `rgba(255, 255, 255, ${alpha})`
