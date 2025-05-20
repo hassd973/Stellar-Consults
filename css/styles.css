@@ -239,6 +239,8 @@ body.dark #home .container {
   object-fit: cover;
   z-index: -2;
   pointer-events: auto;
+  transform: scale(1.3);
+  transform-origin: center;
 }
 
 #subscribe .fallback-image {
