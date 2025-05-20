@@ -103,32 +103,34 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   });
 
-  // Spline Viewer Error Handling
-  const splineViewer = document.querySelector('spline-viewer');
-  const fallbackImage = document.querySelector('.fallback-image');
+  // Spline Viewer Error Handling (Home and Lower)
+  const splineViewers = document.querySelectorAll('spline-viewer');
+  const fallbackImages = document.querySelectorAll('.fallback-image');
 
-  splineViewer.addEventListener('load', () => {
-    console.log('Spline viewer loaded successfully');
+  splineViewers.forEach((viewer, index) => {
+    viewer.addEventListener('load', () => {
+      console.log(`Spline viewer ${index + 1} loaded successfully`);
+    });
+
+    viewer.addEventListener('error', (e) => {
+      console.error(`Spline viewer ${index + 1} error:`, e);
+      viewer.style.display = 'none';
+      fallbackImages[index].classList.remove('hidden');
+      fallbackImages[index].classList.add('active');
+      console.log(`Switched to image fallback for viewer ${index + 1}`);
+    });
+
+    // Fallback if Spline fails to load within 5 seconds
+    setTimeout(() => {
+      if (!viewer.shadowRoot || !viewer.shadowRoot.querySelector('canvas')) {
+        console.warn(`Spline viewer ${index + 1} failed to initialize within 5 seconds`);
+        viewer.style.display = 'none';
+        fallbackImages[index].classList.remove('hidden');
+        fallbackImages[index].classList.add('active');
+        console.log(`Switched to image fallback for viewer ${index + 1}`);
+      }
+    }, 5000);
   });
-
-  splineViewer.addEventListener('error', (e) => {
-    console.error('Spline viewer error:', e);
-    splineViewer.style.display = 'none';
-    fallbackImage.classList.remove('hidden');
-    fallbackImage.classList.add('active');
-    console.log('Switched to image fallback');
-  });
-
-  // Fallback if Spline fails to load within 5 seconds
-  setTimeout(() => {
-    if (!splineViewer.shadowRoot || !splineViewer.shadowRoot.querySelector('canvas')) {
-      console.warn('Spline viewer failed to initialize within 5 seconds');
-      splineViewer.style.display = 'none';
-      fallbackImage.classList.remove('hidden');
-      fallbackImage.classList.add('active');
-      console.log('Switched to image fallback');
-    }
-  }, 5000);
 
   // Dynamic Nav Padding
   const nav = document.querySelector('nav');
