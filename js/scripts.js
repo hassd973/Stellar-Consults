@@ -39,7 +39,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     updateColor() {
-      const isDarkMode = document.documentElement.classList.contains('dark');
+      const isDarkMode = document.body.classList.contains('dark');
       const colors = isDarkMode ? darkModeColors : lightModeColors;
       this.color = colors[Math.floor(Math.random() * colors.length)];
     }
@@ -74,9 +74,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
   function animateStars() {
     starfieldCtx.clearRect(0, 0, starfieldCanvas.width, starfieldCanvas.height);
-    // Test canvas rendering
-    starfieldCtx.fillStyle = 'rgba(255, 0, 0, 0.1)';
-    starfieldCtx.fillRect(0, 0, 100, 100);
     stars.forEach(star => {
       star.update();
       star.draw();
@@ -103,37 +100,37 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   });
 
-  // Font Loading Error Detection
+  // Font Loading Error Detection (Google Fonts)
   const fontsToCheck = [
-    { name: 'Humanoid', url: '/assets/fonts/Humanoid.ttf' },
-    { name: 'NeueMetana-Bold', url: '/assets/fonts/NeueMetana-Bold.otf' },
-    { name: 'NeueMetana-Regular', url: '/assets/fonts/NeueMetana-Regular.otf' },
-    { name: 'Glitch', url: '/assets/fonts/glitch.ttf' }
+    { name: 'Courier Prime', weight: '400' },
+    { name: 'IBM Plex Mono', weight: '400' },
+    { name: 'VT323', weight: '400' },
+    { name: 'Source Code Pro', weight: '400' }
   ];
 
   let fontsLoaded = 0;
   fontsToCheck.forEach(font => {
-    const fontTest = new FontFace(font.name, `url(${font.url})`, { weight: font.name.includes('Bold') ? '700' : '400' });
+    const fontTest = new FontFace(font.name, `url(https://fonts.googleapis.com/css2?family=${font.name.replace(' ', '+')}:wght@${font.weight})`, { weight: font.weight });
     fontTest.load().then(() => {
       document.fonts.add(fontTest);
       fontsLoaded++;
-      console.log(`Font ${font.name} loaded successfully from ${font.url}`);
+      console.log(`Font ${font.name} loaded successfully`);
     }).catch(err => {
-      console.error(`Failed to load font ${font.name} from ${font.url}:`, err);
+      console.error(`Failed to load font ${font.name}:`, err);
     });
   });
 
   // Fallback if fonts fail to load
   setTimeout(() => {
     if (fontsLoaded < fontsToCheck.length) {
-      console.warn('Not all fonts loaded, applying JetBrains Mono fallback');
+      console.warn('Not all fonts loaded, applying Source Code Pro fallback');
       document.querySelectorAll('h1, h2, h3').forEach(el => {
-        el.style.fontFamily = "'JetBrains Mono', monospace";
+        el.style.fontFamily = "'Source Code Pro', monospace";
       });
     }
   }, 3000);
 
-  // Spline Viewer Error Handling (Home and Lower)
+  // Spline Viewer Error Handling
   const splineViewers = document.querySelectorAll('spline-viewer');
   const fallbackImages = document.querySelectorAll('.fallback-image');
 
@@ -160,6 +157,16 @@ document.addEventListener('DOMContentLoaded', () => {
         console.log(`Switched to image fallback for viewer ${index + 1}`);
       }
     }, 5000);
+  });
+
+  // Spline Overlay Toggle
+  document.querySelector('#spline-lower').addEventListener('mouseenter', () => {
+    document.querySelector('.spline-overlay').style.opacity = '0.5';
+    console.log('Spline overlay: opacity set to 0.5');
+  });
+  document.querySelector('#spline-lower').addEventListener('mouseleave', () => {
+    document.querySelector('.spline-overlay').style.opacity = '0.3';
+    console.log('Spline overlay: opacity set to 0.3');
   });
 
   // Dynamic Nav Padding
@@ -221,63 +228,81 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   });
 
-  // Theme Toggle with Spline URL Switch
+  // Theme Toggle
   const themeToggle = document.getElementById('theme-toggle');
-  const html = document.documentElement;
+  const html = document.body;
   const currentTheme = localStorage.getItem('theme') || 'light';
   if (currentTheme === 'dark') html.classList.add('dark');
-  themeToggle.textContent = currentTheme === 'light' ? 'Toggle Dark Mode' : 'Toggle Light Mode';
-
-  const lightSplineUrl = 'https://prod.spline.design/QF93hExmWxJjAxAW/scene.splinecode';
-  const darkSplineUrl = 'https://prod.spline.design/bPYHfwyVwULNcZok/scene.splinecode';
-
-  // Set initial Spline URLs
-  splineViewers.forEach((viewer, index) => {
-    const url = currentTheme === 'light' ? lightSplineUrl : darkSplineUrl;
-    viewer.setAttribute('url', url);
-    console.log(`Initial Spline URL for viewer ${index + 1}:`, url);
-    try {
-      viewer.load();
-    } catch (err) {
-      console.error(`Viewer ${index + 1} failed to load initial URL:`, err);
-    }
-  });
 
   themeToggle.addEventListener('click', () => {
     try {
-      const newTheme = html.classList.contains('dark') ? 'light' : 'dark';
       html.classList.toggle('dark');
+      const newTheme = html.classList.contains('dark') ? 'dark' : 'light';
       localStorage.setItem('theme', newTheme);
-      themeToggle.textContent = newTheme === 'light' ? 'Toggle Dark Mode' : 'Toggle Light Mode';
       stars.forEach(star => star.updateColor());
-
-      // Update Spline URLs
-      const newUrl = newTheme === 'light' ? lightSplineUrl : darkSplineUrl;
-      splineViewers.forEach((viewer, index) => {
-        viewer.setAttribute('url', newUrl);
-        try {
-          viewer.load();
-          console.log(`Viewer ${index + 1} URL updated to:`, newUrl);
-        } catch (err) {
-          console.error(`Viewer ${index + 1} failed to load URL ${newUrl}:`, err);
-        }
-      });
-
       console.log('Theme toggled to:', newTheme);
     } catch (err) {
       console.error('Theme toggle error:', err);
     }
   });
 
+  // Hover-Based Font Cycling
+  const fonts = [
+    'font-0', // Courier Prime
+    'font-1', // IBM Plex Mono
+    'font-2', // VT323
+    'font-3'  // Source Code Pro
+  ];
+  document.querySelectorAll('h2, h3').forEach(header => {
+    header.addEventListener('mouseover', () => {
+      let currentIndex = parseInt(header.getAttribute('data-font-index') || '0');
+      let nextIndex = (currentIndex + 1) % fonts.length;
+      header.style.opacity = '0';
+      setTimeout(() => {
+        header.className = header.className.replace(/font-\d/, fonts[nextIndex]);
+        header.setAttribute('data-font-index', nextIndex);
+        header.style.opacity = '1';
+      }, 300);
+    });
+  });
+
+  // Date/Time/Weather
+  async function updateDateTimeWeather() {
+    const datetimeEl = document.getElementById('datetime-weather');
+    const now = new Date();
+    const datetimeStr = now.toLocaleString('en-US', {
+      dateStyle: 'medium',
+      timeStyle: 'short',
+      timeZone: Intl.DateTimeFormat().resolvedOptions().timeZone
+    });
+    try {
+      const ipRes = await fetch('https://ipapi.co/json/');
+      const { city } = await ipRes.json();
+      const weatherRes = await fetch(`https://api.openweathermap.org/data/2.5/weather?q=${city}&units=metric&appid=YOUR_API_KEY`);
+      const { main: { temp }, weather } = await weatherRes.json();
+      datetimeEl.textContent = `${datetimeStr} | ${city}, ${Math.round(temp)}°C, ${weather[0].description}`;
+      console.log('Weather updated:', datetimeEl.textContent);
+    } catch (e) {
+      datetimeEl.textContent = `${datetimeStr} | New York, NY, 20°C, Partly Cloudy`;
+      console.error('Weather fetch error:', e);
+    }
+  }
+  updateDateTimeWeather();
+  setInterval(updateDateTimeWeather, 60000);
+
   // Scroll-based Overlay Color Transition
   function updateOverlayColor() {
     const scrollProgress = window.scrollY / (document.body.scrollHeight - window.innerHeight);
-    const purple = { r: 128, g: 0, b: 128 };
-    const blue = { r: 0, g: 0, b: 255 };
+    const purple = { r: 139, g: 92, b: 246 }; // #8b5cf6
+    const blue = { r: 59, g: 130, b: 246 };   // #3b82f6
     const r = Math.round(purple.r + (blue.r - purple.r) * scrollProgress);
+    const g = Math.round(purple.g + (blue.g - purple.g) * scrollProgress);
     const b = Math.round(purple.b + (blue.b - purple.b) * scrollProgress);
-    const newColor = `rgba(${r}, 0, ${b}, 0.5)`;
+    const newColor = `rgba(${r}, ${g}, ${b}, 0.3)`;
     document.documentElement.style.setProperty('--overlay-color', newColor);
+    document.querySelectorAll('.spline-overlay').forEach(el => {
+      el.style.background = `linear-gradient(45deg, rgb(${r}, ${g}, ${b}), #3b82f6)`;
+    });
     console.log('Overlay color updated:', newColor);
   }
 
