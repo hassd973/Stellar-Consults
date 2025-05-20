@@ -1,5 +1,5 @@
 document.addEventListener('DOMContentLoaded', () => {
-  // Font cycle for typewriter effect
+  // Font cycle for #spline-lower typewriter effect
   const fonts = [
     'Courier Prime',
     'IBM Plex Mono',
@@ -12,28 +12,41 @@ document.addEventListener('DOMContentLoaded', () => {
   typingElements.forEach(element => {
     const text = element.getAttribute('data-title');
     let fontIndex = parseInt(element.getAttribute('data-font-index')) || 0;
+    const isLooping = element.closest('#spline-lower') !== null;
 
     function typeWriter(index = 0, typing = true) {
-      if (typing) {
-        // Typing forward
+      if (isLooping) {
+        // Looping typewriter for #spline-lower
+        if (typing) {
+          // Typing forward
+          if (index <= text.length) {
+            element.textContent = text.slice(0, index);
+            setTimeout(() => typeWriter(index + 1, true), 150);
+          } else {
+            // Pause after typing
+            setTimeout(() => typeWriter(index, false), 2000);
+          }
+        } else {
+          // Backspacing
+          if (index >= 0) {
+            element.textContent = text.slice(0, index);
+            setTimeout(() => typeWriter(index - 1, false), 75);
+          } else {
+            // Switch font and restart
+            fontIndex = (fontIndex + 1) % fonts.length;
+            element.setAttribute('data-font-index', fontIndex);
+            element.className = `typing-text font-${fontIndex}`;
+            setTimeout(() => typeWriter(0, true), 200);
+          }
+        }
+      } else {
+        // Single-type for #home h1 and other h2
         if (index <= text.length) {
           element.textContent = text.slice(0, index);
           setTimeout(() => typeWriter(index + 1, true), 150);
         } else {
-          // Pause after typing
-          setTimeout(() => typeWriter(index, false), 2000);
-        }
-      } else {
-        // Backspacing
-        if (index >= 0) {
-          element.textContent = text.slice(0, index);
-          setTimeout(() => typeWriter(index - 1, false), 75);
-        } else {
-          // Switch font and restart
-          fontIndex = (fontIndex + 1) % fonts.length;
-          element.setAttribute('data-font-index', fontIndex);
-          element.className = `typing-text font-${fontIndex}`;
-          setTimeout(() => typeWriter(0, true), 200);
+          // Stop typing, remove cursor blink
+          element.classList.add('static');
         }
       }
     }
