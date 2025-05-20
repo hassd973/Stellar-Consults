@@ -68,12 +68,20 @@ body.dark .form-input::placeholder {
   cursor: pointer;
 }
 
+.sun-icon {
+  display: block;
+}
+
+.moon-icon {
+  display: none;
+}
+
 body.dark .sun-icon {
-  @apply hidden;
+  display: none;
 }
 
 body.dark .moon-icon {
-  @apply block;
+  display: block;
 }
 
 .sun-icon, .moon-icon {
@@ -83,6 +91,7 @@ body.dark .moon-icon {
 /* Date/Time/Weather */
 #datetime-weather {
   color: #000000;
+  text-align: center;
 }
 
 body.dark #datetime-weather {
