@@ -105,11 +105,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // Font Loading Error Detection
   const fontsToCheck = [
-    { name: 'Playfair Display', url: '/assets/fonts/PlayfairDisplay-Regular.otf' },
-    { name: 'Montserrat', url: '/assets/fonts/Montserrat-Bold.otf' },
-    { name: 'Dancing Script', url: '/assets/fonts/DancingScript-Regular.otf' },
-    { name: 'Lora', url: '/assets/fonts/Lora-Regular.otf' },
-    { name: 'Poppins', url: '/assets/fonts/Poppins-Bold.otf' }
+    { name: 'Humanoid', url: '/assets/fonts/Humanoid.ttf' },
+    { name: 'NeueMetana-Bold', url: '/assets/fonts/NeueMetana-Bold.otf' },
+    { name: 'NeueMetana-Regular', url: '/assets/fonts/NeueMetana-Regular.otf' },
+    { name: 'Glitch', url: '/assets/fonts/glitch.ttf' }
   ];
 
   fontsToCheck.forEach(font => {
@@ -229,7 +228,8 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 
   themeToggle.addEventListener('click', () => {
-    const newTheme = html.classList.contains('light') ? 'dark' : 'light';
+    const isLightMode = html.classList.contains('light');
+    const newTheme = isLightMode ? 'dark' : 'light';
     html.classList.remove('light', 'dark');
     html.classList.add(newTheme);
     localStorage.setItem('theme', newTheme);
@@ -247,6 +247,6 @@ document.addEventListener('DOMContentLoaded', () => {
       });
     });
     
-    console.log('Theme switched to:', newTheme);
+    console.log('Theme toggle attempted:', newTheme);
   });
 });
