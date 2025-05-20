@@ -214,17 +214,13 @@ body.dark .section .container {
   background: rgba(31, 41, 55, 0.9);
 }
 
-/* Home Section Container - Extremely Transparent */
-#home .section .container {
+/* Home Section Container */
+#home .container {
   background: rgba(255, 255, 255, 0.1);
-  /* Alternative: Remove background entirely */
-  /* background: none; */
 }
 
-body.dark #home .section .container {
+body.dark #home .container {
   background: rgba(31, 41, 55, 0.1);
-  /* Alternative: Remove background entirely */
-  /* background: none; */
 }
 
 .section h1, .section h2, .section h3, .section p, .section li, .section a {
