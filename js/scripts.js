@@ -116,9 +116,9 @@ document.addEventListener('DOMContentLoaded', () => {
     const fontTest = new FontFace(font.name, `url(${font.url})`, { weight: font.name.includes('Bold') ? '700' : '400' });
     fontTest.load().then(() => {
       document.fonts.add(fontTest);
-      console.log(`Font ${font.name} loaded successfully`);
+      console.log(`Font ${font.name} loaded successfully from ${font.url}`);
     }).catch(err => {
-      console.error(`Failed to load font ${font.name}:`, err);
+      console.error(`Failed to load font ${font.name} from ${font.url}:`, err);
     });
   });
 
@@ -221,9 +221,11 @@ document.addEventListener('DOMContentLoaded', () => {
   const darkSplineUrl = 'https://prod.spline.design/bPYHfwyVwULNcZok/scene.splinecode';
 
   // Set initial Spline URLs based on theme
-  splineViewers.forEach(viewer => {
-    viewer.setAttribute('url', currentTheme === 'light' ? lightSplineUrl : darkSplineUrl);
-    console.log(`Initial Spline URL for viewer:`, viewer.getAttribute('url'));
+  splineViewers.forEach((viewer, index) => {
+    const url = currentTheme === 'light' ? lightSplineUrl : darkSplineUrl;
+    viewer.setAttribute('url', url);
+    console.log(`Initial Spline URL for viewer ${index + 1}:`, url);
+    viewer.load().catch(err => console.error(`Viewer ${index + 1} failed to load initial URL:`, err));
   });
 
   themeToggle.addEventListener('click', () => {
@@ -236,9 +238,13 @@ document.addEventListener('DOMContentLoaded', () => {
     
     // Update Spline URLs
     const newUrl = newTheme === 'light' ? lightSplineUrl : darkSplineUrl;
-    splineViewers.forEach(viewer => {
+    splineViewers.forEach((viewer, index) => {
       viewer.setAttribute('url', newUrl);
-      console.log(`Spline URL updated to:`, newUrl);
+      viewer.load().then(() => {
+        console.log(`Viewer ${index + 1} URL set to:`, newUrl);
+      }).catch(err => {
+        console.error(`Viewer ${index + 1} failed to load URL ${newUrl}:`, err);
+      });
     });
     
     console.log('Theme switched to:', newTheme);
