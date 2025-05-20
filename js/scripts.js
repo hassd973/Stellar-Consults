@@ -103,6 +103,25 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   });
 
+  // Font Loading Error Detection
+  const fontsToCheck = [
+    { name: 'Playfair Display', url: '/assets/fonts/PlayfairDisplay-Regular.otf' },
+    { name: 'Montserrat', url: '/assets/fonts/Montserrat-Bold.otf' },
+    { name: 'Dancing Script', url: '/assets/fonts/DancingScript-Regular.otf' },
+    { name: 'Lora', url: '/assets/fonts/Lora-Regular.otf' },
+    { name: 'Poppins', url: '/assets/fonts/Poppins-Bold.otf' }
+  ];
+
+  fontsToCheck.forEach(font => {
+    const fontTest = new FontFace(font.name, `url(${font.url})`, { weight: font.name.includes('Bold') ? '700' : '400' });
+    fontTest.load().then(() => {
+      document.fonts.add(fontTest);
+      console.log(`Font ${font.name} loaded successfully`);
+    }).catch(err => {
+      console.error(`Failed to load font ${font.name}:`, err);
+    });
+  });
+
   // Spline Viewer Error Handling (Home and Lower)
   const splineViewers = document.querySelectorAll('spline-viewer');
   const fallbackImages = document.querySelectorAll('.fallback-image');
@@ -198,7 +217,7 @@ document.addEventListener('DOMContentLoaded', () => {
   html.classList.add(currentTheme);
   themeToggle.textContent = currentTheme === 'light' ? 'Toggle Dark Mode' : 'Toggle Light Mode';
 
-  const lightSplineUrl = 'https://prod.spline.design/ejMWcGxXRWgS7POl/scene.splinecode';
+  const lightSplineUrl = 'https://prod.spline.design/QF93hExmWxJjAxAW/scene.splinecode';
   const darkSplineUrl = 'https://prod.spline.design/bPYHfwyVwULNcZok/scene.splinecode';
 
   // Set initial Spline URLs based on theme
