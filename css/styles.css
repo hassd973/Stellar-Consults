@@ -17,7 +17,7 @@ a, button, .text-bubble, .btn, .service-item, .success-item, .team-item, .resour
 /* Font Families */
 body {
   font-family: 'IBM Plex Mono', 'Source Code Pro', monospace;
-  line-height: 1.6;
+  line-height: 1.8;
   overscroll-behavior: none;
 }
 
@@ -31,7 +31,7 @@ nav a, .btn, .text-bubble, .form-input, footer p {
 
 /* Hover-Based Font Classes */
 h2, h3 {
-  transition: opacity 0.3s ease;
+  transition: opacity 0.4s ease;
 }
 
 h2.font-0, h3.font-0 {
@@ -56,7 +56,7 @@ body.dark {
   color: #ffffff;
 }
 
-body.dark #home, body.dark #spline-lower {
+body.dark #home, body.dark #spline-lower, body.dark #subscribe {
   color: #ffffff;
 }
 
@@ -94,7 +94,7 @@ body.dark .moon-icon {
 }
 
 .sun-icon, .moon-icon {
-  transition: opacity 0.3s ease;
+  transition: opacity 0.4s ease;
 }
 
 /* Date/Time/Weather */
@@ -119,24 +119,33 @@ body.dark nav {
 
 nav a:hover {
   color: #8b5cf6;
-  transition: color 0.3s ease;
+  transition: color 0.4s ease;
 }
 
-/* Book Now Button */
-.book-now {
-  background-color: #ffffff;
-  color: #000000;
+/* Buttons (Book Now, Sign Up, Schedule Now) */
+.btn {
   position: relative;
   overflow: hidden;
   z-index: 1;
+  transition: transform 0.4s ease, box-shadow 0.4s ease;
 }
 
-body.dark .book-now {
+.btn:hover {
+  transform: scale(1.05);
+  box-shadow: 0 4px 15px rgba(139, 92, 246, 0.3);
+}
+
+.book-now, .signup-btn, .schedule-btn {
+  background-color: #ffffff;
+  color: #000000;
+}
+
+body.dark .book-now, body.dark .signup-btn, body.dark .schedule-btn {
   background-color: #1f2937;
   color: #ffffff;
 }
 
-.book-now::before {
+.book-now::before, .signup-btn::before, .schedule-btn::before {
   content: '';
   position: absolute;
   top: 0;
@@ -145,11 +154,11 @@ body.dark .book-now {
   height: 100%;
   background: linear-gradient(45deg, #8b5cf6, #3b82f6);
   opacity: 0;
-  transition: opacity 0.3s ease;
+  transition: opacity 0.4s ease;
   z-index: -1;
 }
 
-.book-now:hover::before {
+.book-now:hover::before, .signup-btn:hover::before, .schedule-btn:hover::before {
   opacity: 0.5;
 }
 
@@ -166,10 +175,10 @@ body.dark .highlight {
 /* Text Bubbles */
 .text-bubble {
   display: inline-block;
-  padding: 0.5rem 1rem;
+  padding: 0.75rem 1.5rem;
   border: 2px solid #8b5cf6;
   border-radius: 9999px;
-  transition: all 0.3s ease;
+  transition: all 0.4s ease;
   position: relative;
 }
 
@@ -180,7 +189,7 @@ body.dark .text-bubble {
 .text-bubble:hover {
   background: linear-gradient(45deg, #8b5cf6, #3b82f6);
   color: #ffffff;
-  transform: translateY(-2px);
+  transform: scale(1.05);
 }
 
 /* Overlay Bubble Popup */
@@ -193,16 +202,44 @@ body.dark .text-bubble {
   color: #ffffff;
   padding: 0.5rem 1rem;
   border-radius: 0.5rem;
-  font-size: 0.75rem;
+  font-size: 0.875rem;
   white-space: nowrap;
   z-index: 20;
   opacity: 0;
-  transition: transform 0.3s ease, opacity 0.3s ease;
+  transition: transform 0.4s ease, opacity 0.4s ease;
 }
 
-.text-bubble:hover .bubble-popup {
+.text-bubble:hover .bubble-popup, .service-item:hover .bubble-popup, .success-item:hover .bubble-popup {
   transform: translateX(-50%) scale(1);
   opacity: 1;
+}
+
+/* Service and Success Items */
+.service-item, .success-item {
+  position: relative;
+  transition: transform 0.4s ease, box-shadow 0.4s ease;
+}
+
+.service-item:hover, .success-item:hover {
+  transform: scale(1.02);
+  box-shadow: 0 4px 15px rgba(139, 92, 246, 0.3);
+}
+
+.service-item::before, .success-item::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(45deg, #8b5cf6, #3b82f6);
+  opacity: 0;
+  transition: opacity 0.4s ease;
+  z-index: -1;
+}
+
+.service-item:hover::before, .success-item:hover::before {
+  opacity: 0.2;
 }
 
 /* Spline Overlay */
@@ -212,7 +249,7 @@ body.dark .text-bubble {
   transition: opacity 0.5s ease;
 }
 
-#spline-lower:hover .spline-overlay {
+#spline-lower:hover .spline-overlay, #subscribe:hover .spline-overlay {
   opacity: 0.5;
 }
 
@@ -236,19 +273,22 @@ body.dark .text-bubble {
 /* Responsive Design */
 @media (max-width: 640px) {
   h1 {
-    font-size: 2rem;
+    font-size: 2.5rem;
   }
   h2 {
-    font-size: 1.875rem;
+    font-size: 2rem;
+  }
+  h3 {
+    font-size: 1.75rem;
   }
   p, li {
     font-size: 0.875rem;
   }
   .btn {
-    padding: 0.5rem 1rem;
+    padding: 0.75rem 1.5rem;
   }
   .bubble-popup {
-    font-size: 0.625rem;
+    font-size: 0.75rem;
     padding: 0.4rem 0.8rem;
   }
 }
