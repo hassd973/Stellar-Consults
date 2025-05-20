@@ -291,16 +291,23 @@ body.dark #subscribe {
 /* Typewriter Animation */
 .typing-text {
   display: inline-block;
-  overflow: hidden;
+  overflow: visible;
   white-space: nowrap;
   border-right: 3px solid #000000;
   animation: blink-cursor 0.5s step-end infinite;
   min-width: 1ch;
-  transition: font-family 0.3s ease;
+  transition: font-family 0.5s ease;
 }
 
 body.dark .typing-text {
   border-right-color: #ffffff;
+}
+
+#home h1 .typing-text {
+  min-width: 20ch;
+  max-width: 100%;
+  overflow: visible;
+  white-space: nowrap;
 }
 
 @keyframes blink-cursor {
@@ -350,5 +357,8 @@ body.dark .typing-text {
   #subscribe {
     margin-top: 2.5rem;
     margin-bottom: 2.5rem;
+  }
+  #home h1 .typing-text {
+    min-width: 15ch;
   }
 }
