@@ -19,15 +19,15 @@ nav a, .btn, .text-bubble, .form-input, footer p {
 
 /* Mouse Cursor */
 body, * {
-  cursor: url('/assets/images/astronaut-cursor.png') 16 16, default;
+  cursor: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIzMiIgaGVpZ2h0PSIzMiIgdmlld0JveD0iMCAwIDMyIDMyIj48dGV4dCB4PSI4IiB5PSIyNCIgZm9udC1zaXplPSIxNiIgZm9udC1mYW1pbHk9InNhbnMtc2VyaWYiPfCfkZ3wn5C4PC90ZXh0Pjwvc3ZnPg==') 16 16, default;
 }
 
 a, button, .btn, .text-bubble, .service-item, .success-item, .team-item, .resource-item {
-  cursor: url('/assets/images/astronaut-cursor.png') 16 16, pointer;
+  cursor: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIzMiIgaGVpZ2h0PSIzMiIgdmlld0JveD0iMCAwIDMyIDMyIj48dGV4dCB4PSI4IiB5PSIyNCIgZm9udC1zaXplPSIxNiIgZm9udC1mYW1pbHk9InNhbnMtc2VyaWYiPfCfkZ3wn5C4PC90ZXh0Pjwvc3ZnPg==') 16 16, pointer;
 }
 
 input, textarea {
-  cursor: url('/assets/images/astronaut-cursor.png') 16 16, text;
+  cursor: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIzMiIgaGVpZ2h0PSIzMiIgdmlld0JveD0iMCAwIDMyIDMyIj48dGV4dCB4PSI4IiB5PSIyNCIgZm9udC1zaXplPSIxNiIgZm9udC1mYW1pbHk9InNhbnMtc2VyaWYiPfCfkZ3wn5C4PC90ZXh0Pjwvc3ZnPg==') 16 16, text;
 }
 
 /* Dark Mode Styles */
