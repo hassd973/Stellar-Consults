@@ -191,12 +191,21 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   });
 
-  // Theme Toggle
+  // Theme Toggle with Spline URL Switch
   const themeToggle = document.getElementById('theme-toggle');
   const html = document.documentElement;
   const currentTheme = localStorage.getItem('theme') || 'light';
   html.classList.add(currentTheme);
   themeToggle.textContent = currentTheme === 'light' ? 'Toggle Dark Mode' : 'Toggle Light Mode';
+
+  const lightSplineUrl = 'https://prod.spline.design/ejMWcGxXRWgS7POl/scene.splinecode';
+  const darkSplineUrl = 'https://prod.spline.design/bPYHfwyVwULNcZok/scene.splinecode';
+
+  // Set initial Spline URLs based on theme
+  splineViewers.forEach(viewer => {
+    viewer.setAttribute('url', currentTheme === 'light' ? lightSplineUrl : darkSplineUrl);
+    console.log(`Initial Spline URL for viewer:`, viewer.getAttribute('url'));
+  });
 
   themeToggle.addEventListener('click', () => {
     const newTheme = html.classList.contains('light') ? 'dark' : 'light';
@@ -205,6 +214,14 @@ document.addEventListener('DOMContentLoaded', () => {
     localStorage.setItem('theme', newTheme);
     themeToggle.textContent = newTheme === 'light' ? 'Toggle Dark Mode' : 'Toggle Light Mode';
     stars.forEach(star => star.updateColor());
+    
+    // Update Spline URLs
+    const newUrl = newTheme === 'light' ? lightSplineUrl : darkSplineUrl;
+    splineViewers.forEach(viewer => {
+      viewer.setAttribute('url', newUrl);
+      console.log(`Spline URL updated to:`, newUrl);
+    });
+    
     console.log('Theme switched to:', newTheme);
   });
 });
