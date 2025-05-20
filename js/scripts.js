@@ -1,5 +1,5 @@
 document.addEventListener('DOMContentLoaded', () => {
-  // Font cycle for #spline-lower typewriter effect
+  // Font cycle for looping typewriter effect
   const fonts = [
     'Courier Prime',
     'IBM Plex Mono',
@@ -7,7 +7,7 @@ document.addEventListener('DOMContentLoaded', () => {
     'Source Code Pro'
   ];
 
-  // Typewriter effect for all .typing-text elements
+  // Typewriter effect for .typing-text elements
   const typingElements = document.querySelectorAll('.typing-text');
   typingElements.forEach(element => {
     const text = element.getAttribute('data-title');
@@ -30,7 +30,7 @@ document.addEventListener('DOMContentLoaded', () => {
           } else {
             fontIndex = (fontIndex + 1) % fonts.length;
             element.setAttribute('data-font-index', fontIndex);
-            element.className = `typing-text font-${fontIndex}`;
+            element.style.fontFamily = fonts[fontIndex];
             setTimeout(() => typeWriter(0, true), 200);
           }
         }
@@ -56,6 +56,8 @@ document.addEventListener('DOMContentLoaded', () => {
   const savedTheme = localStorage.getItem('theme');
   if (savedTheme === 'dark') {
     body.classList.add('dark');
+    body.classList.remove('bg-white', 'text-black');
+    body.classList.add('bg-gray-800', 'text-white');
   }
   updateSplineViewers();
 
@@ -63,6 +65,10 @@ document.addEventListener('DOMContentLoaded', () => {
     body.classList.toggle('dark');
     const isDark = body.classList.contains('dark');
     localStorage.setItem('theme', isDark ? 'dark' : 'light');
+    body.classList.toggle('bg-white', !isDark);
+    body.classList.toggle('text-black', !isDark);
+    body.classList.toggle('bg-gray-800', isDark);
+    body.classList.toggle('text-white', isDark);
     location.reload();
   });
 
@@ -95,13 +101,13 @@ document.addEventListener('DOMContentLoaded', () => {
 
   function initStars() {
     stars = [];
-    for (let i = 0; i < 150; /* Increased from 100 */) {
+    for (let i = 0; i < 150; i++) {
       stars.push({
         x: Math.random() * canvas.width,
         y: Math.random() * canvas.height,
-        radius: Math.random() * 0.75 + 0.75, /* 0.75–1.5px */
+        radius: Math.random() * 0.75 + 0.75,
         speed: Math.random() * 0.5 + 0.5,
-        alpha: Math.random() * 0.3 + 0.7 /* 0.7–1.0 */
+        alpha: Math.random() * 0.3 + 0.7
       });
     }
   }
@@ -109,7 +115,7 @@ document.addEventListener('DOMContentLoaded', () => {
   function drawStar(x, y, radius, alpha) {
     ctx.save();
     ctx.beginPath();
-    const spikes = 5; // Five-pointed star
+    const spikes = 5;
     const outerRadius = radius;
     const innerRadius = radius * 0.5;
     for (let i = 0; i < spikes * 2; i++) {
@@ -230,27 +236,31 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 
   // Fade-In Animation
-  const sections = document.querySelectorAll('.section');
+  const sections = document.querySelectorAll('.fade-in');
   const observer = new IntersectionObserver(entries => {
     entries.forEach(entry => {
       if (entry.isIntersecting) {
-        entry.target.classList.add('visible');
+        entry.target.classList.add('opacity-100', 'translate-y-0');
+        entry.target.classList.remove('opacity-0', 'translate-y-5');
       }
     });
   }, { threshold: 0.1 });
-  sections.forEach(section => observer.observe(section));
+  sections.forEach(section => {
+    section.classList.add('opacity-0', 'translate-y-5', 'transition', 'duration-600');
+    observer.observe(section);
+  });
 
   // Interactive Elements
   const buttons = document.querySelectorAll('.btn');
   buttons.forEach(button => {
     button.addEventListener('click', () => {
-      button.classList.add('clicked');
-      setTimeout(() => button.classList.remove('clicked'), 200);
+      button.classList.add('scale-95');
+      setTimeout(() => button.classList.remove('scale-95'), 200);
     });
   });
 
   // Text Bubble Popups
-  const textBubbles = document.querySelectorAll('.text-bubble, .service-item, .success-item');
+  const textBubbles = document.querySelectorAll('.text-bubble, .service-item, .success-item, .team-item, .resource-item');
   textBubbles.forEach(bubble => {
     bubble.addEventListener('mouseenter', () => {
       const popup = bubble.querySelector('.bubble-popup');
@@ -282,6 +292,24 @@ document.addEventListener('DOMContentLoaded', () => {
         const opacity = section.id === 'subscribe' ? 0.4 : 0.3;
         overlay.style.opacity = rect.top < window.innerHeight / 2 ? opacity + 0.2 : opacity;
         console.log(`${section.id} overlay opacity set to ${overlay.style.opacity}`);
+      }
+    });
+  });
+
+  // Form Submission Handling
+  const forms = document.querySelectorAll('#subscribe .btn.signup-btn, #contact .btn:not([type="button"][textContent="Cancel"])');
+  forms.forEach(button => {
+    button.addEventListener('click', () => {
+      const form = button.closest('.flex') || button.closest('.max-w-md');
+      const email = form.querySelector('input[type="email"]').value;
+      const name = form.querySelector('input[type="text"]')?.value;
+      const message = form.querySelector('textarea')?.value;
+      if (email && (!name || name) && (!message || message)) {
+        console.log('Form submitted:', { name, email, message });
+        alert('Form submitted successfully!'); // Replace with actual backend call
+      } else {
+        console.error('Form validation failed');
+        alert('Please fill all required fields.');
       }
     });
   });
