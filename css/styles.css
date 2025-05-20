@@ -17,10 +17,27 @@ nav a, .btn, .text-bubble, .form-input, footer p {
   font-family: 'Courier Prime', 'Source Code Pro', monospace;
 }
 
+/* Mouse Cursor */
+body, * {
+  cursor: url('/assets/images/astronaut-cursor.png') 16 16, default;
+}
+
+a, button, .btn, .text-bubble, .service-item, .success-item, .team-item, .resource-item {
+  cursor: url('/assets/images/astronaut-cursor.png') 16 16, pointer;
+}
+
+input, textarea {
+  cursor: url('/assets/images/astronaut-cursor.png') 16 16, text;
+}
+
 /* Dark Mode Styles */
 body.dark {
-  background-color: #1f2937 !important;
-  color: #ffffff !important;
+  background-color: #111827;
+  color: #ffffff;
+}
+
+body.dark .bg-gray-800 {
+  background-color: #111827;
 }
 
 body.dark .form-input {
