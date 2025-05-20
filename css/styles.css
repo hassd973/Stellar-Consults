@@ -1,35 +1,35 @@
 /* Custom Fonts */
 @font-face {
   font-family: 'Humanoid';
-  src: url('/assets/fonts/Humanoid.ttf') format('truetype');
+  src: local('Humanoid'), url('/assets/fonts/Humanoid.ttf') format('truetype');
   font-weight: 400;
   font-style: normal;
   font-display: swap;
 }
 @font-face {
   font-family: 'NeueMetana';
-  src: url('/assets/fonts/NeueMetana-Bold.otf') format('opentype');
+  src: local('NeueMetana Bold'), url('/assets/fonts/NeueMetana-Bold.otf') format('opentype');
   font-weight: 700;
   font-style: normal;
   font-display: swap;
 }
 @font-face {
   font-family: 'NeueMetana';
-  src: url('/assets/fonts/NeueMetana-Regular.otf') format('opentype');
+  src: local('NeueMetana Regular'), url('/assets/fonts/NeueMetana-Regular.otf') format('opentype');
   font-weight: 400;
   font-style: normal;
   font-display: swap;
 }
 @font-face {
   font-family: 'Glitch';
-  src: url('/assets/fonts/glitch.ttf') format('truetype');
+  src: local('Glitch'), url('/assets/fonts/glitch.ttf') format('truetype');
   font-weight: 400;
   font-style: normal;
   font-display: swap;
 }
 
 /* Light Mode */
-:root.light {
+:root {
   --bg-color: #FFFFFF;
   --text-color: #000000;
   --header-color: #000000;
@@ -41,6 +41,7 @@
   --footer-bg: #F5F5F5;
   --input-border: #E5E5E5;
   --nav-bg: rgba(255, 255, 255, 0.95);
+  --overlay-color: rgba(128, 0, 128, 0.5);
 }
 
 /* Dark Mode */
@@ -56,6 +57,7 @@
   --footer-bg: #0F0F0F;
   --input-border: #4A4A4A;
   --nav-bg: rgba(26, 26, 26, 0.95);
+  --overlay-color: rgba(128, 0, 128, 0.5);
 }
 
 body {
@@ -162,6 +164,38 @@ h1:hover, h2:hover, p:hover {
   transform: scale(1.05);
 }
 
+.book-now {
+  background-color: #FFFFFF;
+  color: #000000;
+  position: relative;
+  z-index: 2;
+}
+
+:root.dark .book-now {
+  color: #1A1A1A;
+}
+
+.book-now::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(128, 0, 128, 0);
+  transition: background 0.3s ease;
+  z-index: 1;
+}
+
+.book-now:hover::after {
+  background: var(--overlay-color);
+}
+
+.book-now > * {
+  position: relative;
+  z-index: 2;
+}
+
 #map {
   height: 300px;
   border: 1px solid var(--input-border);
@@ -213,7 +247,7 @@ h1:hover, h2:hover, p:hover {
 }
 
 .highlight:hover::after {
-  background: rgba(128, 0, 128, 0.5);
+  background: var(--overlay-color);
 }
 
 /* Spline Viewer */
@@ -340,7 +374,7 @@ nav a:hover {
 
 .service-item:hover::after, .success-item:hover::after,
 .service-item.selected::after, .success-item.selected::after {
-  background: rgba(128, 0, 128, 0.5);
+  background: var(--overlay-color);
 }
 
 .service-item > *, .success-item > * {
