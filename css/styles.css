@@ -223,6 +223,39 @@ body.dark #home .container {
   background: rgba(31, 41, 55, 0.1);
 }
 
+/* Subscribe Section */
+#subscribe .spline-wrapper {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+
+#subscribe spline-viewer {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  z-index: -2;
+  pointer-events: auto;
+}
+
+#subscribe .fallback-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  z-index: -2;
+}
+
+#subscribe .spline-overlay {
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(45deg, #8b5cf6, #3b82f6);
+  opacity: 0.4;
+  z-index: -1;
+}
+
 .section h1, .section h2, .section h3, .section p, .section li, .section a {
   opacity: 0.85;
 }
