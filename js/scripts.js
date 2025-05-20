@@ -29,7 +29,7 @@ document.addEventListener('DOMContentLoaded', () => {
     constructor() {
       this.x = Math.random() * starfieldCanvas.width;
       this.y = Math.random() * starfieldCanvas.height;
-      this.radius = Math.random() * 0.5 + 0.5; // Smaller stars
+      this.radius = Math.random() * 0.5 + 0.5;
       this.vx = (Math.random() - 0.5) * 0.2;
       this.vy = (Math.random() - 0.5) * 0.2;
       this.opacity = 0.7 + Math.random() * 0.3;
@@ -163,12 +163,21 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // Spline Overlay Toggle
   document.querySelector('#spline-lower').addEventListener('mouseenter', () => {
-    document.querySelector('.spline-overlay').style.opacity = '0.5';
-    console.log('Spline overlay: opacity set to 0.5');
+    document.querySelector('#spline-lower .spline-overlay').style.opacity = '0.5';
+    console.log('Spline-lower overlay: opacity set to 0.5');
   });
   document.querySelector('#spline-lower').addEventListener('mouseleave', () => {
-    document.querySelector('.spline-overlay').style.opacity = '0.3';
-    console.log('Spline overlay: opacity set to 0.3');
+    document.querySelector('#spline-lower .spline-overlay').style.opacity = '0.3';
+    console.log('Spline-lower overlay: opacity set to 0.3');
+  });
+
+  document.querySelector('#subscribe').addEventListener('mouseenter', () => {
+    document.querySelector('#subscribe .spline-overlay').style.opacity = '0.5';
+    console.log('Subscribe overlay: opacity set to 0.5');
+  });
+  document.querySelector('#subscribe').addEventListener('mouseleave', () => {
+    document.querySelector('#subscribe .spline-overlay').style.opacity = '0.3';
+    console.log('Subscribe overlay: opacity set to 0.3');
   });
 
   // Dynamic Nav Padding
@@ -211,28 +220,40 @@ document.addEventListener('DOMContentLoaded', () => {
       const isSelected = item.classList.contains('selected');
       interactiveItems.forEach((i) => i.classList.remove('selected'));
       if (!isSelected) item.classList.add('selected');
+      console.log('Interactive item clicked:', item.textContent);
     });
     item.addEventListener('keydown', (e) => {
       if (e.key === 'Enter') {
         const isSelected = item.classList.contains('selected');
         interactiveItems.forEach((i) => i.classList.remove('selected'));
         if (!isSelected) item.classList.add('selected');
+        console.log('Interactive item selected via Enter:', item.textContent);
       }
     });
   });
 
-  // Text Bubble Popups
-  const textBubbles = document.querySelectorAll('.text-bubble');
-  textBubbles.forEach(bubble => {
-    bubble.addEventListener('mouseenter', () => {
-      const popup = bubble.querySelector('.bubble-popup');
+  // Text Bubble and List Item Popups
+  const popupItems = document.querySelectorAll('.text-bubble, .service-item, .success-item');
+  popupItems.forEach(item => {
+    item.addEventListener('mouseenter', () => {
+      const popup = item.querySelector('.bubble-popup');
       popup.classList.remove('hidden');
-      console.log('Bubble popup shown:', popup.textContent);
+      console.log('Popup shown:', popup.textContent);
     });
-    bubble.addEventListener('mouseleave', () => {
-      const popup = bubble.querySelector('.bubble-popup');
+    item.addEventListener('mouseleave', () => {
+      const popup = item.querySelector('.bubble-popup');
       popup.classList.add('hidden');
-      console.log('Bubble popup hidden:', popup.textContent);
+      console.log('Popup hidden:', popup.textContent);
+    });
+  });
+
+  // Button Click Feedback
+  const buttons = document.querySelectorAll('.btn');
+  buttons.forEach(button => {
+    button.addEventListener('click', () => {
+      button.classList.add('clicked');
+      setTimeout(() => button.classList.remove('clicked'), 200);
+      console.log('Button clicked:', button.textContent);
     });
   });
 
@@ -242,6 +263,7 @@ document.addEventListener('DOMContentLoaded', () => {
       e.preventDefault();
       const target = document.querySelector(anchor.getAttribute('href'));
       target.scrollIntoView({ behavior: 'smooth' });
+      console.log('Smooth scroll to:', anchor.getAttribute('href'));
     });
   });
 
@@ -304,7 +326,7 @@ document.addEventListener('DOMContentLoaded', () => {
         header.className = header.className.replace(/font-\d/, fonts[nextIndex]);
         header.setAttribute('data-font-index', nextIndex);
         header.style.opacity = '1';
-      }, 300);
+      }, 400);
     });
   });
 
@@ -349,5 +371,5 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   window.addEventListener('scroll', updateOverlayColor);
-  updateOverlayColor(); // Initial call
+  updateOverlayColor();
 });
