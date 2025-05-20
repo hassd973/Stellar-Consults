@@ -220,20 +220,15 @@ body.dark .typing-text {
   50% { border-right-color: transparent; }
 }
 
-/* Text Sections with Opacity */
+/* Text Sections with Transparent Background */
 .section .container {
-  background: rgba(255, 255, 255, 0.9);
+  background: rgba(219, 234, 254, 0.05);
   padding: 1rem;
   border-radius: 0.5rem;
 }
 
 body.dark .section .container {
   background: rgba(31, 41, 55, 0.9);
-}
-
-/* Home Section Container */
-#home .container {
-  background: rgba(255, 255, 255, 0.1);
 }
 
 body.dark #home .container {
