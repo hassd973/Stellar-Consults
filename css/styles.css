@@ -101,6 +101,10 @@ body.dark .moon-icon {
 #datetime-weather {
   color: #000000;
   text-align: center;
+  position: relative;
+  z-index: 10; /* Above #home content, below nav */
+  margin-top: 1rem;
+  min-height: 1.5rem; /* Reserve space if unavailable */
 }
 
 body.dark #datetime-weather {
@@ -112,10 +116,10 @@ nav {
   position: fixed;
   top: 0;
   width: 100%;
-  height: 4rem; /* Fixed height for consistent spacing */
+  height: 4rem;
   background: linear-gradient(to bottom, rgba(255, 255, 255, 0.95), rgba(255, 255, 255, 0.9));
   backdrop-filter: blur(10px);
-  z-index: 50; /* Ensure nav stays above content */
+  z-index: 50;
 }
 
 body.dark nav {
@@ -272,11 +276,11 @@ body.dark #subscribe .spline-overlay {
 
 /* Home Section */
 #home {
-  padding-top: 5rem; /* Space for fixed nav */
+  padding-top: 5rem;
 }
 
 #home spline-viewer {
-  transform: none; /* Normal size */
+  transform: none;
 }
 
 /* Subscribe Section */
@@ -323,19 +327,22 @@ body.dark .typing-text {
 }
 
 #home h1 .typing-text {
-  font-size: 3rem; /* Default for desktop */
+  font-size: 3rem;
 }
 
 @media (max-width: 640px) {
   #home {
-    padding-top: 4.5rem; /* Space for nav on mobile */
+    padding-top: 5rem; /* Increased to clear nav */
   }
   #home h1 .typing-text {
-    font-size: 2.25rem; /* Adjusted for mobile */
+    font-size: 2.25rem;
+  }
+  #datetime-weather {
+    font-size: 1rem; /* Smaller for mobile */
   }
   .container {
     max-width: 100%;
-    padding: 0 1rem;
+    padding: 0.5rem 1rem; /* Adjusted padding */
   }
 }
 
