@@ -24,7 +24,6 @@
         <a href="#about" class="text-sm font-medium" aria-label="About">About</a>
         <a href="#resources" class="text-sm font-medium" aria-label="Resources">Resources</a>
         <a href="#contact" class="text-sm font-medium" aria-label="Contact">Contact</a>
-        <div id="datetime-weather" class="text-xs font-medium"></div>
         <button id="theme-toggle" class="text-xl focus:outline-none" aria-label="Toggle Dark Mode">
           <span class="sun-icon block">☀️</span>
           <span class="moon-icon hidden">🌙</span>
@@ -46,6 +45,7 @@
         <a href="#team" class="text-bubble">Our Team</a>
         <a href="#resources" class="text-bubble">Insights</a>
       </div>
+      <div id="datetime-weather" class="text-xs font-medium mt-4"></div>
     </div>
   </section>
 
@@ -194,7 +194,7 @@
   <section id="spline-lower" class="section fade-in relative text-center min-h-[80vh] flex items-center justify-center">
     <spline-viewer url="https://prod.spline.design/QF93hExmWxJjAxAW/scene.splinecode" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: -2; pointer-events: auto;"></spline-viewer>
     <img class="fallback-image hidden" src="/assets/images/fallback-lower.jpg" alt="Fallback Background" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; z-index: -2;">
-    <div class="spline-overlay absolute top-0 left-0 w-full h-full" style="background: rgba(0, 0, 0, 0.3); z-index: -1;"></div>
+    <div class="spline-overlay absolute top-0 left-0 w-full h-full" style="background: linear-gradient(45deg, #8b5cf6, #3b82f6); opacity: 0.3; z-index: -1;"></div>
     <div class="container mx-auto px-4 max-w-3xl relative z-10">
       <h2 class="text-3xl font-semibold mb-4 tracking-tight" data-font-index="0">Explore Our Vision 🚀</h2>
     </div>
