@@ -30,10 +30,6 @@ nav a, .btn, .text-bubble, .form-input, footer p {
 }
 
 /* Typewriter Font Classes */
-.typing-text {
-  font-family: 'Courier Prime', 'Source Code Pro', monospace;
-}
-
 .typing-text.font-0 {
   font-family: 'Courier Prime', 'Source Code Pro', monospace;
 }
@@ -267,8 +263,8 @@ body.dark #subscribe .spline-overlay {
 
 /* Home Section */
 #home spline-viewer {
-  /* Removed transform: scale(1.3); to revert to normal size */
-  transform: none;
+  transform: scale(1.3);
+  transform-origin: center;
 }
 
 /* Subscribe Section */
@@ -296,18 +292,11 @@ body.dark #subscribe {
 .typing-text {
   display: inline-block;
   overflow: visible;
-  white-space: normal;
+  white-space: nowrap;
   border-right: 3px solid #000000;
   animation: blink-cursor 0.5s step-end infinite;
-  min-width: unset;
-  max-width: 100%;
-  overflow-wrap: break-word;
+  min-width: 1ch;
   transition: font-family 0.5s ease;
-}
-
-.typing-text.static {
-  border-right: none;
-  animation: none;
 }
 
 body.dark .typing-text {
@@ -315,17 +304,10 @@ body.dark .typing-text {
 }
 
 #home h1 .typing-text {
-  font-size: 3rem; /* Default for desktop */
-}
-
-@media (max-width: 640px) {
-  #home h1 .typing-text {
-    font-size: 2.5rem; /* Adjusted for mobile */
-  }
-  .container {
-    max-width: 100%;
-    padding: 0 1rem;
-  }
+  min-width: 20ch;
+  max-width: 100%;
+  overflow: visible;
+  white-space: nowrap;
 }
 
 @keyframes blink-cursor {
@@ -375,5 +357,8 @@ body.dark .typing-text {
   #subscribe {
     margin-top: 2.5rem;
     margin-bottom: 2.5rem;
+  }
+  #home h1 .typing-text {
+    min-width: 15ch;
   }
 }
