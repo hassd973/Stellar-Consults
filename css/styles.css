@@ -5,6 +5,15 @@
   box-sizing: border-box;
 }
 
+/* Custom Cursor */
+body {
+  cursor: url('/assets/images/astronaut.png') 16 16, auto;
+}
+
+a, button, .text-bubble, .btn, .service-item, .success-item, .team-item, .resource-item {
+  cursor: url('/assets/images/astronaut.png') 16 16, pointer;
+}
+
 /* Font Families */
 body {
   font-family: 'IBM Plex Mono', 'Source Code Pro', monospace;
@@ -65,7 +74,7 @@ body.dark .form-input::placeholder {
 #theme-toggle {
   background: none;
   border: none;
-  cursor: pointer;
+  cursor: url('/assets/images/astronaut.png') 16 16, pointer;
 }
 
 .sun-icon {
@@ -161,6 +170,7 @@ body.dark .highlight {
   border: 2px solid #8b5cf6;
   border-radius: 9999px;
   transition: all 0.3s ease;
+  position: relative;
 }
 
 body.dark .text-bubble {
@@ -171,6 +181,28 @@ body.dark .text-bubble {
   background: linear-gradient(45deg, #8b5cf6, #3b82f6);
   color: #ffffff;
   transform: translateY(-2px);
+}
+
+/* Overlay Bubble Popup */
+.bubble-popup {
+  position: absolute;
+  top: -2.5rem;
+  left: 50%;
+  transform: translateX(-50%) scale(0);
+  background: linear-gradient(45deg, #8b5cf6, #3b82f6);
+  color: #ffffff;
+  padding: 0.5rem 1rem;
+  border-radius: 0.5rem;
+  font-size: 0.75rem;
+  white-space: nowrap;
+  z-index: 20;
+  opacity: 0;
+  transition: transform 0.3s ease, opacity 0.3s ease;
+}
+
+.text-bubble:hover .bubble-popup {
+  transform: translateX(-50%) scale(1);
+  opacity: 1;
 }
 
 /* Spline Overlay */
@@ -214,5 +246,9 @@ body.dark .text-bubble {
   }
   .btn {
     padding: 0.5rem 1rem;
+  }
+  .bubble-popup {
+    font-size: 0.625rem;
+    padding: 0.4rem 0.8rem;
   }
 }
