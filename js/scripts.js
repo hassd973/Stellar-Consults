@@ -128,7 +128,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // Date, Time, and Weather
   const dateTimeWeather = document.getElementById('datetime-weather');
-  function updateDateTimeWeather() {
+  async function updateDateTimeWeather() {
     const now = new Date();
     const options = {
       year: 'numeric',
@@ -139,22 +139,76 @@ document.addEventListener('DOMContentLoaded', () => {
       hour12: true
     };
     const dateTime = now.toLocaleString('en-US', options);
-    const city = 'New York';
-    const apiKey = 'YOUR_API_KEY';
-    fetch(`https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${apiKey}&units=metric`)
-      .then(response => response.json())
-      .then(data => {
-        const temp = Math.round(data.main.temp);
-        const description = data.weather[0].description;
-        dateTimeWeather.textContent = `${dateTime} | ${city}, ${temp}°C, ${description}`;
-      })
-      .catch(error => {
-        console.error('Weather API error:', error);
-        dateTimeWeather.textContent = `${dateTime} | Weather unavailable`;
+    
+    // Replace with your OpenWeatherMap API key (sign up at https://openweathermap.org)
+    const apiKey = 'YOUR_OPENWEATHERMAP_API_KEY';
+    const fallbackLocation = 'lat=40.7128&lon=-74.0060'; // NYC coordinates
+    let weatherData = null;
+
+    // Try geolocation
+    try {
+      const position = await new Promise((resolve, reject) => {
+        navigator.geolocation.getCurrentPosition(resolve, reject, { timeout: 5000 });
       });
+      const { latitude, longitude } = position.coords;
+      const weatherUrl = `https://api.openweathermap.org/data/2.5/weather?lat=${latitude}&lon=${longitude}&appid=${apiKey}&units=metric`;
+      const response = await fetch(weatherUrl);
+      if (!response.ok) throw new Error(`HTTP error! Status: ${response.status}`);
+      weatherData = await response.json();
+      console.log('Weather fetched for geolocation:', weatherData);
+    } catch (geoError) {
+      console.warn('Geolocation failed, falling back to NYC:', geoError.message);
+      // Fallback to NYC
+      try {
+        const weatherUrl = `https://api.openweathermap.org/data/2.5/weather?${fallbackLocation}&appid=${apiKey}&units=metric`;
+        const response = await fetch(weatherUrl);
+        if (!response.ok) throw new Error(`HTTP error! Status: ${response.status}`);
+        weatherData = await response.json();
+        console.log('Weather fetched for NYC:', weatherData);
+      } catch (weatherError) {
+        console.error('Weather fetch failed:', weatherError.message);
+        // Display time only if weather fails
+        dateTimeWeather.textContent = `${dateTime} | Weather unavailable`;
+        return;
+      }
+    }
+
+    // Update display with weather data
+    if (weatherData) {
+      const city = weatherData.name;
+      const temp = Math.round(weatherData.main.temp);
+      const description = weatherData.weather[0].description;
+      dateTimeWeather.textContent = `${dateTime} | ${city}, ${temp}°C, ${description}`;
+    }
   }
-  updateDateTimeWeather();
-  setInterval(updateDateTimeWeather, 60000);
+
+  // Initial update
+  updateDateTimeWeather().catch((err) => {
+    console.error('Initial weather update failed:', err);
+    dateTimeWeather.textContent = `Time: ${new Date().toLocaleString('en-US', {
+      year: 'numeric',
+      month: 'long',
+      day: 'numeric',
+      hour: '2-digit',
+      minute: '2-digit',
+      hour12: true
+    })} | Weather unavailable`;
+  });
+
+  // Update every 60 seconds
+  setInterval(() => {
+    updateDateTimeWeather().catch((err) => {
+      console.error('Periodic weather update failed:', err);
+      dateTimeWeather.textContent = `Time: ${new Date().toLocaleString('en-US', {
+        year: 'numeric',
+        month: 'long',
+        day: 'numeric',
+        hour: '2-digit',
+        minute: '2-digit',
+        hour12: true
+      })} | Weather unavailable`;
+    });
+  }, 60000);
 
   // Smooth Scroll
   document.querySelectorAll('a[href^="#"]').forEach(anchor => {
