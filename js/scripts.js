@@ -16,23 +16,18 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function typeWriter(index = 0, typing = true) {
       if (isLooping) {
-        // Looping typewriter for #spline-lower
         if (typing) {
-          // Typing forward
           if (index <= text.length) {
             element.textContent = text.slice(0, index);
             setTimeout(() => typeWriter(index + 1, true), 150);
           } else {
-            // Pause after typing
             setTimeout(() => typeWriter(index, false), 2000);
           }
         } else {
-          // Backspacing
           if (index >= 0) {
             element.textContent = text.slice(0, index);
             setTimeout(() => typeWriter(index - 1, false), 75);
           } else {
-            // Switch font and restart
             fontIndex = (fontIndex + 1) % fonts.length;
             element.setAttribute('data-font-index', fontIndex);
             element.className = `typing-text font-${fontIndex}`;
@@ -40,18 +35,14 @@ document.addEventListener('DOMContentLoaded', () => {
           }
         }
       } else {
-        // Single-type for #home h1 and other h2
         if (index <= text.length) {
           element.textContent = text.slice(0, index);
           setTimeout(() => typeWriter(index + 1, true), 150);
         } else {
-          // Stop typing, remove cursor blink
           element.classList.add('static');
         }
       }
     }
-
-    // Start typewriter effect
     typeWriter();
   });
 
@@ -62,22 +53,19 @@ document.addEventListener('DOMContentLoaded', () => {
   const lightUrl = 'https://prod.spline.design/QF93hExmWxJjAxAW/scene.splinecode';
   const darkUrl = 'https://prod.spline.design/bPYHfwyVwULNcZok/scene.splinecode';
 
-  // Initialize theme from localStorage
   const savedTheme = localStorage.getItem('theme');
   if (savedTheme === 'dark') {
     body.classList.add('dark');
   }
   updateSplineViewers();
 
-  // Theme toggle event
   themeToggle.addEventListener('click', () => {
     body.classList.toggle('dark');
     const isDark = body.classList.contains('dark');
     localStorage.setItem('theme', isDark ? 'dark' : 'light');
-    location.reload(); // Refresh to load correct Spline embed
+    location.reload();
   });
 
-  // Update Spline viewer URLs
   function updateSplineViewers() {
     const isDark = body.classList.contains('dark');
     splineViewers.forEach((viewer, index) => {
@@ -86,7 +74,6 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  // Spline Error Handling
   splineViewers.forEach((viewer, index) => {
     viewer.addEventListener('error', () => {
       console.error(`Spline viewer ${index + 1} failed to load`);
@@ -108,24 +95,44 @@ document.addEventListener('DOMContentLoaded', () => {
 
   function initStars() {
     stars = [];
-    for (let i = 0; i < 100; i++) {
+    for (let i = 0; i < 150; /* Increased from 100 */) {
       stars.push({
         x: Math.random() * canvas.width,
         y: Math.random() * canvas.height,
-        radius: Math.random() * 0.5 + 0.5,
-        speed: Math.random() * 0.5 + 0.5
+        radius: Math.random() * 0.75 + 0.75, /* 0.75–1.5px */
+        speed: Math.random() * 0.5 + 0.5,
+        alpha: Math.random() * 0.3 + 0.7 /* 0.7–1.0 */
       });
     }
+  }
+
+  function drawStar(x, y, radius, alpha) {
+    ctx.save();
+    ctx.beginPath();
+    const spikes = 5; // Five-pointed star
+    const outerRadius = radius;
+    const innerRadius = radius * 0.5;
+    for (let i = 0; i < spikes * 2; i++) {
+      const r = i % 2 === 0 ? outerRadius : innerRadius;
+      const angle = (Math.PI / spikes) * i - Math.PI / 2;
+      ctx.lineTo(
+        x + r * Math.cos(angle),
+        y + r * Math.sin(angle)
+      );
+    }
+    ctx.closePath();
+    ctx.fill();
+    ctx.restore();
   }
 
   function animateStars() {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     const isDark = body.classList.contains('dark');
-    ctx.fillStyle = isDark ? '#ffffff' : '#000000';
     stars.forEach(star => {
-      ctx.beginPath();
-      ctx.arc(star.x, star.y, star.radius, 0, Math.PI * 2);
-      ctx.fill();
+      ctx.fillStyle = isDark
+        ? `rgba(255, 255, 255, ${star.alpha})`
+        : `rgba(0, 0, 0, ${star.alpha})`;
+      drawStar(star.x, star.y, star.radius, star.alpha);
       star.y += star.speed;
       if (star.y > canvas.height) star.y = 0;
     });
@@ -150,12 +157,10 @@ document.addEventListener('DOMContentLoaded', () => {
     };
     const dateTime = now.toLocaleString('en-US', options);
     
-    // Replace with your OpenWeatherMap API key (sign up at https://openweathermap.org)
     const apiKey = 'YOUR_OPENWEATHERMAP_API_KEY';
-    const fallbackLocation = 'lat=40.7128&lon=-74.0060'; // NYC coordinates
+    const fallbackLocation = 'lat=40.7128&lon=-74.0060';
     let weatherData = null;
 
-    // Try geolocation
     try {
       const position = await new Promise((resolve, reject) => {
         navigator.geolocation.getCurrentPosition(resolve, reject, { timeout: 5000 });
@@ -168,7 +173,6 @@ document.addEventListener('DOMContentLoaded', () => {
       console.log('Weather fetched for geolocation:', weatherData);
     } catch (geoError) {
       console.warn('Geolocation failed, falling back to NYC:', geoError.message);
-      // Fallback to NYC
       try {
         const weatherUrl = `https://api.openweathermap.org/data/2.5/weather?${fallbackLocation}&appid=${apiKey}&units=metric`;
         const response = await fetch(weatherUrl);
@@ -177,13 +181,11 @@ document.addEventListener('DOMContentLoaded', () => {
         console.log('Weather fetched for NYC:', weatherData);
       } catch (weatherError) {
         console.error('Weather fetch failed:', weatherError.message);
-        // Display time only if weather fails
         dateTimeWeather.textContent = `${dateTime} | Weather unavailable`;
         return;
       }
     }
 
-    // Update display with weather data
     if (weatherData) {
       const city = weatherData.name;
       const temp = Math.round(weatherData.main.temp);
@@ -192,7 +194,6 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   }
 
-  // Initial update
   updateDateTimeWeather().catch((err) => {
     console.error('Initial weather update failed:', err);
     dateTimeWeather.textContent = `Time: ${new Date().toLocaleString('en-US', {
@@ -205,7 +206,6 @@ document.addEventListener('DOMContentLoaded', () => {
     })} | Weather unavailable`;
   });
 
-  // Update every 60 seconds
   setInterval(() => {
     updateDateTimeWeather().catch((err) => {
       console.error('Periodic weather update failed:', err);
