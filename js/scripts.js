@@ -39,8 +39,8 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     updateColor() {
-      const isLightMode = document.documentElement.classList.contains('light');
-      const colors = isLightMode ? lightModeColors : darkModeColors;
+      const isDarkMode = document.documentElement.classList.contains('dark');
+      const colors = isDarkMode ? darkModeColors : lightModeColors;
       this.color = colors[Math.floor(Math.random() * colors.length)];
     }
 
@@ -111,15 +111,27 @@ document.addEventListener('DOMContentLoaded', () => {
     { name: 'Glitch', url: '/assets/fonts/glitch.ttf' }
   ];
 
+  let fontsLoaded = 0;
   fontsToCheck.forEach(font => {
     const fontTest = new FontFace(font.name, `url(${font.url})`, { weight: font.name.includes('Bold') ? '700' : '400' });
     fontTest.load().then(() => {
       document.fonts.add(fontTest);
+      fontsLoaded++;
       console.log(`Font ${font.name} loaded successfully from ${font.url}`);
     }).catch(err => {
       console.error(`Failed to load font ${font.name} from ${font.url}:`, err);
     });
   });
+
+  // Fallback if fonts fail to load
+  setTimeout(() => {
+    if (fontsLoaded < fontsToCheck.length) {
+      console.warn('Not all fonts loaded, applying JetBrains Mono fallback');
+      document.querySelectorAll('h1, h2, h3').forEach(el => {
+        el.style.fontFamily = "'JetBrains Mono', monospace";
+      });
+    }
+  }, 3000);
 
   // Spline Viewer Error Handling (Home and Lower)
   const splineViewers = document.querySelectorAll('spline-viewer');
@@ -213,40 +225,62 @@ document.addEventListener('DOMContentLoaded', () => {
   const themeToggle = document.getElementById('theme-toggle');
   const html = document.documentElement;
   const currentTheme = localStorage.getItem('theme') || 'light';
-  html.classList.add(currentTheme);
+  if (currentTheme === 'dark') html.classList.add('dark');
   themeToggle.textContent = currentTheme === 'light' ? 'Toggle Dark Mode' : 'Toggle Light Mode';
 
   const lightSplineUrl = 'https://prod.spline.design/QF93hExmWxJjAxAW/scene.splinecode';
   const darkSplineUrl = 'https://prod.spline.design/bPYHfwyVwULNcZok/scene.splinecode';
 
-  // Set initial Spline URLs based on theme
+  // Set initial Spline URLs
   splineViewers.forEach((viewer, index) => {
     const url = currentTheme === 'light' ? lightSplineUrl : darkSplineUrl;
     viewer.setAttribute('url', url);
     console.log(`Initial Spline URL for viewer ${index + 1}:`, url);
-    viewer.load().catch(err => console.error(`Viewer ${index + 1} failed to load initial URL:`, err));
+    try {
+      viewer.load();
+    } catch (err) {
+      console.error(`Viewer ${index + 1} failed to load initial URL:`, err);
+    }
   });
 
   themeToggle.addEventListener('click', () => {
-    const isLightMode = html.classList.contains('light');
-    const newTheme = isLightMode ? 'dark' : 'light';
-    html.classList.remove('light', 'dark');
-    html.classList.add(newTheme);
-    localStorage.setItem('theme', newTheme);
-    themeToggle.textContent = newTheme === 'light' ? 'Toggle Dark Mode' : 'Toggle Light Mode';
-    stars.forEach(star => star.updateColor());
-    
-    // Update Spline URLs
-    const newUrl = newTheme === 'light' ? lightSplineUrl : darkSplineUrl;
-    splineViewers.forEach((viewer, index) => {
-      viewer.setAttribute('url', newUrl);
-      viewer.load().then(() => {
-        console.log(`Viewer ${index + 1} URL set to:`, newUrl);
-      }).catch(err => {
-        console.error(`Viewer ${index + 1} failed to load URL ${newUrl}:`, err);
+    try {
+      const newTheme = html.classList.contains('dark') ? 'light' : 'dark';
+      html.classList.toggle('dark');
+      localStorage.setItem('theme', newTheme);
+      themeToggle.textContent = newTheme === 'light' ? 'Toggle Dark Mode' : 'Toggle Light Mode';
+      stars.forEach(star => star.updateColor());
+
+      // Update Spline URLs
+      const newUrl = newTheme === 'light' ? lightSplineUrl : darkSplineUrl;
+      splineViewers.forEach((viewer, index) => {
+        viewer.setAttribute('url', newUrl);
+        try {
+          viewer.load();
+          console.log(`Viewer ${index + 1} URL updated to:`, newUrl);
+        } catch (err) {
+          console.error(`Viewer ${index + 1} failed to load URL ${newUrl}:`, err);
+        }
       });
-    });
-    
-    console.log('Theme toggle attempted:', newTheme);
+
+      console.log('Theme toggled to:', newTheme);
+    } catch (err) {
+      console.error('Theme toggle error:', err);
+    }
   });
+
+  // Scroll-based Overlay Color Transition
+  function updateOverlayColor() {
+    const scrollProgress = window.scrollY / (document.body.scrollHeight - window.innerHeight);
+    const purple = { r: 128, g: 0, b: 128 };
+    const blue = { r: 0, g: 0, b: 255 };
+    const r = Math.round(purple.r + (blue.r - purple.r) * scrollProgress);
+    const b = Math.round(purple.b + (blue.b - purple.b) * scrollProgress);
+    const newColor = `rgba(${r}, 0, ${b}, 0.5)`;
+    document.documentElement.style.setProperty('--overlay-color', newColor);
+    console.log('Overlay color updated:', newColor);
+  }
+
+  window.addEventListener('scroll', updateOverlayColor);
+  updateOverlayColor(); // Initial call
 });
