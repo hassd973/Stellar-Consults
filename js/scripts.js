@@ -163,7 +163,8 @@ document.addEventListener('DOMContentLoaded', () => {
     };
     const dateTime = now.toLocaleString('en-US', options);
     
-    const apiKey = 'YOUR_OPENWEATHERMAP_API_KEY';
+    const apiKey = 'ad645f36d47c020a1a0c38b4ec97719d
+';
     const fallbackLocation = 'lat=40.7128&lon=-74.0060';
     let weatherData = null;
 
