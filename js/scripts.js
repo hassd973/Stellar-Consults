@@ -29,7 +29,7 @@ document.addEventListener('DOMContentLoaded', () => {
     constructor() {
       this.x = Math.random() * starfieldCanvas.width;
       this.y = Math.random() * starfieldCanvas.height;
-      this.radius = Math.random() * 2 + 3;
+      this.radius = Math.random() * 0.5 + 0.5; // Smaller stars
       this.vx = (Math.random() - 0.5) * 0.2;
       this.vy = (Math.random() - 0.5) * 0.2;
       this.opacity = 0.7 + Math.random() * 0.3;
@@ -50,7 +50,7 @@ document.addEventListener('DOMContentLoaded', () => {
       starfieldCtx.fillStyle = this.color;
       starfieldCtx.globalAlpha = this.opacity;
       starfieldCtx.shadowColor = this.color;
-      starfieldCtx.shadowBlur = 20;
+      starfieldCtx.shadowBlur = 10; // Reduced for smaller stars
       starfieldCtx.fill();
       starfieldCtx.shadowBlur = 0;
       starfieldCtx.globalAlpha = 1;
@@ -133,6 +133,8 @@ document.addEventListener('DOMContentLoaded', () => {
   // Spline Viewer Error Handling
   const splineViewers = document.querySelectorAll('spline-viewer');
   const fallbackImages = document.querySelectorAll('.fallback-image');
+  const lightSplineUrl = 'https://prod.spline.design/QF93hExmWxJjAxAW/scene.splinecode';
+  const darkSplineUrl = 'https://prod.spline.design/bPYHfwyVwULNcZok/scene.splinecode';
 
   splineViewers.forEach((viewer, index) => {
     viewer.addEventListener('load', () => {
@@ -228,11 +230,23 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   });
 
-  // Theme Toggle
+  // Theme Toggle with Spline URL Switch
   const themeToggle = document.getElementById('theme-toggle');
   const html = document.body;
   const currentTheme = localStorage.getItem('theme') || 'light';
   if (currentTheme === 'dark') html.classList.add('dark');
+
+  // Set initial Spline URLs
+  splineViewers.forEach((viewer, index) => {
+    const url = currentTheme === 'light' ? lightSplineUrl : darkSplineUrl;
+    viewer.setAttribute('url', url);
+    console.log(`Initial Spline URL for viewer ${index + 1}:`, url);
+    try {
+      viewer.load();
+    } catch (err) {
+      console.error(`Viewer ${index + 1} failed to load initial URL:`, err);
+    }
+  });
 
   themeToggle.addEventListener('click', () => {
     try {
@@ -240,6 +254,19 @@ document.addEventListener('DOMContentLoaded', () => {
       const newTheme = html.classList.contains('dark') ? 'dark' : 'light';
       localStorage.setItem('theme', newTheme);
       stars.forEach(star => star.updateColor());
+
+      // Update Spline URLs
+      const newUrl = newTheme === 'light' ? lightSplineUrl : darkSplineUrl;
+      splineViewers.forEach((viewer, index) => {
+        viewer.setAttribute('url', newUrl);
+        try {
+          viewer.load();
+          console.log(`Viewer ${index + 1} URL updated to:`, newUrl);
+        } catch (err) {
+          console.error(`Viewer ${index + 1} failed to load URL ${newUrl}:`, err);
+        }
+      });
+
       console.log('Theme toggled to:', newTheme);
     } catch (err) {
       console.error('Theme toggle error:', err);
