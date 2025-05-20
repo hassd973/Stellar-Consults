@@ -17,6 +17,18 @@
   font-weight: 400;
   font-style: normal;
 }
+@font-face {
+  font-family: 'Lora';
+  src: url('/assets/fonts/Lora-Regular.otf') format('opentype');
+  font-weight: 400;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'Poppins';
+  src: url('/assets/fonts/Poppins-Bold.otf') format('opentype');
+  font-weight: 700;
+  font-style: normal;
+}
 
 /* Light Mode */
 :root.light {
@@ -68,14 +80,8 @@ h1, h2, h3 {
   word-break: break-word;
 }
 
-h2 {
-  animation: font-cycle 6s infinite ease-in-out;
-}
-
-h2 span {
-  font-family: 'Montserrat', sans-serif;
-  font-weight: 700;
-  font-style: italic;
+h2, h3 {
+  animation: font-cycle 10s infinite ease-in-out;
 }
 
 p {
@@ -106,14 +112,8 @@ h1:hover, h2:hover, p:hover {
   position: relative;
 }
 
-#home .container {
-  background: rgba(0, 0, 0, 0.4);
-  padding: 1.5rem;
-  border-radius: 8px;
-}
-
 #home h1, #home p, #home .btn, #home .text-bubble {
-  color: rgba(255, 255, 255, 0.9);
+  color: rgba(255, 255, 255, 0.95);
   mix-blend-mode: difference;
 }
 
@@ -187,6 +187,29 @@ h1:hover, h2:hover, p:hover {
   outline: none;
 }
 
+/* Highlighted Text */
+.highlight {
+  font-style: italic;
+  position: relative;
+  z-index: 2;
+}
+
+.highlight::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(128, 0, 128, 0);
+  transition: background 0.3s ease;
+  z-index: 1;
+}
+
+.highlight:hover::after {
+  background: rgba(128, 0, 128, 0.5);
+}
+
 /* Spline Viewer */
 s:where(spline-viewer) {
   width: 100%;
@@ -244,9 +267,11 @@ s:where(spline-viewer) {
 
 /* Font Animation */
 @keyframes font-cycle {
-  0%, 33% { font-family: 'Playfair Display', serif; }
-  34%, 66% { font-family: 'Montserrat', sans-serif; }
-  67%, 100% { font-family: 'Dancing Script', serif; }
+  0%, 20% { font-family: 'Playfair Display', serif; }
+  21%, 40% { font-family: 'Montserrat', sans-serif; }
+  41%, 60% { font-family: 'Dancing Script', serif; }
+  61%, 80% { font-family: 'Lora', serif; }
+  81%, 100% { font-family: 'Poppins', sans-serif; }
 }
 
 /* Fade-in Animation */
@@ -385,7 +410,7 @@ footer {
 }
 
 #spline-lower h2 {
-  color: rgba(255, 255, 255, 0.9);
+  color: rgba(255, 255, 255, 0.95);
   mix-blend-mode: difference;
 }
 
