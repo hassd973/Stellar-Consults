@@ -216,13 +216,13 @@ document.addEventListener('DOMContentLoaded', () => {
     updateDateTimeWeather().catch((err) => {
       console.error('Periodic weather update failed:', err);
       dateTimeWeather.textContent = `Time: ${new Date().toLocaleString('en-US', {
-        year: 'numeric',
-        month: 'long',
-        day: 'numeric',
-        hour: '2-digit',
-        minute: '2-digit',
-        hour12: true
-      })} | Weather unavailable`;
+      year: 'numeric',
+      month: 'long',
+      day: 'numeric',
+      hour: '2-digit',
+      minute: '2-digit',
+      hour12: true
+    })} | Weather unavailable`;
     });
   }, 60000);
 
