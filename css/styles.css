@@ -102,9 +102,9 @@ body.dark .moon-icon {
   color: #000000;
   text-align: center;
   position: relative;
-  z-index: 10; /* Above #home content, below nav */
+  z-index: 10;
   margin-top: 1rem;
-  min-height: 1.5rem; /* Reserve space if unavailable */
+  min-height: 1.5rem;
 }
 
 body.dark #datetime-weather {
@@ -131,7 +131,7 @@ nav a:hover {
   transition: color 0.4s ease;
 }
 
-/* Buttons (Book Now, Sign Up, Schedule Now) */
+/* Buttons */
 .btn {
   position: relative;
   overflow: hidden;
@@ -281,6 +281,7 @@ body.dark #subscribe .spline-overlay {
 
 #home spline-viewer {
   transform: none;
+  opacity: 1; /* Ensure Spline is fully opaque */
 }
 
 /* Subscribe Section */
@@ -302,6 +303,7 @@ body.dark #subscribe {
   height: 100%;
   overflow: hidden;
   z-index: -2;
+  opacity: 1; /* Ensure Spline wrapper is fully opaque */
 }
 
 /* Typewriter Animation */
@@ -330,19 +332,34 @@ body.dark .typing-text {
   font-size: 3rem;
 }
 
+/* Text Sections with Opacity */
+.section .container {
+  background: rgba(255, 255, 255, 0.9); /* Light mode semi-transparent */
+  padding: 1rem;
+  border-radius: 0.5rem;
+}
+
+body.dark .section .container {
+  background: rgba(31, 41, 55, 0.9); /* Dark mode semi-transparent */
+}
+
+.section h1, .section h2, .section h3, .section p, .section li {
+  opacity: 0.85; /* Slight opacity for text */
+}
+
 @media (max-width: 640px) {
   #home {
-    padding-top: 5rem; /* Increased to clear nav */
+    padding-top: 5rem;
   }
   #home h1 .typing-text {
     font-size: 2.25rem;
   }
   #datetime-weather {
-    font-size: 1rem; /* Smaller for mobile */
+    font-size: 1rem;
   }
   .container {
     max-width: 100%;
-    padding: 0.5rem 1rem; /* Adjusted padding */
+    padding: 0.5rem 1rem;
   }
 }
 
