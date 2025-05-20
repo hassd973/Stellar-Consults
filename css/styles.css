@@ -7,29 +7,38 @@
 
 /* Font Families */
 body {
-  font-family: 'Exo 2', 'Share Tech Mono', sans-serif;
+  font-family: 'IBM Plex Mono', 'Source Code Pro', monospace;
   line-height: 1.6;
   overscroll-behavior: none;
 }
 
 h1, h2, h3 {
-  font-family: 'Orbitron', 'Share Tech Mono', sans-serif;
+  font-family: 'Courier Prime', 'Source Code Pro', monospace;
 }
 
 nav a, .btn, .text-bubble, .form-input, footer p {
-  font-family: 'Quantico', 'Share Tech Mono', sans-serif;
+  font-family: 'VT323', 'Source Code Pro', monospace;
 }
 
-/* Font Cycling Animation for h2, h3 */
-@keyframes cycleFonts {
-  0%, 20% { font-family: 'Orbitron', 'Share Tech Mono', sans-serif; }
-  25%, 45% { font-family: 'Exo 2', 'Share Tech Mono', sans-serif; }
-  50%, 70% { font-family: 'Quantico', 'Share Tech Mono', sans-serif; }
-  75%, 100% { font-family: 'Share Tech Mono', sans-serif; }
-}
-
+/* Hover-Based Font Classes */
 h2, h3 {
-  animation: cycleFonts 12s infinite;
+  transition: opacity 0.3s ease;
+}
+
+h2.font-0, h3.font-0 {
+  font-family: 'Courier Prime', 'Source Code Pro', monospace;
+}
+
+h2.font-1, h3.font-1 {
+  font-family: 'IBM Plex Mono', 'Source Code Pro', monospace;
+}
+
+h2.font-2, h3.font-2 {
+  font-family: 'VT323', 'Source Code Pro', monospace;
+}
+
+h2.font-3, h3.font-3 {
+  font-family: 'Source Code Pro', monospace;
 }
 
 /* Dark Mode Styles */
@@ -60,15 +69,24 @@ body.dark .form-input::placeholder {
 }
 
 body.dark .sun-icon {
-  display: none;
+  @apply hidden;
 }
 
 body.dark .moon-icon {
-  display: inline;
+  @apply block;
 }
 
 .sun-icon, .moon-icon {
   transition: opacity 0.3s ease;
+}
+
+/* Date/Time/Weather */
+#datetime-weather {
+  color: #000000;
+}
+
+body.dark #datetime-weather {
+  color: #ffffff;
 }
 
 /* Navigation */
