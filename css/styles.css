@@ -316,7 +316,7 @@ nav a:hover {
 
 .service-item:hover, .success-item:hover, .team-item:hover, .resource-item:hover {
   background-color: rgba(255, 255, 255, 0.1);
-  box-shadow: 0 0 8px var(--grow-color);
+  box-shadow: 0 0 8px var(--glow-color);
   transform: scale(1.02);
 }
 
