@@ -50,7 +50,7 @@ document.addEventListener('DOMContentLoaded', () => {
       starfieldCtx.fillStyle = this.color;
       starfieldCtx.globalAlpha = this.opacity;
       starfieldCtx.shadowColor = this.color;
-      starfieldCtx.shadowBlur = 10; // Reduced for smaller stars
+      starfieldCtx.shadowBlur = 10;
       starfieldCtx.fill();
       starfieldCtx.shadowBlur = 0;
       starfieldCtx.globalAlpha = 1;
@@ -218,6 +218,21 @@ document.addEventListener('DOMContentLoaded', () => {
         interactiveItems.forEach((i) => i.classList.remove('selected'));
         if (!isSelected) item.classList.add('selected');
       }
+    });
+  });
+
+  // Text Bubble Popups
+  const textBubbles = document.querySelectorAll('.text-bubble');
+  textBubbles.forEach(bubble => {
+    bubble.addEventListener('mouseenter', () => {
+      const popup = bubble.querySelector('.bubble-popup');
+      popup.classList.remove('hidden');
+      console.log('Bubble popup shown:', popup.textContent);
+    });
+    bubble.addEventListener('mouseleave', () => {
+      const popup = bubble.querySelector('.bubble-popup');
+      popup.classList.add('hidden');
+      console.log('Bubble popup hidden:', popup.textContent);
     });
   });
 
