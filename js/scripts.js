@@ -18,16 +18,16 @@ document.addEventListener('DOMContentLoaded', () => {
         // Typing forward
         if (index <= text.length) {
           element.textContent = text.slice(0, index);
-          setTimeout(() => typeWriter(index + 1, true), 100);
+          setTimeout(() => typeWriter(index + 1, true), 150);
         } else {
           // Pause after typing
-          setTimeout(() => typeWriter(index, false), 500);
+          setTimeout(() => typeWriter(index, false), 2000);
         }
       } else {
         // Backspacing
         if (index >= 0) {
           element.textContent = text.slice(0, index);
-          setTimeout(() => typeWriter(index - 1, false), 50);
+          setTimeout(() => typeWriter(index - 1, false), 75);
         } else {
           // Switch font and restart
           fontIndex = (fontIndex + 1) % fonts.length;
@@ -212,7 +212,7 @@ document.addEventListener('DOMContentLoaded', () => {
   // Leaflet Map
   const map = L.map('map').setView([40.7128, -74.0060], 15);
   L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-    attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+    attribution: '© <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'
   }).addTo(map);
   L.marker([40.7128, -74.0060]).addTo(map)
     .bindPopup('Stellar Consults<br>One World Trade Center')
