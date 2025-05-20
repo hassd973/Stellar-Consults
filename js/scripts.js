@@ -94,8 +94,11 @@ document.addEventListener('DOMContentLoaded', () => {
   let stars = [];
 
   function resizeCanvas() {
-    canvas.width = window.innerWidth;
-    canvas.height = window.innerHeight;
+    canvas.width = window.innerWidth * window.devicePixelRatio;
+    canvas.height = window.innerHeight * window.devicePixelRatio;
+    canvas.style.width = window.innerWidth + 'px';
+    canvas.style.height = window.innerHeight + 'px';
+    ctx.scale(window.devicePixelRatio, window.devicePixelRatio);
     initStars();
   }
 
@@ -103,9 +106,9 @@ document.addEventListener('DOMContentLoaded', () => {
     stars = [];
     for (let i = 0; i < 150; i++) {
       stars.push({
-        x: Math.random() * canvas.width,
-        y: Math.random() * canvas.height,
-        radius: Math.random() * 0.75 + 0.75,
+        x: Math.random() * window.innerWidth,
+        y: Math.random() * window.innerHeight,
+        radius: Math.random() * 1.0 + 1.0,
         speed: Math.random() * 0.5 + 0.5,
         alpha: Math.random() * 0.3 + 0.7
       });
@@ -118,6 +121,10 @@ document.addEventListener('DOMContentLoaded', () => {
     const spikes = 5;
     const outerRadius = radius;
     const innerRadius = radius * 0.5;
+    const isDark = document.body.classList.contains('dark');
+    ctx.fillStyle = isDark
+      ? `rgba(255, 255, 255, ${alpha})`
+      : `rgba(0, 0, 0, ${alpha})`;
     for (let i = 0; i < spikes * 2; i++) {
       const r = i % 2 === 0 ? outerRadius : innerRadius;
       const angle = (Math.PI / spikes) * i - Math.PI / 2;
@@ -133,14 +140,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
   function animateStars() {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
-    const isDark = body.classList.contains('dark');
     stars.forEach(star => {
-      ctx.fillStyle = isDark
-        ? `rgba(255, 255, 255, ${star.alpha})`
-        : `rgba(0, 0, 0, ${star.alpha})`;
       drawStar(star.x, star.y, star.radius, star.alpha);
       star.y += star.speed;
-      if (star.y > canvas.height) star.y = 0;
+      if (star.y > window.innerHeight) star.y = 0;
     });
     requestAnimationFrame(animateStars);
   }
