@@ -4,30 +4,35 @@
   src: url('/assets/fonts/PlayfairDisplay-Regular.otf') format('opentype');
   font-weight: 400;
   font-style: normal;
+  font-display: swap;
 }
 @font-face {
   font-family: 'Montserrat';
   src: url('/assets/fonts/Montserrat-Bold.otf') format('opentype');
   font-weight: 700;
   font-style: normal;
+  font-display: swap;
 }
 @font-face {
   font-family: 'Dancing Script';
   src: url('/assets/fonts/DancingScript-Regular.otf') format('opentype');
   font-weight: 400;
   font-style: normal;
+  font-display: swap;
 }
 @font-face {
   font-family: 'Lora';
   src: url('/assets/fonts/Lora-Regular.otf') format('opentype');
   font-weight: 400;
   font-style: normal;
+  font-display: swap;
 }
 @font-face {
   font-family: 'Poppins';
   src: url('/assets/fonts/Poppins-Bold.otf') format('opentype');
   font-weight: 700;
   font-style: normal;
+  font-display: swap;
 }
 
 /* Light Mode */
@@ -61,7 +66,7 @@
 }
 
 body {
-  font-family: 'JetBrains Mono', monospace;
+  font-family: 'JetBrains Mono', monospace, sans-serif;
   background-color: var(--bg-color);
   color: var(--text-color);
   line-height: 1.4;
@@ -72,7 +77,7 @@ body {
 }
 
 h1, h2, h3 {
-  font-family: 'Playfair Display', serif;
+  font-family: 'Playfair Display', 'Lora', serif;
   font-weight: 400;
   color: var(--header-color);
   letter-spacing: 0.01em;
@@ -85,7 +90,7 @@ h2, h3 {
 }
 
 p {
-  font-family: 'JetBrains Mono', monospace;
+  font-family: 'JetBrains Mono', monospace, sans-serif;
   font-weight: 400;
   overflow-wrap: break-word;
   word-break: break-word;
@@ -173,7 +178,7 @@ h1:hover, h2:hover, p:hover {
   padding: 8px;
   width: 100%;
   box-sizing: border-box;
-  font-family: 'JetBrains Mono', monospace;
+  font-family: 'JetBrains Mono', monospace, sans-serif;
   transition: all 0.2s ease;
 }
 
@@ -311,7 +316,7 @@ nav a:hover {
 
 .service-item:hover, .success-item:hover, .team-item:hover, .resource-item:hover {
   background-color: rgba(255, 255, 255, 0.1);
-  box-shadow: 0 0 8px var(--glow-color);
+  box-shadow: 0 0 8px var(--grow-color);
   transform: scale(1.02);
 }
 
