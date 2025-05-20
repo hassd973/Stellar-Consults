@@ -135,6 +135,10 @@ nav a:hover {
   box-shadow: 0 4px 15px rgba(139, 92, 246, 0.3);
 }
 
+.btn.clicked {
+  transform: scale(0.95);
+}
+
 .book-now, .signup-btn, .schedule-btn {
   background-color: #ffffff;
   color: #000000;
@@ -249,8 +253,62 @@ body.dark .text-bubble {
   transition: opacity 0.5s ease;
 }
 
-#spline-lower:hover .spline-overlay, #subscribe:hover .spline-overlay {
+#subscribe .spline-overlay {
+  opacity: 0.4;
+}
+
+body.dark #subscribe .spline-overlay {
   opacity: 0.5;
+}
+
+#spline-lower:hover .spline-overlay, #subscribe:hover .spline-overlay {
+  opacity: 0.6;
+}
+
+/* Home Section */
+#home spline-viewer {
+  transform: scale(1.3);
+  transform-origin: center;
+}
+
+/* Subscribe Section */
+#subscribe {
+  background-color: #f3f4f6;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+}
+
+body.dark #subscribe {
+  background-color: #1f2937;
+  box-shadow: 0 10px 30px rgba(255, 255, 255, 0.1);
+}
+
+.spline-wrapper {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  z-index: -2;
+}
+
+/* Typewriter Animation */
+.typing-text {
+  display: inline-block;
+  overflow: hidden;
+  white-space: nowrap;
+  border-right: 3px solid #000000;
+  animation: blink-cursor 0.75s step-end infinite;
+}
+
+body.dark .typing-text {
+  border-right-color: #ffffff;
+}
+
+@keyframes blink-cursor {
+  50% {
+    border-right-color: transparent;
+  }
 }
 
 /* Fade-In Animation */
@@ -290,5 +348,9 @@ body.dark .text-bubble {
   .bubble-popup {
     font-size: 0.75rem;
     padding: 0.4rem 0.8rem;
+  }
+  #subscribe {
+    margin-top: 2.5rem;
+    margin-bottom: 2.5rem;
   }
 }
