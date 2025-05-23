@@ -28,7 +28,11 @@
       font-family: 'Faculty Glyphic', serif;
     }
     h1 {
-      font-size: 4rem;
+      font-size: 4.5rem;
+      text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    }
+    .dark h1 {
+      text-shadow: 0 2px 4px rgba(0, 0, 0, 0.4);
     }
     h2 {
       font-size: 3rem;
@@ -44,20 +48,21 @@
       color: #68d391;
     }
     nav {
-      background: rgba(255, 255, 255, 0.9);
+      background: rgba(255, 255, 255, 0.8);
       border-bottom: 1px solid rgba(45, 122, 123, 0.3);
       backdrop-filter: blur(8px);
+      z-index: 30; /* Explicit z-index to ensure nav stays above content */
     }
     .dark nav {
-      background: rgba(26, 32, 44, 0.9);
+      background: rgba(26, 32, 44, 0.8);
       border-bottom: 1px solid rgba(104, 211, 145, 0.3);
     }
     footer {
-      background: rgba(255, 255, 255, 0.9);
+      background: rgba(255, 255, 255, 0.8);
       border-top: 1px solid rgba(45, 122, 123, 0.3);
     }
     .dark footer {
-      background: rgba(26, 32, 44, 0.9);
+      background: rgba(26, 32, 44, 0.8);
       border-top: 1px solid rgba(104, 211, 145, 0.3);
     }
     .container {
@@ -225,12 +230,86 @@
       position: relative;
       z-index: 10;
     }
+    #home {
+      min-height: 80vh; /* Ensure Hero section has sufficient height */
+    }
     #starfield {
       opacity: 0.7;
-      filter: brightness(100%) contrast(100%); /* Ensure stars appear white */
+      filter: brightness(100%) contrast(100%);
     }
     .dark #starfield {
-      filter: brightness(100%) contrast(100%); /* Maintain white stars in dark mode */
+      filter: brightness(100%) contrast(100%);
+    }
+    /* Infographic Styles */
+    .infographic-card {
+      background: rgba(255, 255, 255, 0.7);
+      border: 1px solid rgba(45, 122, 123, 0.3);
+      border-radius: 8px;
+      padding: 1.5rem;
+      cursor: pointer;
+      transition: transform 0.3s, box-shadow 0.3s;
+    }
+    .dark .infographic-card {
+      background: rgba(45, 55, 72, 0.7);
+      border: 1px solid rgba(104, 211, 145, 0.3);
+    }
+    .infographic-card:hover {
+      transform: scale(1.05);
+      box-shadow: 0 6px 16px rgba(45, 122, 123, 0.4);
+    }
+    .dark .infographic-card:hover {
+      box-shadow: 0 6px 16px rgba(104, 211, 145, 0.4);
+    }
+    .progress-bar {
+      height: 8px;
+      background: rgba(45, 122, 123, 0.2);
+      border-radius: 4px;
+      overflow: hidden;
+    }
+    .dark .progress-bar {
+      background: rgba(104, 211, 145, 0.2);
+    }
+    .progress-fill {
+      height: 100%;
+      background: #2c7a7b;
+      transition: width 1s ease-in-out;
+    }
+    .dark .progress-fill {
+      background: #68d391;
+    }
+    .infographic-popup {
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background: rgba(255, 255, 255, 0.9);
+      border: 1px solid rgba(45, 122, 123, 0.3);
+      border-radius: 8px;
+      padding: 2rem;
+      max-width: 90%;
+      width: 500px;
+      z-index: 100;
+      box-shadow: 0 8px 24px rgba(45, 122, 123, 0.4);
+      display: none;
+    }
+    .dark .infographic-popup {
+      background: rgba(45, 55, 72, 0.9);
+      border: 1px solid rgba(104, 211, 145, 0.3);
+      box-shadow: 0 8px 24px rgba(104, 211, 145, 0.4);
+    }
+    .infographic-popup.active {
+      display: block;
+    }
+    .popup-close {
+      position: absolute;
+      top: 1rem;
+      right: 1rem;
+      font-size: 1.5rem;
+      cursor: pointer;
+      color: #1f2a44;
+    }
+    .dark .popup-close {
+      color: #f7fafc;
     }
   </style>
 </head>
@@ -246,7 +325,7 @@
   <canvas id="starfield" style="position: absolute; top: 0; left: 0; width: 100%; height: 100vh; z-index: 0; display: block;"></canvas>
 
   <!-- Navigation Bar -->
-  <nav class="fixed top-0 w-full z-30 py-4">
+  <nav class="fixed top-0 w-full z-30 py-3">
     <div class="container mx-auto px-4 max-w-4xl flex justify-between items-center flex-wrap">
       <a href="#home" class="logo text-3xl font-semibold no-underline" aria-label="Stellar Consults Home">Stellar Consults</a>
       <div class="flex gap-4 flex-wrap items-center">
@@ -264,8 +343,8 @@
   </nav>
 
   <!-- Hero Section -->
-  <section id="home" class="section fade-in text-center pt-16 pb-32 flex items-center justify-center">
-    <div class="container mx-auto px-4 max-w-4xl">
+  <section id="home" class="section fade-in text-center pt-16 sm:pt-20 pb-32 flex items-center justify-center">
+    <div class="container mx-auto px-4 max-w-4xl mt-12 sm:mt-16">
       <h1 class="text-6xl font-semibold mb-4 tracking-tight"><span class="typing-text" data-title="Stellar Consults 🚀" data-font-index="0"></span></h1>
       <p class="text-lg font-normal mb-6 leading-relaxed">Welcome to Stellar Consults, where we are passionately committed to <span class="highlight">transforming</span> the healthcare landscape through innovative, state-of-the-art digital solutions meticulously crafted for dental and medical practices. Our visionary approach is designed to propel your practice into the future, equipping you with the tools and strategies needed to <span class="highlight">excel</span> in 2025 and beyond. By harnessing the latest technological advancements, we empower healthcare professionals to achieve extraordinary levels of efficiency, productivity, and patient satisfaction, ensuring your practice not only meets but exceeds the demands of a rapidly evolving industry.</p>
       <a href="#book" class="btn book-now inline-block px-6 py-3 text-lg font-medium">Book Now 📅</a>
@@ -315,18 +394,85 @@
     </div>
   </section>
 
-  <!-- Our Success Section -->
+  <!-- Our Success Section with Infographics -->
   <section id="success" class="section fade-in plain-bg text-center py-32">
     <div class="container mx-auto px-4 max-w-4xl">
       <h2 class="text-5xl font-semibold mb-4 tracking-tight typing-text" data-title="Our Success 📊" data-font-index="0"></h2>
-      <ul class="grid list-disc pl-6 mb-6 text-left max-w-2xl mx-auto text-lg font-medium">
-        <li class="success-item mb-4 cursor-pointer relative" data-success-id="1" tabindex="0">Our clients consistently achieve an impressive average revenue increase of <span class="highlight">26%</span> within just the first year of partnering with us, a testament to our holistic and meticulously tailored strategies that optimize every facet of practice performance.<span class="bubble-popup hidden">26% revenue boost!</span></li>
-        <li class="success-item mb-4 cursor-pointer relative" data-success-id="2" tabindex="0">We deliver productivity gains ranging from 33% to 50% by implementing streamlined workflows and integrating advanced technological systems, significantly enhancing the day-to-day efficiency of healthcare operations.<span class="bubble-popup hidden">Up to 50% productivity!</span></li>
-        <li class="success-item mb-4 cursor-pointer relative" data-success-id="3" tabindex="0">Through our robust revenue cycle management techniques, we reduce accounts receivable by more than 40%, bolstering cash flow and fortifying the financial stability of the practices we serve.<span class="bubble-popup hidden">40% less receivables!</span></li>
-        <li class="success-item mb-4 cursor-pointer relative" data-success-id="4" tabindex="0">We take pride in serving over 30 diverse practices nationwide, ranging from small, independent clinics to expansive multi-specialty groups, each benefiting from our customized consulting solutions.<span class="bubble-popup hidden">Serving 30+ practices!</span></li>
-        <li class="success-item mb-4 cursor-pointer relative" data-success-id="5" tabindex="0">Our exceptional 95% client retention rate underscores our dedication to fostering enduring partnerships and delivering consistent, high-quality results that exceed expectations.<span class="bubble-popup hidden">95% retention rate!</span></li>
-        <li class="success-item mb-4 cursor-pointer relative" data-success-id="6" tabindex="0">We specialize in supporting practices with annual revenues between $1M and $5M, offering bespoke solutions that address the unique challenges and opportunities faced by mid-sized healthcare providers.<span class="bubble-popup hidden">Tailored for $1M-$5M!</span></li>
-      </ul>
+      <p class="text-lg font-normal mb-6 leading-relaxed">Explore our proven impact through interactive metrics showcasing the transformative results we deliver for healthcare practices.</p>
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div class="infographic-card relative" data-success-id="1" tabindex="0">
+          <h3 class="text-2xl font-semibold mb-2">26% Revenue Boost</h3>
+          <div class="progress-bar">
+            <div class="progress-fill" style="width: 26%"></div>
+          </div>
+          <p class="text-base mt-2">Our clients achieve an average revenue increase of 26% within the first year.</p>
+          <div class="infographic-popup" data-success-id="1">
+            <span class="popup-close">×</span>
+            <h3 class="text-xl font-semibold mb-2">26% Revenue Boost</h3>
+            <p class="text-base">Our holistic strategies optimize every facet of practice performance, driving significant revenue growth in just one year.</p>
+          </div>
+        </div>
+        <div class="infographic-card relative" data-success-id="2" tabindex="0">
+          <h3 class="text-2xl font-semibold mb-2">33-50% Productivity Gain</h3>
+          <div class="progress-bar">
+            <div class="progress-fill" style="width: 50%"></div>
+          </div>
+          <p class="text-base mt-2">Streamlined workflows and advanced tech boost productivity by up to 50%.</p>
+          <div class="infographic-popup" data-success-id="2">
+            <span class="popup-close">×</span>
+            <h3 class="text-xl font-semibold mb-2">33-50% Productivity Gain</h3>
+            <p class="text-base">We implement efficient workflows and integrate cutting-edge systems to enhance daily operations.</p>
+          </div>
+        </div>
+        <div class="infographic-card relative" data-success-id="3" tabindex="0">
+          <h3 class="text-2xl font-semibold mb-2">40% Reduced Receivables</h3>
+          <div class="progress-bar">
+            <div class="progress-fill" style="width: 40%"></div>
+          </div>
+          <p class="text-base mt-2">Robust revenue cycle management cuts accounts receivable by over 40%.</p>
+          <div class="infographic-popup" data-success-id="3">
+            <span class="popup-close">×</span>
+            <h3 class="text-xl font-semibold mb-2">40% Reduced Receivables</h3>
+            <p class="text-base">Our techniques strengthen cash flow and financial stability for practices.</p>
+          </div>
+        </div>
+        <div class="infographic-card relative" data-success-id="4" tabindex="0">
+          <h3 class="text-2xl font-semibold mb-2">30+ Practices Served</h3>
+          <div class="progress-bar">
+            <div class="progress-fill" style="width: 30%"></div>
+          </div>
+          <p class="text-base mt-2">We support a diverse range of clinics, from small to multi-specialty groups.</p>
+          <div class="infographic-popup" data-success-id="4">
+            <span class="popup-close">×</span>
+            <h3 class="text-xl font-semibold mb-2">30+ Practices Served</h3>
+            <p class="text-base">Our customized solutions benefit practices nationwide, big and small.</p>
+          </div>
+        </div>
+        <div class="infographic-card relative" data-success-id="5" tabindex="0">
+          <h3 class="text-2xl font-semibold mb-2">95% Retention Rate</h3>
+          <div class="progress-bar">
+            <div class="progress-fill" style="width: 95%"></div>
+          </div>
+          <p class="text-base mt-2">Our high retention rate reflects our commitment to lasting partnerships.</p>
+          <div class="infographic-popup" data-success-id="5">
+            <span class="popup-close">×</span>
+            <h3 class="text-xl font-semibold mb-2">95% Retention Rate</h3>
+            <p class="text-base">We deliver consistent, high-quality results that exceed client expectations.</p>
+          </div>
+        </div>
+        <div class="infographic-card relative" data-success-id="6" tabindex="0">
+          <h3 class="text-2xl font-semibold mb-2">$1M-$5M Practices</h3>
+          <div class="progress-bar">
+            <div class="progress-fill" style="width: 60%"></div>
+          </div>
+          <p class="text-base mt-2">Tailored solutions for mid-sized healthcare providers.</p>
+          <div class="infographic-popup" data-success-id="6">
+            <span class="popup-close">×</span>
+            <h3 class="text-xl font-semibold mb-2">$1M-$5M Practices</h3>
+            <p class="text-base">We specialize in addressing the unique challenges of mid-sized practices.</p>
+          </div>
+        </div>
+      </div>
     </div>
   </section>
 
@@ -353,7 +499,7 @@
         <li class="mb-4 team-item cursor-pointer" data-team-id="3" tabindex="0">Our customized action plans are painstakingly tailored to align with your practice’s specific needs and ambitious long-term objectives, ensuring relevance and impact.</li>
         <li class="mb-4 team-item cursor-pointer" data-team-id="4" tabindex="0">We provide hands-on, immersive coaching for your staff, ensuring seamless adoption of new processes and fostering a culture of continuous improvement.</li>
         <li class="mb-4 team-item cursor-pointer" data-team-id="5" tabindex="0">Our ongoing support includes regular, proactive check-ins and unfettered access to our dedicated consulting team, guaranteeing sustained success.</li>
-        <li class="mb-4 team-item cursor-pointer" data-team-id "6" tabindex="0">We employ a proprietary methodology that synergistically blends advanced data analytics with patient-centered design principles, setting a new standard in practice enhancement.</li>
+        <li class="mb-4 team-item cursor-pointer" data-team-id="6" tabindex="0">We employ a proprietary methodology that synergistically blends advanced data analytics with patient-centered design principles, setting a new standard in practice enhancement.</li>
         <li class="mb-4 team-item cursor-pointer" data-team-id="7" tabindex="0">Our consistently high client satisfaction ratings reflect our unrelenting commitment to excellence and our ability to deliver transformative results time and again.</li>
       </ul>
     </div>
@@ -435,6 +581,44 @@
   </footer>
 
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
-  <script src="/js/scripts.js"></script>
+  <script>
+    // Infographic Popup Interaction
+    document.querySelectorAll('.infographic-card').forEach(card => {
+      card.addEventListener('click', () => {
+        const popup = card.querySelector('.infographic-popup');
+        popup.classList.toggle('active');
+      });
+      const closeBtn = card.querySelector('.popup-close');
+      closeBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        card.querySelector('.infographic-popup').classList.remove('active');
+      });
+    });
+
+    // Sample Starfield JavaScript (add to /js/scripts.js if needed)
+    /*
+    const canvas = document.getElementById('starfield');
+    const ctx = canvas.getContext('2d');
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+    const stars = [];
+    for (let i = 0; i < 100; i++) {
+      stars.push({
+        x: Math.random() * canvas.width,
+        y: Math.random() * canvas.height,
+        size: Math.random() * 2
+      });
+    }
+    function drawStars() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      ctx.fillStyle = '#ffffff'; // White stars
+      stars.forEach(star => {
+        ctx.fillRect(star.x, star.y, star.size, star.size);
+      });
+      requestAnimationFrame(drawStars);
+    }
+    drawStars();
+    */
+  </script>
 </body>
 </html>
