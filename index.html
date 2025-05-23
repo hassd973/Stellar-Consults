@@ -5,17 +5,140 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Stellar Consults 🚀</title>
   <script src="https://cdn.tailwindcss.com"></script>
-  <link href="https://fonts.googleapis.com/css2?family=Courier+Prime:wght@400;700&family=IBM+Plex+Mono:wght@400;600&family=VT323&family=Source+Code+Pro:wght@400&display=swap" rel="stylesheet">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Faculty+Glyphic&family=Inconsolata:wght@200..900&family=Limelight&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
   <script type="module" src="https://unpkg.com/@splinetool/viewer@1.9.96/build/spline-viewer.js"></script>
   <link rel="stylesheet" href="/css/styles.css">
+  <style>
+    body {
+      font-family: 'Inconsolata', monospace;
+      background: #fff;
+      color: #000;
+      transition: background-color 0.4s, color 0.4s;
+      margin: 0;
+      min-height: 100vh;
+    }
+    .dark body {
+      background: #1e1b4b;
+      color: #e0f7fa;
+    }
+    h1, h2, h3, .logo, .typing-text {
+      font-family: 'Faculty Glyphic', serif;
+    }
+    .highlight {
+      color: #8b5cf6;
+      font-weight: 600;
+    }
+    .dark .highlight {
+      color: #ffbb33;
+    }
+    nav {
+      background: rgba(200, 200, 200, 0.2);
+      border-bottom: 1px solid rgba(139, 92, 246, 0.2);
+    }
+    footer {
+      background: rgba(200, 200, 200, 0.2);
+      border-top: 1px solid rgba(139, 92, 246, 0.2);
+    }
+    .container {
+      background: rgba(200, 200, 200, 0.2);
+      border: 1px solid rgba(139, 92, 246, 0.2);
+      border-radius: 6px;
+      padding: 1rem;
+      box-shadow: 0 0 4px rgba(139, 92, 246, 0.3);
+    }
+    .btn {
+      background: rgba(200, 200, 200, 0.2);
+      border: 1px solid rgba(139, 92, 246, 0.2);
+      color: #000;
+      transition: background 0.3s, box-shadow 0.3s;
+    }
+    .dark .btn {
+      color: #e0f7fa;
+    }
+    .btn:hover {
+      background: rgba(139, 92, 246, 0.1);
+      box-shadow: 0 0 8px rgba(139, 92, 246, 0.5);
+    }
+    .form-input, textarea {
+      background: rgba(200, 200, 200, 0.2);
+      border: 1px solid rgba(139, 92, 246, 0.2);
+      color: #000;
+      transition: border-color 0.3s, box-shadow 0.3s;
+    }
+    .dark .form-input, .dark textarea {
+      color: #e0f7fa;
+    }
+    .form-input:focus, textarea:focus {
+      border-color: #8b5cf6;
+      box-shadow: 0 0 6px rgba(139, 92, 246, 0.4);
+      outline: none;
+    }
+    .text-bubble {
+      background: rgba(200, 200, 200, 0.2);
+      border: 1px solid rgba(139, 92, 246, 0.2);
+      transition: background 0.3s;
+    }
+    .text-bubble:hover {
+      background: rgba(139, 92, 246, 0.1);
+    }
+    .bubble-popup {
+      background: rgba(139, 92, 246, 0.8);
+      color: #fff;
+      padding: 0.25rem 0.5rem;
+      border-radius: 4px;
+      font-size: 0.75rem;
+      position: absolute;
+      bottom: 100%;
+      left: 50%;
+      transform: translateX(-50%);
+      white-space: nowrap;
+      z-index: 60;
+      box-shadow: 0 0 4px rgba(139, 92, 246, 0.3);
+    }
+    .service-item, .success-item, .team-item, .resource-item {
+      transition: background 0.3s;
+    }
+    .service-item:hover, .success-item:hover, .team-item:hover, .resource-item:hover {
+      background: rgba(139, 92, 246, 0.1);
+    }
+    .spline-overlay {
+      background: linear-gradient(45deg, #8b5cf6, #3b82f6);
+      opacity: 0.3;
+      z-index: -1;
+    }
+    #map {
+      background: rgba(200, 200, 200, 0.2);
+      border: 1px solid rgba(139, 92, 246, 0.2);
+      box-shadow: 0 0 4px rgba(139, 92, 246, 0.3);
+    }
+    ul {
+      scrollbar-width: thin;
+      scrollbar-color: #8b5cf6 rgba(200, 200, 200, 0.2);
+    }
+    ul::-webkit-scrollbar {
+      width: 6px;
+    }
+    ul::-webkit-scrollbar-track {
+      background: rgba(200, 200, 200, 0.2);
+    }
+    ul::-webkit-scrollbar-thumb {
+      background: #8b5cf6;
+      border-radius: 4px;
+    }
+    a:hover {
+      background: rgba(139, 92, 246, 0.1);
+    }
+  </style>
 </head>
 <body class="bg-white text-black transition-colors duration-400">
   <!-- Starfield Canvas -->
   <canvas id="starfield" style="position: absolute; top: 0; left: 0; width: 100%; height: 100vh; z-index: 0; display: block;"></canvas>
 
   <!-- Navigation Bar -->
-  <nav class="fixed top: 0; w-full z-30 py-4">
+  <nav class="fixed top-0 w-full z-30 py-4">
     <div class="container mx-auto px-4 max-w-4xl flex justify-between items-center flex-wrap">
       <a href="#home" class="logo text-2xl font-semibold no-underline" aria-label="Stellar Consults Home">Stellar Consults</a>
       <div class="flex gap-4 flex-wrap items-center">
@@ -32,10 +155,11 @@
     </div>
   </nav>
 
-  <!-- Hero Section with Full-Background Spline Viewer and Text Bubbles -->
+  <!-- Hero Section -->
   <section id="home" class="section fade-in relative text-center min-h-[80vh] flex items-center justify-center">
     <spline-viewer url="https://prod.spline.design/QF93hExmWxJjAxAW/scene.splinecode" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: -2; pointer-events: auto;"></spline-viewer>
     <img class="fallback-image hidden" src="/assets/images/fallback.jpg" alt="Fallback Background" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; z-index: -2;">
+    <div class="spline-overlay absolute top-0 left-0 w-full h-full"></div>
     <div class="container mx-auto px-4 max-w-4xl relative z-10">
       <h1 class="text-5xl font-semibold mb-4 tracking-tight"><span class="typing-text" data-title="Stellar Consults 🚀" data-font-index="0"></span></h1>
       <p class="text-base font-normal mb-6 leading-relaxed">Welcome to Stellar Consults, where we are passionately committed to <span class="highlight">transforming</span> the healthcare landscape through innovative, state-of-the-art digital solutions meticulously crafted for dental and medical practices. Our visionary approach is designed to propel your practice into the future, equipping you with the tools and strategies needed to <span class="highlight">excel</span> in 2025 and beyond. By harnessing the latest technological advancements, we empower healthcare professionals to achieve extraordinary levels of efficiency, productivity, and patient satisfaction, ensuring your practice not only meets but exceeds the demands of a rapidly evolving industry.</p>
@@ -50,7 +174,10 @@
   </section>
 
   <!-- Book Online Section -->
-  <section id="book" class="section fade-in text-center py-32">
+  <section id="book" class="section fade-in relative text-center min-h-[80vh] flex items-center justify-center">
+    <spline-viewer url="https://prod.spline.design/QF93hExmWxJjAxAW/scene.splinecode" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: -2; pointer-events: auto;"></spline-viewer>
+    <img class="fallback-image hidden" src="/assets/images/fallback.jpg" alt="Fallback Background" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; z-index: -2;">
+    <div class="spline-overlay absolute top-0 left-0 w-full h-full"></div>
     <div class="container mx-auto px-4 max-w-4xl relative z-10">
       <h2 class="text-4xl font-semibold mb-4 tracking-tight typing-text" data-title="Book Online 📅" data-font-index="0"></h2>
       <p class="text-base font-normal mb-6 leading-relaxed">At Stellar Consults, we’ve developed an exceptionally seamless and intuitive online booking system, thoughtfully engineered to integrate effortlessly with the unique operational rhythms of your dental or medical practice. Whether you’re seeking an in-depth virtual consultation to explore innovative strategies or prefer an on-site session to dive into hands-on <span class="highlight">optimization</span>, our cutting-edge platform guarantees a streamlined, hassle-free scheduling experience. This allows you to dedicate your valuable time and energy to what truly matters—providing outstanding care to your patients while we handle the logistics with precision and care.</p>
@@ -59,7 +186,10 @@
   </section>
 
   <!-- About Us Section -->
-  <section id="about" class="section fade-in text-center py-32">
+  <section id="about" class="section fade-in relative text-center min-h-[80vh] flex items-center justify-center">
+    <spline-viewer url="https://prod.spline.design/QF93hExmWxJjAxAW/scene.splinecode" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: -2; pointer-events: auto;"></spline-viewer>
+    <img class="fallback-image hidden" src="/assets/images/fallback.jpg" alt="Fallback Background" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; z-index: -2;">
+    <div class="spline-overlay absolute top-0 left-0 w-full h-full"></div>
     <div class="container mx-auto px-4 max-w-4xl relative z-10">
       <h2 class="text-4xl font-semibold mb-4 tracking-tight typing-text" data-title="About Us 🚀" data-font-index="0"></h2>
       <p class="text-base font-normal mb-6 leading-relaxed">Since our inception in 2017, Stellar Consults has emerged as a trailblazer in the realm of healthcare practice optimization, founded by a distinguished team of seasoned consultants with a deep-rooted passion for elevating industry standards. Our unwavering mission is to <span class="highlight">empower</span> dental, medical, and wellness practices across the United States with unparalleled expertise and transformative digital solutions. We combine decades of proven experience with pioneering technology to enhance operational efficiency, foster team development, and drive strategic growth. Our comprehensive approach ensures that our clients not only adapt to the challenges of a dynamic healthcare environment but also flourish, establishing themselves as leaders in their respective fields.</p>
@@ -67,7 +197,10 @@
   </section>
 
   <!-- Services Section -->
-  <section id="services" class="section fade-in text-center py-32">
+  <section id="services" class="section fade-in relative text-center py-32">
+    <spline-viewer url="https://prod.spline.design/QF93hExmWxJjAxAW/scene.splinecode" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: -2; pointer-events: auto;"></spline-viewer>
+    <img class="fallback-image hidden" src="/assets/images/fallback.jpg" alt="Fallback Background" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; z-index: -2;">
+    <div class="spline-overlay absolute top-0 left-0 w-full h-full"></div>
     <div class="container mx-auto px-4 max-w-4xl relative z-10">
       <h2 class="text-4xl font-semibold mb-4 tracking-tight typing-text" data-title="Services We Offer 🛠️" data-font-index="0"></h2>
       <ul class="grid list-disc pl-6 mb-6 text-left max-w-2xl mx-auto text-base font-medium">
@@ -87,7 +220,10 @@
   </section>
 
   <!-- Our Success Section -->
-  <section id="success" class="section fade-in text-center py-32">
+  <section id="success" class="section fade-in relative text-center py-32">
+    <spline-viewer url="https://prod.spline.design/QF93hExmWxJjAxAW/scene.splinecode" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: -2; pointer-events: auto;"></spline-viewer>
+    <img class="fallback-image hidden" src="/assets/images/fallback.jpg" alt="Fallback Background" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; z-index: -2;">
+    <div class="spline-overlay absolute top-0 left-0 w-full h-full"></div>
     <div class="container mx-auto px-4 max-w-4xl relative z-10">
       <h2 class="text-4xl font-semibold mb-4 tracking-tight typing-text" data-title="Our Success 📊" data-font-index="0"></h2>
       <ul class="grid list-disc pl-6 mb-6 text-left max-w-2xl mx-auto text-base font-medium">
@@ -101,13 +237,11 @@
     </div>
   </section>
 
-  <!-- Subscribe Section with Spline Background -->
+  <!-- Subscribe Section -->
   <section id="subscribe" class="section fade-in relative text-center py-32 mt-20 mb-20">
-    <div class="spline-wrapper">
-      <spline-viewer url="https://prod.spline.design/QF93hExmWxJjAxAW/scene.splinecode" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: -2; pointer-events: auto;"></spline-viewer>
-      <img class="fallback-image hidden" src="/assets/images/fallback-subscribe.jpg" alt="Fallback Background" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; z-index: -2;">
-    </div>
-    <div class="spline-overlay absolute top-0 left-0 w-full h-full" style="background: linear-gradient(45deg, #8b5cf6, #3b82f6); opacity: 0.4; z-index: -1;"></div>
+    <spline-viewer url="https://prod.spline.design/QF93hExmWxJjAxAW/scene.splinecode" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: -2; pointer-events: auto;"></spline-viewer>
+    <img class="fallback-image hidden" src="/assets/images/fallback.jpg" alt="Fallback Background" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; z-index: -2;">
+    <div class="spline-overlay absolute top-0 left-0 w-full h-full"></div>
     <div class="container mx-auto px-4 max-w-4xl relative z-10">
       <h2 class="text-4xl font-semibold mb-4 tracking-tight typing-text" data-title="Subscribe 📬" data-font-index="0"></h2>
       <p class="text-base font-normal mb-6 leading-relaxed">Stay at the forefront of healthcare innovation by subscribing to the Stellar Consults newsletter. Our expertly curated updates deliver the latest industry insights, advanced practice management techniques, and exclusive resources directly to your inbox. Whether you’re looking to refine your strategies or stay informed on emerging trends, our newsletter ensures you’re equipped with the knowledge and tools to <span class="highlight">succeed</span> in a competitive landscape.</p>
@@ -119,7 +253,10 @@
   </section>
 
   <!-- Your Stellar Team Section -->
-  <section id="team" class="section fade-in text-center py-32">
+  <section id="team" class="section fade-in relative text-center py-32">
+    <spline-viewer url="https://prod.spline.design/QF93hExmWxJjAxAW/scene.splinecode" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: -2; pointer-events: auto;"></spline-viewer>
+    <img class="fallback-image hidden" src="/assets/images/fallback.jpg" alt="Fallback Background" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; z-index: -2;">
+    <div class="spline-overlay absolute top-0 left-0 w-full h-full"></div>
     <div class="container mx-auto px-4 max-w-4xl relative z-10">
       <h2 class="text-4xl font-semibold mb-4 tracking-tight typing-text" data-title="Your Stellar Team 👩‍⚕️" data-font-index="0"></h2>
       <h3 class="text-3xl font-medium mb-4 tracking-tight">Our Experience</h3>
@@ -136,7 +273,10 @@
   </section>
 
   <!-- Our Approach Section -->
-  <section id="approach" class="section fade-in text-center py-32">
+  <section id="approach" class="section fade-in relative text-center min-h-[80vh] flex items-center justify-center">
+    <spline-viewer url="https://prod.spline.design/QF93hExmWxJjAxAW/scene.splinecode" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: -2; pointer-events: auto;"></spline-viewer>
+    <img class="fallback-image hidden" src="/assets/images/fallback.jpg" alt="Fallback Background" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; z-index: -2;">
+    <div class="spline-overlay absolute top-0 left-0 w-full h-full"></div>
     <div class="container mx-auto px-4 max-w-4xl relative z-10">
       <h2 class="text-4xl font-semibold mb-4 tracking-tight typing-text" data-title="Our Approach 🔍" data-font-index="0"></h2>
       <p class="text-base font-normal mb-6 leading-relaxed">Our proven, methodical approach commences with an exhaustive consultation, during which we meticulously identify operational inefficiencies and untapped growth opportunities unique to your practice. Following this, we present a thorough, meticulously detailed report that outlines a bespoke project plan, complete with precise timelines, critical milestones, in-depth cost analyses, and actionable, forward-thinking strategies. Our seasoned team collaborates closely with you throughout the implementation phase, ensuring a fluid transition and tangible, measurable <span class="highlight">outcomes</span>. This structured, results-driven methodology is engineered to secure sustainable success for your practice, positioning it as a leader in the healthcare sector.</p>
@@ -144,7 +284,10 @@
   </section>
 
   <!-- Why Us Section -->
-  <section id="why-us" class="section fade-in text-center py-32">
+  <section id="why-us" class="section fade-in relative text-center min-h-[80vh] flex items-center justify-center">
+    <spline-viewer url="https://prod.spline.design/QF93hExmWxJjAxAW/scene.splinecode" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: -2; pointer-events: auto;"></spline-viewer>
+    <img class="fallback-image hidden" src="/assets/images/fallback.jpg" alt="Fallback Background" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; z-index: -2;">
+    <div class="spline-overlay absolute top-0 left-0 w-full h-full"></div>
     <div class="container mx-auto px-4 max-w-4xl relative z-10">
       <h2 class="text-4xl font-semibold mb-4 tracking-tight typing-text" data-title="Why Choose Us? 🤝" data-font-index="0"></h2>
       <p class="text-base font-normal mb-6 leading-relaxed">At Stellar Consults, we firmly believe that impactful healthcare consulting demands a selective, client-centric philosophy. We deliberately choose to work with a limited number of clients, ensuring that each receives the individualized attention, time, and expert guidance they deserve. Whether you’re seeking a strategic partner to navigate complex challenges, specialized expertise to unlock new opportunities, or innovative tools to revolutionize your operations, we stand ready to collaborate with you. Together, we’ll craft and refine a meticulously tailored success plan that aligns with your vision. Our steadfast commitment to partnership means you’ll have a trusted ally every step of the way. Contact us today to schedule a complimentary, no-obligation consultation and discover how we can elevate your practice into a thriving, future-ready <span class="highlight">powerhouse</span>.</p>
@@ -152,7 +295,10 @@
   </section>
 
   <!-- Resources Section -->
-  <section id="resources" class="section fade-in text-center py-32">
+  <section id="resources" class="section fade-in relative text-center py-32">
+    <spline-viewer url="https://prod.spline.design/QF93hExmWxJjAxAW/scene.splinecode" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: -2; pointer-events: auto;"></spline-viewer>
+    <img class="fallback-image hidden" src="/assets/images/fallback.jpg" alt="Fallback Background" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; z-index: -2;">
+    <div class="spline-overlay absolute top-0 left-0 w-full h-full"></div>
     <div class="container mx-auto px-4 max-w-4xl relative z-10">
       <h2 class="text-4xl font-semibold mb-4 tracking-tight typing-text" data-title="Resources 📚" data-font-index="0"></h2>
       <p class="text-base font-normal mb-6 leading-relaxed">Delve into our expansive, meticulously curated library of resources, thoughtfully designed to equip healthcare professionals with actionable, cutting-edge insights and unparalleled industry knowledge. From sophisticated revenue growth strategies to advanced workflow optimization techniques, our comprehensive collection of guides, in-depth articles, and illuminating case studies empowers your practice to achieve extraordinary <span class="highlight">success</span>. Stay ahead of the curve in the ever-evolving healthcare landscape with resources crafted by our team of experts, dedicated to your professional advancement.</p>
@@ -165,7 +311,10 @@
   </section>
 
   <!-- Contact Us Section -->
-  <section id="contact" class="section fade-in text-center py-32">
+  <section id="contact" class="section fade-in relative text-center py-32">
+    <spline-viewer url="https://prod.spline.design/QF93hExmWxJjAxAW/scene.splinecode" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: -2; pointer-events: auto;"></spline-viewer>
+    <img class="fallback-image hidden" src="/assets/images/fallback.jpg" alt="Fallback Background" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; z-index: -2;">
+    <div class="spline-overlay absolute top-0 left-0 w-full h-full"></div>
     <div class="container mx-auto px-4 max-w-4xl relative z-10">
       <h2 class="text-4xl font-semibold mb-4 tracking-tight typing-text" data-title="Contact Us 📞" data-font-index="0"></h2>
       <p class="text-base font-normal mb-6 leading-relaxed">We warmly invite you to connect with Stellar Consults to explore how our expertise can propel your practice to new <span class="highlight">heights</span>. Arrange a visit to our prestigious headquarters in Lower Manhattan’s iconic One World Trade Center, or opt for a convenient virtual consultation to discuss your needs from anywhere in the nation. Our dedicated team is fully committed to providing the unparalleled support, innovative solutions, and strategic guidance necessary to help your practice thrive in today’s competitive healthcare environment.</p>
@@ -187,19 +336,22 @@
   </section>
 
   <!-- Map Section -->
-  <section id="map-section" class="section fade-in text-center py-32">
+  <section id="map-section" class="section fade-in relative text-center py-32">
+    <spline-viewer url="https://prod.spline.design/QF93hExmWxJjAxAW/scene.splinecode" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: -2; pointer-events: auto;"></spline-viewer>
+    <img class="fallback-image hidden" src="/assets/images/fallback.jpg" alt="Fallback Background" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; z-index: -2;">
+    <div class="spline-overlay absolute top-0 left-0 w-full h-full"></div>
     <div class="container mx-auto px-4 max-w-4xl relative z-10">
       <h2 class="text-4xl font-semibold mb-4 tracking-tight typing-text" data-title="Our Location 📍" data-font-index="0"></h2>
       <p class="text-base font-normal mb-6 leading-relaxed">We warmly welcome you to visit our distinguished office, strategically situated within the iconic One World Trade Center in Lower Manhattan. This prime location positions us to effectively serve clients throughout the New York metropolitan area and beyond, offering a hub of innovation and <span class="highlight">excellence</span> in healthcare consulting.</p>
-      <div id="map" class="h-[400px] border"></div>
+      <div id="map" class="h-[400px]"></div>
     </div>
   </section>
 
   <!-- Lower Spline Section -->
   <section id="spline-lower" class="section fade-in relative text-center min-h-[80vh] flex items-center justify-center">
     <spline-viewer url="https://prod.spline.design/QF93hExmWxJjAxAW/scene.splinecode" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: -2; pointer-events: auto;"></spline-viewer>
-    <img class="fallback-image hidden" src="/assets/images/fallback-lower.jpg" alt="Fallback Background" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; z-index: -2;">
-    <div class="spline-overlay absolute top-0 left-0 w-full h-full" style="background: linear-gradient(45deg, #8b5cf6, #3b82f6); opacity: 0.3; z-index: -1;"></div>
+    <img class="fallback-image hidden" src="/assets/images/fallback.jpg" alt="Fallback Background" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; z-index: -2;">
+    <div class="spline-overlay absolute top-0 left-0 w-full h-full"></div>
     <div class="container mx-auto px-4 max-w-4xl relative z-10">
       <h2 class="text-4xl font-semibold mb-4 tracking-tight typing-text" data-title="Explore Our Vision 🚀" data-font-index="0"></h2>
     </div>
