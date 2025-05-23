@@ -14,42 +14,42 @@
   <style>
     body {
       font-family: 'Inconsolata', monospace;
-      background: #f5f6f5; /* Soft off-white for light mode */
-      color: #1f2a44; /* Darker, professional gray-blue text */
+      background: #f5f6f5;
+      color: #1f2a44;
       transition: background-color 0.4s, color 0.4s;
       margin: 0;
       min-height: 100vh;
     }
     .dark body {
-      background: #1a202c; /* Neutral dark gray for dark mode */
-      color: #f7fafc; /* Warm off-white text */
+      background: #1a202c;
+      color: #f7fafc;
     }
     h1, h2, h3, .logo, .typing-text {
       font-family: 'Faculty Glyphic', serif;
     }
     h1 {
-      font-size: 4rem; /* Increased from text-5xl to text-6xl */
+      font-size: 4rem;
     }
     h2 {
-      font-size: 3rem; /* Increased from text-4xl to text-5xl */
+      font-size: 3rem;
     }
     h3 {
-      font-size: 1.875rem; /* Increased to text-3xl */
+      font-size: 1.875rem;
     }
     .highlight {
-      color: #2c7a7b; /* Professional teal for light mode */
+      color: #2c7a7b;
       font-weight: 600;
     }
     .dark .highlight {
-      color: #68d391; /* Lighter green-teal for dark mode */
+      color: #68d391;
     }
     nav {
-      background: rgba(255, 255, 255, 0.9); /* Cleaner, semi-transparent white */
-      border-bottom: 1px solid rgba(45, 122, 123, 0.3); /* Teal border */
-      backdrop-filter: blur(8px); /* Subtle blur for modern look */
+      background: rgba(255, 255, 255, 0.9);
+      border-bottom: 1px solid rgba(45, 122, 123, 0.3);
+      backdrop-filter: blur(8px);
     }
     .dark nav {
-      background: rgba(26, 32, 44, 0.9); /* Dark mode nav */
+      background: rgba(26, 32, 44, 0.9);
       border-bottom: 1px solid rgba(104, 211, 145, 0.3);
     }
     footer {
@@ -61,19 +61,19 @@
       border-top: 1px solid rgba(104, 211, 145, 0.3);
     }
     .container {
-      background: rgba(255, 255, 255, 0.7); /* Cleaner container background */
+      background: rgba(255, 255, 255, 0.7);
       border: 1px solid rgba(45, 122, 123, 0.3);
       border-radius: 8px;
       padding: 1.5rem;
-      box-shadow: 0 4px 12px rgba(45, 122, 123, 0.2); /* Softer shadow */
+      box-shadow: 0 4px 12px rgba(45, 122, 123, 0.2);
     }
     .dark .container {
-      background: rgba(45, 55, 72, 0.7); /* Dark mode container */
+      background: rgba(45, 55, 72, 0.7);
       border: 1px solid rgba(104, 211, 145, 0.3);
       box-shadow: 0 4px 12px rgba(104, 211, 145, 0.2);
     }
     .btn {
-      background: rgba(45, 122, 123, 0.1); /* Teal-based button */
+      background: rgba(45, 122, 123, 0.1);
       border: 1px solid rgba(45, 122, 123, 0.4);
       color: #1f2a44;
       transition: background 0.3s, box-shadow 0.3s, transform 0.3s;
@@ -86,7 +86,7 @@
     .btn:hover {
       background: rgba(45, 122, 123, 0.2);
       box-shadow: 0 4px 12px rgba(45, 122, 123, 0.4);
-      transform: translateY(-2px); /* Subtle lift effect */
+      transform: translateY(-2px);
     }
     .dark .btn:hover {
       background: rgba(104, 211, 145, 0.2);
@@ -129,7 +129,7 @@
       background: rgba(104, 211, 145, 0.2);
     }
     .bubble-popup {
-      background: rgba(45, 122, 123, 0.9); /* Teal popup */
+      background: rgba(45, 122, 123, 0.9);
       color: #f7fafc;
       padding: 0.5rem 1rem;
       border-radius: 6px;
@@ -165,8 +165,8 @@
       z-index: -2;
     }
     .spline-overlay {
-      background: linear-gradient(45deg, #2c7a7b, #4a5568); /* Teal to gray gradient */
-      opacity: 0.2; /* Reduced opacity for subtlety */
+      background: linear-gradient(45deg, #2c7a7b, #4a5568);
+      opacity: 0.2;
       position: absolute;
       top: 0;
       left: 0;
@@ -226,7 +226,11 @@
       z-index: 10;
     }
     #starfield {
-      opacity: 0.7; /* Subtle starfield to avoid overpowering */
+      opacity: 0.7;
+      filter: brightness(100%) contrast(100%); /* Ensure stars appear white */
+    }
+    .dark #starfield {
+      filter: brightness(100%) contrast(100%); /* Maintain white stars in dark mode */
     }
   </style>
 </head>
@@ -260,7 +264,7 @@
   </nav>
 
   <!-- Hero Section -->
-  <section id="home" class="section fade-in text-center py-32 flex items-center justify-center">
+  <section id="home" class="section fade-in text-center pt-16 pb-32 flex items-center justify-center">
     <div class="container mx-auto px-4 max-w-4xl">
       <h1 class="text-6xl font-semibold mb-4 tracking-tight"><span class="typing-text" data-title="Stellar Consults 🚀" data-font-index="0"></span></h1>
       <p class="text-lg font-normal mb-6 leading-relaxed">Welcome to Stellar Consults, where we are passionately committed to <span class="highlight">transforming</span> the healthcare landscape through innovative, state-of-the-art digital solutions meticulously crafted for dental and medical practices. Our visionary approach is designed to propel your practice into the future, equipping you with the tools and strategies needed to <span class="highlight">excel</span> in 2025 and beyond. By harnessing the latest technological advancements, we empower healthcare professionals to achieve extraordinary levels of efficiency, productivity, and patient satisfaction, ensuring your practice not only meets but exceeds the demands of a rapidly evolving industry.</p>
@@ -349,7 +353,7 @@
         <li class="mb-4 team-item cursor-pointer" data-team-id="3" tabindex="0">Our customized action plans are painstakingly tailored to align with your practice’s specific needs and ambitious long-term objectives, ensuring relevance and impact.</li>
         <li class="mb-4 team-item cursor-pointer" data-team-id="4" tabindex="0">We provide hands-on, immersive coaching for your staff, ensuring seamless adoption of new processes and fostering a culture of continuous improvement.</li>
         <li class="mb-4 team-item cursor-pointer" data-team-id="5" tabindex="0">Our ongoing support includes regular, proactive check-ins and unfettered access to our dedicated consulting team, guaranteeing sustained success.</li>
-        <li class="mb-4 team-item cursor-pointer" data-team-id="6" tabindex="0">We employ a proprietary methodology that synergistically blends advanced data analytics with patient-centered design principles, setting a new standard in practice enhancement.</li>
+        <li class="mb-4 team-item cursor-pointer" data-team-id "6" tabindex="0">We employ a proprietary methodology that synergistically blends advanced data analytics with patient-centered design principles, setting a new standard in practice enhancement.</li>
         <li class="mb-4 team-item cursor-pointer" data-team-id="7" tabindex="0">Our consistently high client satisfaction ratings reflect our unrelenting commitment to excellence and our ability to deliver transformative results time and again.</li>
       </ul>
     </div>
