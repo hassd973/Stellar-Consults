@@ -211,6 +211,12 @@
     }
     #home {
       min-height: 80vh;
+      padding-top: 5rem; /* Fallback for mobile */
+    }
+    @media (min-width: 640px) {
+      #home {
+        padding-top: 6rem; /* Fallback for larger screens */
+      }
     }
     #starfield {
       opacity: 0.7;
@@ -335,11 +341,11 @@
   </nav>
 
   <!-- Hero Section -->
-  <section id="home" class="section fade-in relative text-center min-h-[80vh] pt-16 sm:pt-20 flex items-center justify-center py-40">
+  <section id="home" class="section fade-in relative text-center min-h-[80vh] flex items-center justify-center py-40">
     <spline-viewer url="https://prod.spline.design/QF93hExmWxJjAxAW/scene.splinecode" data-light-url="https://prod.spline.design/QF93hExmWxJjAxAW/scene.splinecode" data-dark-url="https://prod.spline.design/bPYHfwyVwULNcZok/scene.splinecode" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: -2; pointer-events: auto;"></spline-viewer>
     <img class="fallback-image hidden" src="/assets/images/fallback.jpg" alt="Fallback Background" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; z-index: -2;">
     <div class="spline-overlay"></div>
-    <div class="container mx-auto px-4 max-w-3xl relative z-10 mt-12 sm:mt-16">
+    <div class="container mx-auto px-4 max-w-3xl relative z-10">
       <h1 class="text-5xl font-semibold mb-4 tracking-tight"><span class="typing-text" data-title="Stellar Consults 🚀" data-font-index="0"></span></h1>
       <p class="text-base font-normal mb-6 leading-relaxed">Welcome to Stellar Consults, where we are passionately committed to <span class="highlight">transforming</span> the healthcare landscape through innovative, state-of-the-art digital solutions meticulously crafted for dental and medical practices. Our visionary approach is designed to propel your practice into the future, equipping you with the tools and strategies needed to <span class="highlight">excel</span> in 2025 and beyond. By harnessing the latest technological advancements, we empower healthcare professionals to achieve extraordinary levels of efficiency, productivity, and patient satisfaction, ensuring your practice not only meets but exceeds the demands of a rapidly evolving industry.</p>
       <a href="#book" class="btn book-now inline-block px-6 py-3 text-base font-medium">Book Now 📅</a>
@@ -585,6 +591,20 @@
 
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
   <script>
+    // Header Height Adjustment
+    document.addEventListener('DOMContentLoaded', () => {
+      const nav = document.querySelector('nav');
+      const homeSection = document.querySelector('#home');
+      
+      function updateHomePadding() {
+        const navHeight = nav.offsetHeight;
+        homeSection.style.paddingTop = `${navHeight + 20}px`; // Add 20px buffer
+      }
+      
+      updateHomePadding();
+      window.addEventListener('resize', updateHomePadding);
+    });
+
     // Typing Text Animation
     document.addEventListener('DOMContentLoaded', () => {
       const typingElements = document.querySelectorAll('.typing-text');
