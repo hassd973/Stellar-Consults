@@ -309,8 +309,11 @@
       content: attr(data-title);
       display: inline;
     }
+    .js-enabled .typing-text::after {
+      content: none; /* Hide fallback when JavaScript is enabled */
+    }
     .typing-text.typed::after {
-      content: none; /* Hide fallback once JavaScript renders the typing effect */
+      content: none; /* Ensure no fallback during/after typing */
     }
   </style>
 </head>
