@@ -1,4 +1,7 @@
 document.addEventListener('DOMContentLoaded', () => {
+  // Enable JavaScript flag to hide CSS fallback
+  document.body.classList.add('js-enabled');
+
   // Header Height Adjustment
   const nav = document.querySelector('nav');
   const homeSection = document.querySelector('#home');
@@ -25,6 +28,8 @@ document.addEventListener('DOMContentLoaded', () => {
     const isLooping = element.closest('#spline-lower') !== null;
 
     function typeWriter(index = 0, typing = true) {
+      // Add .typed during typing
+      element.classList.add('typed');
       if (isLooping) {
         if (typing) {
           if (index <= text.length) {
@@ -49,7 +54,7 @@ document.addEventListener('DOMContentLoaded', () => {
           element.textContent = text.slice(0, index);
           setTimeout(() => typeWriter(index + 1, true), 150);
         } else {
-          element.classList.add('static');
+          element.classList.add('typed'); // Keep .typed for non-looping
         }
       }
     }
@@ -325,6 +330,19 @@ document.addEventListener('DOMContentLoaded', () => {
         console.error('Form validation failed');
         alert('Please fill all required fields.');
       }
+    });
+  });
+
+  // Infographic Popups
+  document.querySelectorAll('.infographic-card').forEach(card => {
+    card.addEventListener('click', () => {
+      const popup = card.querySelector('.infographic-popup');
+      popup.classList.toggle('active');
+    });
+    const closeBtn = card.querySelector('.popup-close');
+    closeBtn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      card.querySelector('.infographic-popup').classList.remove('active');
     });
   });
 
