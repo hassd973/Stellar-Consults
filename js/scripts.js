@@ -1,4 +1,14 @@
 document.addEventListener('DOMContentLoaded', () => {
+  // Header Height Adjustment
+  const nav = document.querySelector('nav');
+  const homeSection = document.querySelector('#home');
+  function updateHomePadding() {
+    const navHeight = nav.offsetHeight;
+    homeSection.style.paddingTop = `${navHeight + 20}px`; // 20px buffer
+  }
+  updateHomePadding();
+  window.addEventListener('resize', updateHomePadding);
+
   // Font cycle for looping typewriter effect
   const fonts = [
     'Courier Prime',
