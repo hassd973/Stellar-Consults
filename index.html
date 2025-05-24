@@ -8,7 +8,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Faculty+Glyphic&family=Inconsolata:wght@200..900&family=Limelight&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
   <script type="module" src="https://unpkg.com/@splinetool/viewer@1.9.96/build/spline-viewer.js"></script>
   <link rel="stylesheet" href="/css/styles.css">
   <style>
@@ -577,7 +577,7 @@
     </div>
   </footer>
 
-  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
   <script>
     // Typing Text Animation
     document.addEventListener('DOMContentLoaded', () => {
@@ -585,8 +585,8 @@
       typingElements.forEach(element => {
         const text = element.getAttribute('data-title');
         if (!text) return;
-        element.classList.add('typed'); // Mark as processed
-        element.textContent = ''; // Clear fallback text
+        element.classList.add('typed');
+        element.textContent = '';
         let i = 0;
         function type() {
           if (i < text.length) {
@@ -597,6 +597,29 @@
         }
         type();
       });
+    });
+
+    // Dark Mode Toggle
+    document.addEventListener('DOMContentLoaded', () => {
+      const themeToggle = document.getElementById('theme-toggle');
+      const sunIcon = themeToggle.querySelector('.sun-icon');
+      const moonIcon = themeToggle.querySelector('.moon-icon');
+      themeToggle.addEventListener('click', () => {
+        document.body.classList.toggle('dark');
+        sunIcon.classList.toggle('hidden');
+        moonIcon.classList.toggle('hidden');
+      });
+    });
+
+    // Map Initialization
+    document.addEventListener('DOMContentLoaded', () => {
+      const map = L.map('map').setView([40.7128, -74.0060], 15);
+      L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        attribution: '© <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+      }).addTo(map);
+      L.marker([40.7128, -74.0060]).addTo(map)
+        .bindPopup('Stellar Consults<br>One World Trade Center')
+        .openPopup();
     });
 
     // Infographic Popup Interaction
@@ -610,6 +633,19 @@
         e.stopPropagation();
         card.querySelector('.infographic-popup').classList.remove('active');
       });
+    });
+
+    // Date/Time and Weather
+    document.addEventListener('DOMContentLoaded', () => {
+      function updateDateTimeWeather() {
+        const now = new Date();
+        const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric', hour: '2-digit', minute: '2-digit', timeZone: 'America/New_York' };
+        const dateTime = now.toLocaleString('en-US', options);
+        const weatherPlaceholder = 'Sunny, 72°F'; // Replace with actual weather API call
+        document.getElementById('datetime-weather').textContent = `${dateTime} | ${weatherPlaceholder}`;
+      }
+      updateDateTimeWeather();
+      setInterval(updateDateTimeWeather, 60000);
     });
 
     // Sample Starfield JavaScript (add to /js/scripts.js if needed)
@@ -635,29 +671,6 @@
       requestAnimationFrame(drawStars);
     }
     drawStars();
-    */
-
-    // Sample Map and Weather/Time JavaScript (add to /js/scripts.js if needed)
-    /*
-    // Map Initialization
-    const map = L.map('map').setView([40.7128, -74.0060], 15);
-    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-      attribution: '© <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-    }).addTo(map);
-    L.marker([40.7128, -74.0060]).addTo(map)
-      .bindPopup('Stellar Consults<br>One World Trade Center')
-      .openPopup();
-
-    // Date/Time and Weather
-    function updateDateTimeWeather() {
-      const now = new Date();
-      const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric', hour: '2-digit', minute: '2-digit', timeZone: 'America/New_York' };
-      const dateTime = now.toLocaleString('en-US', options);
-      const weatherPlaceholder = 'Sunny, 72°F'; // Replace with actual weather API call
-      document.getElementById('datetime-weather').textContent = `${dateTime} | ${weatherPlaceholder}`;
-    }
-    updateDateTimeWeather();
-    setInterval(updateDateTimeWeather, 60000);
     */
   </script>
 </body>
