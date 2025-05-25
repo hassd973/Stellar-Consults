@@ -5,71 +5,10 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Stellar Consults 🚀</title>
   <script src="https://cdn.tailwindcss.com"></script>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Pixelify+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Courier+Prime:wght@400;700&family=IBM+Plex+Mono:wght@400;600&family=VT323&family=Source+Code+Pro:wght@400&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
   <script type="module" src="https://unpkg.com/@splinetool/viewer@1.9.96/build/spline-viewer.js"></script>
   <link rel="stylesheet" href="/css/styles.css">
-  <style>
-    body {
-      font-family: 'Pixelify Sans', sans-serif;
-    }
-    h1, h2 {
-      font-family: 'Pixelify Sans', sans-serif;
-      font-weight: 700;
-    }
-    .highlight {
-      color: #4f46e5;
-      font-weight: 600;
-    }
-    .btn {
-      background-color: #4f46e5;
-      color: white;
-      border-radius: 8px;
-      transition: transform 0.3s ease, background-color 0.3s ease;
-    }
-    .btn:hover {
-      background-color: #4338ca;
-      transform: scale(1.05);
-    }
-    .text-bubble {
-      background-color: rgba(255, 255, 255, 0.9);
-      padding: 8px 16px;
-      border-radius: 20px;
-      transition: transform 0.3s ease;
-    }
-    .text-bubble:hover .bubble-popup {
-      display: block;
-    }
-    .bubble-popup {
-      position: absolute;
-      background-color: #4f46e5;
-      color: white;
-      padding: 8px;
-      border-radius: 4px;
-      top: -40px;
-      left: 50%;
-      transform: translateX(-50%);
-      white-space: nowrap;
-      z-index: 20;
-    }
-    .section {
-      scroll-margin-top: 80px;
-    }
-    @media (max-width: 640px) {
-      .container {
-        padding-left: 1rem;
-        padding-right: 1rem;
-      }
-      h1 {
-        font-size: 2.5rem;
-      }
-      h2 {
-        font-size: 1.8rem;
-      }
-    }
-  </style>
 </head>
 <body class="bg-white text-black transition-colors duration-400">
   <!-- Root Spline Background -->
@@ -82,7 +21,7 @@
   <canvas id="starfield" style="position: absolute; top: 0; left: 0; width: 100%; height: 100vh; z-index: -3; display: block;"></canvas>
 
   <!-- Navigation Bar -->
-  <nav class="fixed top-0 w-full z-30 py-4 bg-white/80 backdrop-blur-sm">
+  <nav class="fixed top: 0; w-full z-30 py-4">
     <div class="container mx-auto px-4 max-w-4xl flex justify-between items-center flex-wrap">
       <a href="#home" class="logo text-2xl font-semibold no-underline" aria-label="Stellar Consults Home">Stellar Consults</a>
       <div class="flex gap-4 flex-wrap items-center">
@@ -173,7 +112,7 @@
       <h2 class="text-4xl font-semibold mb-4 tracking-tight typing-text" data-title="Subscribe 📬" data-font-index="0"></h2>
       <p class="text-base font-normal mb-6 leading-relaxed">Stay at the forefront of healthcare innovation by subscribing to the Stellar Consults newsletter. Our expertly curated updates deliver the latest industry insights, advanced practice management techniques, and exclusive resources directly to your inbox. Whether you’re looking to refine your strategies or stay informed on emerging trends, our newsletter ensures you’re equipped with the knowledge and tools to <span class="highlight">succeed</span> in a competitive landscape.</p>
       <div class="max-w-md mx-auto flex flex-col gap-4">
-        <input type="email" placeholder="Email Address" class="form-input px-4 py-3 border text-base rounded-lg" required>
+        <input type="email" placeholder="Email Address" class="form-input px-4 py-3 border text-base" required>
         <button type="button" class="btn signup-btn px-6 py-3 text-base font-medium">Sign Up</button>
       </div>
     </div>
@@ -234,9 +173,9 @@
       <p class="text-base font-medium mb-4 leading-relaxed">Business Hours: Monday–Friday, 09:00 AM – 05:00 PM</p>
       <p class="text-base font-medium mb-4 leading-relaxed">For our valued out-of-state clients, our team is prepared to travel frequently, delivering on-site support tailored to your location and needs. Contact us today to schedule a visit or engage in a detailed discussion about how we can serve you best.</p>
       <div class="max-w-md mx-auto flex flex-col gap-4">
-        <input type="text" placeholder="Name" class="form-input px-4 py-3 border text-base rounded-lg" required>
-        <input type="email" placeholder="Email*" class="form-input px-4 py-3 border text-base rounded-lg" required>
-        <textarea placeholder="Message" class="form-input px-4 py-3 border text-base h-32 rounded-lg" required></textarea>
+        <input type="text" placeholder="Name" class="form-input px-4 py-3 border text-base" required>
+        <input type="email" placeholder="Email*" class="form-input px-4 py-3 border text-base" required>
+        <textarea placeholder="Message" class="form-input px-4 py-3 border text-base h-32" required></textarea>
         <div class="text-sm text-gray-500 text-center">This site is protected by reCAPTCHA and the Google Privacy Policy and Terms of Service apply.</div>
         <div class="flex gap-4 justify-center">
           <button type="button" class="btn px-6 py-3 text-base font-medium">Send</button>
@@ -252,7 +191,7 @@
     <div class="container mx-auto px-4 max-w-4xl relative z-10">
       <h2 class="text-4xl font-semibold mb-4 tracking-tight typing-text" data-title="Our Location 📍" data-font-index="0"></h2>
       <p class="text-base font-normal mb-6 leading-relaxed">We warmly welcome you to visit our distinguished office, strategically situated within the iconic One World Trade Center in Lower Manhattan. This prime location positions us to effectively serve clients throughout the New York metropolitan area and beyond, offering a hub of innovation and <span class="highlight">excellence</span> in healthcare consulting.</p>
-      <div id="map" class="h-[400px] border rounded-lg"></div>
+      <div id="map" class="h-[400px] border"></div>
     </div>
   </section>
 
@@ -272,16 +211,6 @@
   </footer>
 
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
-  <script>
-    // Initialize Leaflet map
-    const map = L.map('map').setView([40.7128, -74.0135], 15); // Centered on One World Trade Center
-    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-      attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-    }).addTo(map);
-    L.marker([40.7128, -74.0135]).addTo(map)
-      .bindPopup('Stellar Consults<br>One World Trade Center, 285 Fulton St Fl 85, New York, NY 10007')
-      .openPopup();
-  </script>
   <script src="/js/scripts.js"></script>
 </body>
 </html>
