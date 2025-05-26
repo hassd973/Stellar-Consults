@@ -23,9 +23,6 @@
       color: #1f2a44;
       transition: background-color 0.4s, color 0.4s;
       min-height: 100vh;
-      scroll-behavior: smooth;
-      scroll-snap-type: y mandatory;
-      overscroll-behavior: none;
     }
     .dark body {
       background: #0a0e17;
@@ -35,17 +32,17 @@
       font-family: 'Faculty Glyphic', serif;
     }
     h1 {
-      font-size: clamp(2rem, 7vw, 4rem);
+      font-size: clamp(2.5rem, 8vw, 4.5rem);
       text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
     }
     .dark h1 {
       text-shadow: 0 2px 4px rgba(0, 0, 0, 0.4);
     }
     h2 {
-      font-size: clamp(1.75rem, 5vw, 2.5rem);
+      font-size: clamp(2rem, 6vw, 3rem);
     }
     h3 {
-      font-size: clamp(1.25rem, 3.5vw, 1.5rem);
+      font-size: clamp(1.5rem, 4vw, 1.875rem);
     }
     .highlight {
       color: #60a5fa;
@@ -55,64 +52,20 @@
       color: #93c5fd;
     }
     nav {
-      background: rgba(255, 255, 255, 0.9);
-      border-bottom: 1px solid rgba(96, 165, 250, 0.2);
+      background: rgba(255, 255, 255, 0.8);
+      border-bottom: 1px solid rgba(96, 165, 250, 0.3);
       backdrop-filter: blur(8px);
-      z-index: 40;
+      z-index: 30;
       width: 100%;
-      padding: 0.5rem 0;
-      position: fixed;
-      top: 0;
     }
     .dark nav {
-      background: rgba(17, 24, 39, 0.9);
-      border-bottom: 1px solid rgba(147, 197, 253, 0.2);
-    }
-    .nav-container {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      max-width: 1200px;
-      margin: 0 auto;
-      padding: 0 1rem;
-    }
-    .nav-links {
-      display: flex;
-      gap: 1rem;
-      align-items: center;
-    }
-    .nav-links a {
-      font-size: 0.95rem;
-      font-weight: 500;
-      transition: color 0.3s, transform 0.3s;
-    }
-    .nav-links a:hover {
-      color: #60a5fa;
-      transform: scale(1.05);
-    }
-    .dark .nav-links a:hover {
-      color: #93c5fd;
-    }
-    .hamburger {
-      display: none;
-      font-size: 1.5rem;
-      cursor: pointer;
-      background: none;
-      border: none;
-      color: #1f2a44;
-    }
-    .dark .hamburger {
-      color: #e5e7eb;
-    }
-    .logo {
-      font-size: 1.5rem;
-      font-weight: 600;
+      background: rgba(17, 24, 39, 0.8);
+      border-bottom: 1px solid rgba(147, 197, 253, 0.3);
     }
     footer {
       background: rgba(255, 255, 255, 0.8);
       border-top: 1px solid rgba(96, 165, 250, 0.3);
       width: 100%;
-      scroll-snap-align: start;
     }
     .dark footer {
       background: rgba(17, 24, 39, 0.8);
@@ -268,56 +221,24 @@
       position: relative;
       z-index: 10;
       width: 100%;
-      min-height: 100vh;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      scroll-snap-align: start;
       padding: clamp(2rem, 10vw, 10rem) 0;
     }
     #home {
-      padding-top: 5rem;
+      min-height: 80vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
     }
     @media (max-width: 640px) {
-      section {
-        padding: 3rem 0;
-      }
       #home {
-        padding-top: 20;
+        padding: 4rem 0;
       }
       .container {
-        padding: 0.75rem;
-      }
-      .nav-container {
-        flex-direction: row;
-        justify-content: space-between;
-      }
-      .nav-links {
-        display: none;
-        flex-direction: column;
-        position: absolute;
-        top: 100%;
-        left: 0;
-        width: 100%;
-        background: rgba(255, 255, 255, 0.95);
         padding: 1rem;
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
       }
-      .dark .nav-links {
-        background: rgba(17, 24, 39, 0.95);
-      }
-      .nav-links.active {
-        display: flex;
-      }
-      .nav-links a {
-        font-size: 0.9rem;
-        padding: 0.5rem 0;
-      }
-      .hamburger {
-        display: block;
-      }
-      .logo {
-        font-size: 1.25rem;
+      nav .container {
+        flex-direction: column;
+        gap: 1rem;
       }
     }
     #starfield {
@@ -361,7 +282,7 @@
       background: rgba(255, 255, 255, 0.6);
       border: 1px solid rgba(96, 165, 250, 0.3);
       border-radius: 8px;
-      padding: clamp(0.75rem, 2vw, 1.25rem);
+      padding: clamp(1rem, 2vw, 1.5rem);
       cursor: pointer;
       transition: transform 0.3s, box-shadow 0.3s;
     }
@@ -377,9 +298,9 @@
       box-shadow: 0 6px 16px rgba(147, 197, 253, 0.4);
     }
     .progress-bar {
-      height: 6px;
+      height: 8px;
       background: rgba(96, 165, 250, 0.2);
-      border-radius: 3px;
+      border-radius: 4px;
       overflow: hidden;
     }
     .dark .progress-bar {
@@ -401,9 +322,9 @@
       background: rgba(255, 255, 255, 0.9);
       border: 1px solid rgba(96, 165, 250, 0.3);
       border-radius: 8px;
-      padding: 1.5rem;
+      padding: 2rem;
       max-width: 90%;
-      width: clamp(280px, 80vw, 450px);
+      width: clamp(300px, 80vw, 500px);
       z-index: 100;
       box-shadow: 0 8px 24px rgba(96, 165, 250, 0.4);
       display: none;
@@ -418,9 +339,9 @@
     }
     .popup-close {
       position: absolute;
-      top: 0.75rem;
-      right: 0.75rem;
-      font-size: 1.25rem;
+      top: 1rem;
+      right: 1rem;
+      font-size: 1.5rem;
       cursor: pointer;
       color: #1f2a44;
     }
@@ -437,100 +358,23 @@
     .typing-text.typed::after {
       content: none;
     }
-    .preview-btn {
-      position: fixed;
-      bottom: 1.5rem;
-      right: 1.5rem;
-      background: rgba(96, 165, 250, 0.9);
-      color: #f7fafc;
-      padding: 0.5rem 1rem;
-      border-radius: 50px;
-      font-size: 0.9rem;
-      font-weight: 500;
-      cursor: pointer;
-      z-index: 50;
-      transition: background 0.3s, transform 0.3s, box-shadow 0.3s;
-      display: flex;
-      align-items: center;
-      gap: 0.5rem;
-    }
-    .dark .preview-btn {
-      background: rgba(147, 197, 253, 0.9);
-    }
-    .preview-btn:hover {
-      background: rgba(96, 165, 250, 1);
-      transform: scale(1.05);
-      box-shadow: 0 4px 12px rgba(96, 165, 250, 0.4);
-    }
-    .dark .preview-btn:hover {
-      background: rgba(147, 197, 253, 1);
-      box-shadow: 0 4px 12px rgba(147, 197, 253, 0.4);
-    }
-    .preview-popup {
-      position: fixed;
-      bottom: 4rem;
-      right: 1.5rem;
-      background: rgba(255, 255, 255, 0.9);
-      border: 1px solid rgba(96, 165, 250, 0.3);
-      border-radius: 8px;
-      padding: 0.75rem;
-      max-width: 280px;
-      z-index: 50;
-      box-shadow: 0 4px 12px rgba(96, 165, 250, 0.3);
-      display: none;
-      font-size: 0.85rem;
-      color: #1f2a44;
-    }
-    .dark .preview-popup {
-      background: rgba(17, 24, 39, 0.9);
-      border: 1px solid rgba(147, 197, 253, 0.3);
-      box-shadow: 0 4px 12px rgba(147, 197, 253, 0.3);
-      color: #e5e7eb;
-    }
-    .preview-popup.active {
-      display: block;
-    }
-    @media (max-width: 640px) {
-      .preview-btn {
-        bottom: 1rem;
-        right: 1rem;
-        padding: 0.5rem 0.75rem;
-        font-size: 0.85rem;
-      }
-      .preview-popup {
-        bottom: 3.5rem;
-        right: 1rem;
-        max-width: 250px;
-        font-size: 0.8rem;
-      }
-    }
   </style>
 </head>
 <body class="bg-white text-black transition-colors duration-400">
   <!-- Starfield -->
   <div id="starfield"></div>
 
-  <!-- Preview Button -->
-  <button class="preview-btn" aria-label="Preview Next Section">
-    <span>What's Next? 🚀</span>
-    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
-    </svg>
-  </button>
-  <div class="preview-popup" id="preview-popup"></div>
-
   <!-- Navigation Bar -->
-  <nav>
-    <div class="nav-container">
-      <a href="#home" class="logo no-underline" aria-label="Stellar Consults Home">Stellar Consults</a>
-      <button class="hamburger" aria-label="Toggle Navigation">☰</button>
-      <div class="nav-links">
-        <a href="#home" aria-label="Home">Home</a>
-        <a href="#services" aria-label="Services">Services</a>
-        <a href="#about" aria-label="About">About</a>
-        <a href="#resources" aria-label="Resources">Resources</a>
-        <a href="#contact" aria-label="Contact">Contact</a>
-        <button id="theme-toggle" class="text-lg focus:outline-none" aria-label="Toggle Dark Mode" aria-pressed="false">
+  <nav class="fixed top-0 w-full z-30 py-4">
+    <div class="container mx-auto px-4 flex justify-between items-center flex-wrap">
+      <a href="#home" class="logo text-2xl font-semibold no-underline" aria-label="Stellar Consults Home">Stellar Consults</a>
+      <div class="flex gap-4 flex-wrap items-center">
+        <a href="#home" class="text-base font-medium hover:scale-105 transition-transform duration-400" aria-label="Home">Home</a>
+        <a href="#services" class="text-base font-medium hover:scale-105 transition-transform duration-400" aria-label="Services">Services</a>
+        <a href="#about" class="text-base font-medium hover:scale-105 transition-transform duration-400" aria-label="About">About</a>
+        <a href="#resources" class="text-base font-medium hover:scale-105 transition-transform duration-400" aria-label="Resources">Resources</a>
+        <a href="#contact" class="text-base font-medium hover:scale-105 transition-transform duration-400" aria-label="Contact">Contact</a>
+        <button id="theme-toggle" class="text-xl focus:outline-none" aria-label="Toggle Dark Mode" aria-pressed="false">
           <span class="sun-icon block">☀️</span>
           <span class="moon-icon hidden">🌙</span>
         </button>
@@ -771,7 +615,7 @@
 
   <!-- Lower Spline Section -->
   <section id="spline-lower" class="section fade-in relative text-center min-h-[80vh] flex items-center justify-center">
-    <spline-viewer url="https://prod.spline.design/QF93hExmWxJjAxAW/scene.splinecode" data-light-url="https://prod.spline.design/QF93hExmWxJjAxAW/scene.splinecode" data-dark-url="https://prod.spline.design/bPYHmWxVvULNcZok/scene"></spline-viewer>
+    <spline-viewer url="https://prod.spline.design/QF93hExmWxJjAxAW/scene.splinecode" data-light-url="https://prod.spline.design/QF93hExmWxJjAxAW/scene.splinecode" data-dark-url="https://prod.spline.design/bPYHfwyVwULNcZok/scene.splinecode" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: -2; pointer-events: auto;"></spline-viewer>
     <img class="fallback-image hidden" src="/assets/images/fallback-lower.jpg" alt="Fallback Background" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; z-index: -2;">
     <div class="spline-overlay"></div>
     <div class="container mx-auto px-4 relative z-10">
@@ -780,19 +624,19 @@
   </section>
 
   <!-- Footer -->
-  <footer id="footer" class="py-12 text-center relative z-10">
+  <footer class="py-12 text-center relative z-10">
     <div class="container mx-auto px-4">
-      <a href="#home" class="logo text-xl font-semibold no-underline hover:underline" aria-label="Stellar Consults Home">Stellar Consults 🚀</a>
-      <p class="mt-2 text-sm">Copyright © 2025 Stellar Consults - All Rights Reserved.</p>
+      <a href="#home" class="logo text-2xl font-semibold no-underline hover:scale-105 transition-transform duration-400" aria-label="Stellar Consults Home">Stellar Consults 🚀</a>
+      <p class="mt-2 text-base">Copyright © 2025 Stellar Consults - All Rights Reserved.</p>
     </div>
   </footer>
 
   <script>
+    // Initialize Leaflet map
     document.addEventListener('DOMContentLoaded', () => {
-      // Initialize Leaflet map
       const map = L.map('map').setView([40.7128, -74.0134], 15);
       L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-        attribution: '© <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>',
+        attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>',
         maxZoom: 18,
       }).addTo(map);
       L.marker([40.7128, -74.0134]).addTo(map)
@@ -808,8 +652,8 @@
           star.style.width = `${Math.random() * 3 + 1}px`;
           star.style.height = star.style.width;
           star.style.left = `${Math.random() * 100}vw`;
-          star.style.animationDuration = `${Math.random() * 5 + 4}s`;
-          star.style.animationDelay = '0s';
+          star.style.animationDuration = `${Math.random() * 5 + 5}s`;
+          star.style.animationDelay = `${Math.random() * 5}s`;
           starfield.appendChild(star);
         }
       }
@@ -819,88 +663,6 @@
       window.addEventListener('resize', () => {
         map.invalidateSize();
       });
-
-      // Hamburger menu toggle
-      const hamburger = document.querySelector('.hamburger');
-      const navLinks = document.querySelector('.nav-links');
-      hamburger.addEventListener('click', () => {
-        navLinks.classList.toggle('active');
-        hamburger.textContent = navLinks.classList.contains('active') ? '✕' : '☰';
-      });
-
-      // Close hamburger menu when a link is clicked
-      navLinks.querySelectorAll('a').forEach(link => {
-        link.addEventListener('click', () => {
-          navLinks.classList.remove('active');
-          hamburger.textContent = '☰';
-        });
-      });
-
-      // Preview button functionality
-      const previewBtn = document.querySelector('.preview-btn');
-      const previewPopup = document.getElementById('preview-popup');
-      const sections = Array.from(document.querySelectorAll('section')).concat(document.querySelector('footer'));
-      const sectionData = [
-        { id: 'home', title: 'Stellar Consults 🚀', desc: 'Discover how we transform healthcare practices with innovative digital solutions.' },
-        { id: 'book', title: 'Book Online 📅', desc: 'Explore our seamless booking system designed for your practice’s needs.' },
-        { id: 'about', title: 'About Us 🚀', desc: 'Learn about our mission to empower healthcare practices since 2017.' },
-        { id: 'services', title: 'Services We Offer 🛠️', desc: 'Check out our comprehensive services to optimize your practice.' },
-        { id: 'success', title: 'Our Success 📊', desc: 'See the proven results we’ve delivered for healthcare practices.' },
-        { id: 'subscribe', title: 'Subscribe 📬', desc: 'Stay updated with our newsletter for the latest industry insights.' },
-        { id: 'team', title: 'Your Stellar Team 👩‍⚕️', desc: 'Meet our experienced consultants driving your success.' },
-        { id: 'approach', title: 'Our Approach 🔍', desc: 'Understand our methodical process for practice optimization.' },
-        { id: 'why-us', title: 'Why Choose Us? 🤝', desc: 'Discover why we’re the trusted partner for your practice.' },
-        { id: 'resources', title: 'Resources 📚', desc: 'Access our library of guides and insights for healthcare professionals.' },
-        { id: 'contact', title: 'Contact Us 📞', desc: 'Connect with us to elevate your practice to new heights.' },
-        { id: 'map-section', title: 'Our Location 📍', desc: 'Visit our office at One World Trade Center, NYC.' },
-        { id: 'spline-lower', title: 'Explore Our Vision 🚀', desc: 'Dive into our vision for the future of healthcare consulting.' },
-        { id: 'footer', title: 'Footer', desc: 'Thanks for exploring! Ready to start your journey with us?' }
-      ];
-
-      function updatePreview() {
-        const scrollPosition = window.scrollY + window.innerHeight / 2;
-        let currentSection = sections[0];
-        sections.forEach(section => {
-          const sectionTop = section.offsetTop;
-          if (sectionTop <= scrollPosition) {
-            currentSection = section;
-          }
-        });
-
-        const currentIndex = sections.indexOf(currentSection);
-        const nextSection = sections[currentIndex + 1];
-        const nextData = sectionData.find(data => data.id === (nextSection ? nextSection.id : 'footer'));
-
-        if (nextData) {
-          previewPopup.innerHTML = `
-            <strong>${nextData.title}</strong><br>
-            ${nextData.desc}<br>
-            <em>Click to visit now! 🌟</em>
-          `;
-          previewBtn.style.display = 'flex';
-        } else {
-          previewPopup.innerHTML = `<em>You've reached the end! Ready to start your journey? 🚀</em>`;
-          previewBtn.style.display = 'none';
-        }
-      }
-
-      previewBtn.addEventListener('click', () => {
-        const isActive = previewPopup.classList.contains('active');
-        previewPopup.classList.toggle('active', !isActive);
-        const currentIndex = sections.indexOf(
-          sections.find(section => section.getBoundingClientRect().top <= window.innerHeight / 2)
-        );
-        const nextSection = sections[currentIndex + 1];
-        if (nextSection) {
-          nextSection.scrollIntoView({ behavior: 'smooth' });
-          setTimeout(() => {
-            previewPopup.classList.remove('active');
-          }, 500);
-        }
-      });
-
-      window.addEventListener('scroll', updatePreview);
-      updatePreview();
     });
   </script>
 </body>
