@@ -7,10 +7,15 @@ document.addEventListener('DOMContentLoaded', () => {
   const homeSection = document.querySelector('#home');
   function updateHomePadding() {
     const navHeight = nav.offsetHeight;
-    homeSection.style.paddingTop = `${navHeight + 20}px`; // 20px buffer
+    const buffer = window.innerWidth < 640 ? 30 : 20; // Increased buffer on mobile
+    homeSection.style.paddingTop = `${navHeight + buffer}px`;
   }
   updateHomePadding();
-  window.addEventListener('resize', updateHomePadding);
+  let resizeTimeout;
+  window.addEventListener('resize', () => {
+    clearTimeout(resizeTimeout);
+    resizeTimeout = setTimeout(updateHomePadding, 100);
+  });
 
   // Font cycle for looping typewriter effect
   const fonts = [
@@ -28,7 +33,6 @@ document.addEventListener('DOMContentLoaded', () => {
     const isLooping = element.closest('#spline-lower') !== null;
 
     function typeWriter(index = 0, typing = true) {
-      // Add .typed during typing
       element.classList.add('typed');
       if (isLooping) {
         if (typing) {
@@ -54,7 +58,7 @@ document.addEventListener('DOMContentLoaded', () => {
           element.textContent = text.slice(0, index);
           setTimeout(() => typeWriter(index + 1, true), 150);
         } else {
-          element.classList.add('typed'); // Keep .typed for non-looping
+          element.classList.add('typed');
         }
       }
     }
@@ -84,7 +88,7 @@ document.addEventListener('DOMContentLoaded', () => {
     body.classList.toggle('text-black', !isDark);
     body.classList.toggle('bg-gray-900', isDark);
     body.classList.toggle('text-white', isDark);
-    location.reload();
+    updateSplineViewers();
   });
 
   function updateSplineViewers() {
@@ -164,9 +168,93 @@ document.addEventListener('DOMContentLoaded', () => {
     requestAnimationFrame(animateStars);
   }
 
-  window.addEventListener('resize', resizeCanvas);
+  window.addEventListener('resize', () => {
+    clearTimeout(resizeTimeout);
+    resizeTimeout = setTimeout(resizeCanvas, 100);
+  });
   resizeCanvas();
   animateStars();
+
+  // Hamburger Menu Toggle
+  const hamburger = document.querySelector('.hamburger');
+  const navLinks = document.querySelector('.nav-links');
+  hamburger.addEventListener('click', () => {
+    navLinks.classList.toggle('active');
+    hamburger.textContent = navLinks.classList.contains('active') ? '✕' : '☰';
+  });
+
+  navLinks.querySelectorAll('a').forEach(link => {
+    link.addEventListener('click', () => {
+      navLinks.classList.remove('active');
+      hamburger.textContent = '☰';
+    });
+  });
+
+  // Preview Button Functionality
+  const previewBtn = document.querySelector('.preview-btn');
+  const previewPopup = document.getElementById('preview-popup');
+  const sections = Array.from(document.querySelectorAll('section')).concat(document.querySelector('footer'));
+  const sectionData = [
+    { id: 'home', title: 'Stellar Consults 🚀', desc: 'Discover how we transform healthcare practices with innovative digital solutions.' },
+    { id: 'book', title: 'Book Online 📅', desc: 'Explore our seamless booking system designed for your practice’s needs.' },
+    { id: 'about', title: 'About Us 🚀', desc: 'Learn about our mission to empower healthcare practices since 2017.' },
+    { id: 'services', title: 'Services We Offer 🛠️', desc: 'Check out our comprehensive services to optimize your practice.' },
+    { id: 'success', title: 'Our Success 📊', desc: 'See the proven results we’ve delivered for healthcare practices.' },
+    { id: 'subscribe', title: 'Subscribe 📬', desc: 'Stay updated with our newsletter for the latest industry insights.' },
+    { id: 'team', title: 'Your Stellar Team 👩‍⚕️', desc: 'Meet our experienced consultants driving your success.' },
+    { id: 'approach', title: 'Our Approach 🔍', desc: 'Understand our methodical process for practice optimization.' },
+    { id: 'why-us', title: 'Why Choose Us? 🤝', desc: 'Discover why we’re the trusted partner for your practice.' },
+    { id: 'resources', title: 'Resources 📚', desc: 'Access our library of guides and insights for healthcare professionals.' },
+    { id: 'contact', title: 'Contact Us 📞', desc: 'Connect with us to elevate your practice to new heights.' },
+    { id: 'map-section', title: 'Our Location 📍', desc: 'Visit our office at One World Trade Center, NYC.' },
+    { id: 'spline-lower', title: 'Explore Our Vision 🚀', desc: 'Dive into our vision for the future of healthcare consulting.' },
+    { id: 'footer', title: 'Footer', desc: 'Thanks for exploring! Ready to start your journey with us?' }
+  ];
+
+  function updatePreview() {
+    const scrollPosition = window.scrollY + window.innerHeight / 2;
+    let currentSection = sections[0];
+    sections.forEach(section => {
+      const sectionTop = section.offsetTop;
+      if (sectionTop <= scrollPosition) {
+        currentSection = section;
+      }
+    });
+
+    const currentIndex = sections.indexOf(currentSection);
+    const nextSection = sections[currentIndex + 1];
+    const nextData = sectionData.find(data => data.id === (nextSection ? nextSection.id : 'footer'));
+
+    if (nextData) {
+      previewPopup.innerHTML = `
+        <strong>${nextData.title}</strong><br>
+        ${nextData.desc}<br>
+        <em>Click to visit now! 🌟</em>
+      `;
+      previewBtn.style.display = 'flex';
+    } else {
+      previewPopup.innerHTML = `<em>You've reached the end! Ready to start your journey? 🚀</em>`;
+      previewBtn.style.display = 'none';
+    }
+  }
+
+  previewBtn.addEventListener('click', () => {
+    const isActive = previewPopup.classList.contains('active');
+    previewPopup.classList.toggle('active', !isActive);
+    const currentIndex = sections.indexOf(
+      sections.find(section => section.getBoundingClientRect().top <= window.innerHeight / 2)
+    );
+    const nextSection = sections[currentIndex + 1];
+    if (nextSection) {
+      nextSection.scrollIntoView({ behavior: 'smooth' });
+      setTimeout(() => {
+        previewPopup.classList.remove('active');
+      }, 500);
+    }
+  });
+
+  window.addEventListener('scroll', updatePreview);
+  updatePreview();
 
   // Date, Time, and Weather
   const dateTimeWeather = document.getElementById('datetime-weather');
@@ -263,7 +351,7 @@ document.addEventListener('DOMContentLoaded', () => {
         entry.target.classList.remove('opacity-0', 'translate-y-5');
       }
     });
-  }, { threshold: 0.1 });
+  }, { threshold: window.innerWidth < 640 ? 0.05 : 0.1 });
   sections.forEach(section => {
     section.classList.add('opacity-0', 'translate-y-5', 'transition', 'duration-600');
     observer.observe(section);
@@ -325,7 +413,7 @@ document.addEventListener('DOMContentLoaded', () => {
       const message = form.querySelector('textarea')?.value;
       if (email && (!name || name) && (!message || message)) {
         console.log('Form submitted:', { name, email, message });
-        alert('Form submitted successfully!'); // Replace with actual backend call
+        alert('Form submitted successfully!');
       } else {
         console.error('Form validation failed');
         alert('Please fill all required fields.');
