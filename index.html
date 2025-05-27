@@ -11,6 +11,7 @@
   <link rel="preload" href="https://fonts.googleapis.com/css2?family=Inconsolata:wght@400;600;700&family=Faculty+Glyphic&display=swap" as="style">
   <link rel="preload" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" as="style">
   <link rel="preload" href="https://prod.spline.design/QF93hExmWxJjAxAW/scene.splinecode" as="fetch" crossorigin>
+  <link rel="preload" href="https://prod.spline.design/bPYHfwyVwULNcZok/scene.splinecode" as="fetch" crossorigin>
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -106,7 +107,7 @@
     }
     .dark .container {
       background: rgba(17, 24, 39, 0.6);
-      border: 1px solid rgba(147, 197, 253, 0.3);
+      border: 1px solid rgba(147, 197, 253);
       box-shadow: 0 4px 12px rgba(147, 197, 253, 0.2);
     }
     .btn {
@@ -118,17 +119,18 @@
     }
     .dark .btn {
       color: #e5e7eb;
-      background: rgba(147, 197, 253, 0.1);
+      background: rgba(147, 197, 250, 0.1);
       border: 1px solid rgba(147, 197, 253, 0.4);
     }
     .btn:hover {
-      background: rgba(96, 165, 250, 0.2);
+      background: rgbagy, 165, 250, 0.2);
       box-shadow: 0 4px 12px rgba(96, 165, 250, 0.4);
       transform: translateY(-2px);
     }
     .dark .btn:hover {
       background: rgba(147, 197, 253, 0.2);
-      box-shadow: 0 4px 12px rgba(147, 197, 253, 0.4);
+      box-shadow: 0 4px 12px rgba(147, 197, 253, 0.2);
+      transform: translateY(-2px);
     }
     .form-input, textarea {
       background: rgba(255, 255, 255, 0.6);
@@ -347,6 +349,19 @@
     spline-viewer.loading .spline-loading {
       display: block;
     }
+    #subscribe spline-viewer {
+      transform: scale(2);
+      transform-origin: center;
+    }
+    .spline-wrapper {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      z-index: -2;
+    }
     .infographic-card {
       background: rgba(255, 255, 255, 0.6);
       border: 1px solid rgba(96, 165, 250, 0.3);
@@ -490,9 +505,33 @@
     .dark .back-to-top:hover {
       background: rgba(147, 197, 253, 1);
     }
+    .loading-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.8);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #fff;
+      font-size: 1.5rem;
+      z-index: 2000;
+      opacity: 0;
+      visibility: hidden;
+      transition: opacity 0.3s ease, visibility 0.3s ease;
+    }
+    .loading-overlay.active {
+      opacity: 1;
+      visibility: visible;
+    }
   </style>
 </head>
 <body class="bg-white text-black transition-colors duration-400">
+  <!-- Loading Overlay -->
+  <div class="loading-overlay">Switching Theme...</div>
+
   <!-- Starfield -->
   <div id="starfield"></div>
 
@@ -516,7 +555,7 @@
 
   <!-- Hero Section -->
   <section id="home" class="section relative text-center min-h-[80vh] flex items-center justify-center">
-    <spline-viewer loading="lazy" url="https://prod.spline.design/QF93hExmWxJjAxAW/scene.splinecode" data-light-url="https://prod.spline.design/QF93hExmWxJjAxAW/scene.splinecode" data-dark-url="https://prod.spline.design/bPYHfwyVwULNcZok/scene.splinecode" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: -2;">
+    <spline-viewer loading="lazy" loading-anim-type="none" url="https://prod.spline.design/QF93hExmWxJjAxAW/scene.splinecode" data-light-url="https://prod.spline.design/QF93hExmWxJjAxAW/scene.splinecode" data-dark-url="https://prod.spline.design/bPYHfwyVwULNcZok/scene.splinecode" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: -2;">
       <div class="spline-loading">Loading 3D Scene...</div>
     </spline-viewer>
     <img class="fallback-image hidden" src="/assets/images/fallback.jpg" alt="Fallback Background" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; z-index: -2;" loading="lazy">
@@ -656,7 +695,7 @@
   <!-- Subscribe Section -->
   <section id="subscribe" class="section relative text-center">
     <div class="spline-wrapper">
-      <spline-viewer loading="lazy" url="https://prod.spline.design/QF93hExmWxJjAxAW/scene.splinecode" data-light-url="https://prod.spline.design/QF93hExmWxJjAxAW/scene.splinecode" data-dark-url="https://prod.spline.design/bPYHfwyVwULNcZok/scene.splinecode" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: -2;">
+      <spline-viewer loading="lazy" loading-anim-type="none" url="https://prod.spline.design/QF93hExmWxJjAxAW/scene.splinecode" data-light-url="https://prod.spline.design/QF93hExmWxJjAxAW/scene.splinecode" data-dark-url="https://prod.spline.design/bPYHfwyVwULNcZok/scene.splinecode" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%;">
         <div class="spline-loading">Loading 3D Scene...</div>
       </spline-viewer>
       <img class="fallback-image hidden" src="/assets/images/fallback-subscribe.jpg" alt="Fallback Background" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; z-index: -2;" loading="lazy">
@@ -765,7 +804,7 @@
 
   <!-- Lower Spline Section -->
   <section id="spline-lower" class="section relative text-center min-h-[80vh] flex items-center justify-center">
-    <spline-viewer loading="lazy" url="https://prod.spline.design/QF93hExmWxJjAxAW/scene.splinecode" data-light-url="https://prod.spline.design/QF93hExmWxJjAxAW/scene.splinecode" data-dark-url="https://prod.spline.design/bPYHfwyVwULNcZok/scene.splinecode" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: -2;">
+    <spline-viewer loading="lazy" loading-anim-type="none" url="https://prod.spline.design/QF93hExmWxJjAxAW/scene.splinecode" data-light-url="https://prod.spline.design/QF93hExmWxJjAxAW/scene.splinecode" data-dark-url="https://prod.spline.design/bPYHfwyVwULNcZok/scene.splinecode" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: -2;">
       <div class="spline-loading">Loading 3D Scene...</div>
     </spline-viewer>
     <img class="fallback-image hidden" src="/assets/images/fallback-lower.jpg" alt="Fallback Background" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; z-index: -2;" loading="lazy">
@@ -837,25 +876,30 @@
       const themeToggle = document.getElementById('theme-toggle');
       const sunIcon = themeToggle.querySelector('.sun-icon');
       const moonIcon = themeToggle.querySelector('.moon-icon');
+      const loadingOverlay = document.querySelector('.loading-overlay');
       themeToggle.addEventListener('click', () => {
-        document.documentElement.classList.toggle('dark');
-        const isDark = document.documentElement.classList.contains('dark');
-        sunIcon.classList.toggle('hidden', isDark);
-        moonIcon.classList.toggle('hidden', !isDark);
-        themeToggle.setAttribute('aria-pressed', isDark);
+        loadingOverlay.classList.add('active');
+        const isDark = !document.documentElement.classList.contains('dark');
         localStorage.setItem('theme', isDark ? 'dark' : 'light');
-        // Update Spline viewers
-        document.querySelectorAll('spline-viewer').forEach(viewer => {
-          viewer.setAttribute('url', isDark ? viewer.getAttribute('data-dark-url') : viewer.getAttribute('data-light-url'));
-        });
+        setTimeout(() => {
+          location.reload(); // Refresh page to load correct Spline URLs
+        }, 300); // Brief delay to show loading overlay
       });
 
-      // Load theme from localStorage
-      if (localStorage.getItem('theme') === 'dark') {
+      // Load theme from localStorage and set initial Spline URLs
+      const savedTheme = localStorage.getItem('theme');
+      if (savedTheme === 'dark') {
         document.documentElement.classList.add('dark');
         sunIcon.classList.add('hidden');
         moonIcon.classList.remove('hidden');
         themeToggle.setAttribute('aria-pressed', 'true');
+        document.querySelectorAll('spline-viewer').forEach(viewer => {
+          viewer.setAttribute('url', viewer.getAttribute('data-dark-url'));
+        });
+      } else {
+        document.querySelectorAll('spline-viewer').forEach(viewer => {
+          viewer.setAttribute('url', viewer.getAttribute('data-light-url'));
+        });
       }
 
       // Typing animation
@@ -869,7 +913,7 @@
             el.textContent += text.charAt(i);
             i++;
             el.classList.add('typing');
-            setTimeout(type, 50); // Faster typing for smoother effect
+            setTimeout(type, 50);
           } else {
             el.classList.remove('typing');
             el.classList.add('typed');
