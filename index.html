@@ -3,15 +3,23 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <meta name="description" content="Stellar Consults offers innovative digital solutions for dental and medical practices, driving efficiency and growth in 2025.">
+  <meta name="keywords" content="healthcare consulting, dental practice optimization, medical practice solutions, digital transformation">
+  <meta name="author" content="Stellar Consults">
   <title>Stellar Consults 🚀</title>
+  <!-- Preload critical resources -->
+  <link rel="preload" href="https://fonts.googleapis.com/css2?family=Inconsolata:wght@400;600;700&family=Faculty+Glyphic&display=swap" as="style">
+  <link rel="preload" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" as="style">
+  <link rel="preload" href="https://prod.spline.design/QF93hExmWxJjAxAW/scene.splinecode" as="fetch" crossorigin>
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Faculty+Glyphic&family=Inconsolata:wght@200..900&family=Limelight&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inconsolata:wght@400;600;700&family=Faculty+Glyphic&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
-  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
-  <script type="module" src="https://unpkg.com/@splinetool/viewer@1.9.96/build/spline-viewer.js"></script>
-  <link rel="stylesheet" href="/css/styles.css">
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin="" defer></script>
+  <script type="module" src="https://unpkg.com/@splinetool/viewer@1.9.96/build/spline-viewer.js" defer></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js" defer></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js" defer></script>
   <style>
     html, body {
       margin: 0;
@@ -21,7 +29,7 @@
       font-family: 'Inconsolata', monospace;
       background: #f5f6f5;
       color: #1f2a44;
-      transition: background-color 0.4s, color 0.4s;
+      transition: background-color 0.4s ease, color 0.4s ease;
       min-height: 100vh;
     }
     .dark body {
@@ -55,12 +63,20 @@
       background: rgba(255, 255, 255, 0.8);
       border-bottom: 1px solid rgba(96, 165, 250, 0.3);
       backdrop-filter: blur(8px);
-      z-index: 30;
+      z-index: 1000;
       width: 100%;
+      transition: background-color 0.3s ease, transform 0.3s ease;
     }
     .dark nav {
       background: rgba(17, 24, 39, 0.8);
       border-bottom: 1px solid rgba(147, 197, 253, 0.3);
+    }
+    nav.scrolled {
+      background: rgba(255, 255, 255, 0.95);
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+    .dark nav.scrolled {
+      background: rgba(17, 24, 39, 0.95);
     }
     footer {
       background: rgba(255, 255, 255, 0.8);
@@ -77,24 +93,28 @@
       border-radius: 8px;
       padding: clamp(1rem, 3vw, 1.5rem);
       box-shadow: 0 4px 12px rgba(96, 165, 250, 0.2);
-      pointer-events: none;
-      max-width: 100%;
+      max-width: 1200px;
       width: 100%;
       margin: 0 auto;
+      opacity: 0;
+      transform: translateY(20px);
+      transition: opacity 0.5s ease, transform 0.5s ease;
+    }
+    .container.visible {
+      opacity: 1;
+      transform: translateY(0);
     }
     .dark .container {
       background: rgba(17, 24, 39, 0.6);
       border: 1px solid rgba(147, 197, 253, 0.3);
       box-shadow: 0 4px 12px rgba(147, 197, 253, 0.2);
     }
-    .container * {
-      pointer-events: auto;
-    }
     .btn {
       background: rgba(96, 165, 250, 0.1);
       border: 1px solid rgba(96, 165, 250, 0.4);
       color: #1f2a44;
-      transition: background 0.3s, box-shadow 0.3s, transform 0.3s;
+      transition: background 0.3s ease, box-shadow 0.3s ease, transform 0.3s ease;
+      border-radius: 4px;
     }
     .dark .btn {
       color: #e5e7eb;
@@ -114,8 +134,9 @@
       background: rgba(255, 255, 255, 0.6);
       border: 1px solid rgba(96, 165, 250, 0.3);
       color: #1f2a44;
-      transition: border-color 0.3s, box-shadow 0.3s;
+      transition: border-color 0.3s ease, box-shadow 0.3s ease;
       width: 100%;
+      border-radius: 4px;
     }
     .dark .form-input, .dark textarea {
       background: rgba(17, 24, 39, 0.6);
@@ -131,11 +152,21 @@
       border-color: #93c5fd;
       box-shadow: 0 0 8px rgba(147, 197, 253, 0.5);
     }
+    .form-error {
+      color: #ef4444;
+      font-size: 0.875rem;
+      margin-top: 0.25rem;
+      display: none;
+    }
+    .form-error.active {
+      display: block;
+    }
     .text-bubble {
       background: rgba(255, 255, 255, 0.6);
       border: 1px solid rgba(96, 165, 250, 0.3);
       padding: 0.5rem 1rem;
-      transition: background 0.3s, transform 0.3s;
+      transition: background 0.3s ease, transform 0.3s ease;
+      position: relative;
     }
     .dark .text-bubble {
       background: rgba(17, 24, 39, 0.6);
@@ -161,19 +192,23 @@
       white-space: nowrap;
       z-index: 60;
       box-shadow: 0 4px 12px rgba(96, 165, 250, 0.3);
+      display: none;
     }
     .dark .bubble-popup {
       background: rgba(147, 197, 253, 0.9);
       box-shadow: 0 4px 12px rgba(147, 197, 253, 0.3);
     }
-    .service-item, .success-item, .team-item, .resource-item {
-      transition: background 0.3s, transform 0.3s;
+    .text-bubble:hover .bubble-popup {
+      display: block;
     }
-    .service-item:hover, .success-item:hover, .team-item:hover, .resource-item:hover {
+    .service-item, .team-item, .resource-item {
+      transition: background 0.3s ease, transform 0.3s ease;
+    }
+    .service-item:hover, .team-item:hover, .resource-item:hover {
       background: rgba(96, 165, 250, 0.1);
       transform: translateY(-2px);
     }
-    .dark .service-item:hover, .dark .success-item:hover, .dark .team-item:hover, .dark .resource-item:hover {
+    .dark .service-item:hover, .dark .team-item:hover, .dark .resource-item:hover {
       background: rgba(147, 197, 253, 0.1);
     }
     #map {
@@ -182,11 +217,28 @@
       box-shadow: 0 4px 12px rgba(96, 165, 250, 0.2);
       width: 100%;
       height: 400px;
+      position: relative;
     }
     .dark #map {
       background: rgba(17, 24, 39, 0.6);
       border: 1px solid rgba(147, 197, 253, 0.3);
       box-shadow: 0 4px 12px rgba(147, 197, 253, 0.2);
+    }
+    .map-loading {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      font-size: 1rem;
+      color: #1f2a44;
+      z-index: 10;
+      display: none;
+    }
+    .dark .map-loading {
+      color: #e5e7eb;
+    }
+    #map.loading .map-loading {
+      display: block;
     }
     ul {
       scrollbar-width: thin;
@@ -221,7 +273,7 @@
       position: relative;
       z-index: 10;
       width: 100%;
-      padding: clamp(2rem, 10vw, 10rem) 0;
+      padding: clamp(2rem, 5vw, 6rem) 0;
     }
     #home {
       min-height: 80vh;
@@ -256,6 +308,7 @@
       border-radius: 50%;
       animation: fall linear infinite;
       box-shadow: 0 0 5px rgba(255, 255, 255, 0.8);
+      will-change: transform, opacity;
     }
     @keyframes fall {
       0% {
@@ -278,13 +331,29 @@
       z-index: -1;
       pointer-events: none;
     }
+    .spline-loading {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      font-size: 1rem;
+      color: #1f2a44;
+      z-index: 10;
+      display: none;
+    }
+    .dark .spline-loading {
+      color: #e5e7eb;
+    }
+    spline-viewer.loading .spline-loading {
+      display: block;
+    }
     .infographic-card {
       background: rgba(255, 255, 255, 0.6);
       border: 1px solid rgba(96, 165, 250, 0.3);
       border-radius: 8px;
       padding: clamp(1rem, 2vw, 1.5rem);
       cursor: pointer;
-      transition: transform 0.3s, box-shadow 0.3s;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
     }
     .dark .infographic-card {
       background: rgba(17, 24, 39, 0.6);
@@ -325,7 +394,7 @@
       padding: 2rem;
       max-width: 90%;
       width: clamp(300px, 80vw, 500px);
-      z-index: 100;
+      z-index: 1000;
       box-shadow: 0 8px 24px rgba(96, 165, 250, 0.4);
       display: none;
     }
@@ -344,9 +413,16 @@
       font-size: 1.5rem;
       cursor: pointer;
       color: #1f2a44;
+      transition: color 0.3s ease;
     }
     .dark .popup-close {
       color: #e5e7eb;
+    }
+    .popup-close:hover {
+      color: #60a5fa;
+    }
+    .dark .popup-close:hover {
+      color: #93c5fd;
     }
     .typing-text::after {
       content: attr(data-title);
@@ -357,6 +433,62 @@
     }
     .typing-text.typed::after {
       content: none;
+    }
+    .typing-text {
+      position: relative;
+      display: inline-block;
+    }
+    .typing-text::before {
+      content: '';
+      position: absolute;
+      right: -0.5rem;
+      width: 2px;
+      height: 1.2em;
+      background: #60a5fa;
+      animation: blink 0.7s infinite;
+      display: none;
+    }
+    .dark .typing-text::before {
+      background: #93c5fd;
+    }
+    .typing-text.typing::before {
+      display: inline-block;
+    }
+    @keyframes blink {
+      50% {
+        opacity: 0;
+      }
+    }
+    .back-to-top {
+      position: fixed;
+      bottom: 2rem;
+      right: 2rem;
+      background: rgba(96, 165, 250, 0.8);
+      color: #fff;
+      width: 3rem;
+      height: 3rem;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 1000;
+      opacity: 0;
+      visibility: hidden;
+      transition: opacity 0.3s ease, visibility 0.3s ease;
+    }
+    .dark .back-to-top {
+      background: rgba(147, 197, 253, 0.8);
+    }
+    .back-to-top.visible {
+      opacity: 1;
+      visibility: visible;
+    }
+    .back-to-top:hover {
+      background: rgba(96, 165, 250, 1);
+      transform: scale(1.1);
+    }
+    .dark .back-to-top:hover {
+      background: rgba(147, 197, 253, 1);
     }
   </style>
 </head>
@@ -383,136 +515,138 @@
   </nav>
 
   <!-- Hero Section -->
-  <section id="home" class="section fade-in relative text-center min-h-[80vh] flex items-center justify-center">
-    <spline-viewer url="https://prod.spline.design/QF93hExmWxJjAxAW/scene.splinecode" data-light-url="https://prod.spline.design/QF93hExmWxJjAxAW/scene.splinecode" data-dark-url="https://prod.spline.design/bPYHfwyVwULNcZok/scene.splinecode" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: -2; pointer-events: auto;"></spline-viewer>
-    <img class="fallback-image hidden" src="/assets/images/fallback.jpg" alt="Fallback Background" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; z-index: -2;">
+  <section id="home" class="section relative text-center min-h-[80vh] flex items-center justify-center">
+    <spline-viewer loading="lazy" url="https://prod.spline.design/QF93hExmWxJjAxAW/scene.splinecode" data-light-url="https://prod.spline.design/QF93hExmWxJjAxAW/scene.splinecode" data-dark-url="https://prod.spline.design/bPYHfwyVwULNcZok/scene.splinecode" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: -2;">
+      <div class="spline-loading">Loading 3D Scene...</div>
+    </spline-viewer>
+    <img class="fallback-image hidden" src="/assets/images/fallback.jpg" alt="Fallback Background" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; z-index: -2;" loading="lazy">
     <div class="spline-overlay"></div>
     <div class="container mx-auto px-4 relative z-10">
-      <h1 class="text-5xl font-semibold mb-4 tracking-tight"><span class="typing-text" data-title="Stellar Consults 🚀" data-font-index="0"></span></h1>
-      <p class="text-base font-normal mb-6 leading-relaxed">Welcome to Stellar Consults, where we are passionately committed to <span class="highlight">transforming</span> the healthcare landscape through innovative, state-of-the-art digital solutions meticulously crafted for dental and medical practices. Our visionary approach is designed to propel your practice into the future, equipping you with the tools and strategies needed to <span class="highlight">excel</span> in 2025 and beyond. By harnessing the latest technological advancements, we empower healthcare professionals to achieve extraordinary levels of efficiency, productivity, and patient satisfaction, ensuring your practice not only meets but exceeds the demands of a rapidly evolving industry.</p>
+      <h1 class="text-5xl font-semibold mb-4 tracking-tight"><span class="typing-text" data-title="Stellar Consults 🚀" data-font-index="0">Stellar Consults 🚀</span></h1>
+      <p class="text-base font-normal mb-6 leading-relaxed">Welcome to Stellar Consults, where we are passionately committed to <span class="highlight">transforming</span> the healthcare landscape through innovative digital solutions for dental and medical practices. Our approach equips your practice with tools and strategies to <span class="highlight">excel</span> in 2025 and beyond, ensuring efficiency, productivity, and patient satisfaction.</p>
       <a href="#book" class="btn book-now inline-block px-6 py-3 text-base font-medium">Book Now 📅</a>
       <div class="text-bubble-container mt-8 flex flex-wrap justify-center gap-4">
-        <a href="#success" class="text-bubble relative px-4 py-2">26% Revenue Boost<span class="bubble-popup hidden">Boost your revenue with our proven strategies!</span></a>
-        <a href="#team" class="text-bubble relative px-4 py-2">Our Team<span class="bubble-popup hidden">Meet our expert consultants!</span></a>
-        <a href="#resources" class="text-bubble relative px-4 py-2">Insights<span class="bubble-popup hidden">Explore our industry insights!</span></a>
+        <a href="#success" class="text-bubble relative px-4 py-2">26% Revenue Boost<span class="bubble-popup">Boost your revenue with our proven strategies!</span></a>
+        <a href="#team" class="text-bubble relative px-4 py-2">Our Team<span class="bubble-popup">Meet our expert consultants!</span></a>
+        <a href="#resources" class="text-bubble relative px-4 py-2">Insights<span class="bubble-popup">Explore our industry insights!</span></a>
       </div>
-      <div id="datetime-weather" class="text-sm font-medium mt-4"></div>
+      <div id="datetime-weather" class="text-sm font-medium mt-4" aria-live="polite"></div>
     </div>
   </section>
 
   <!-- Book Online Section -->
-  <section id="book" class="section fade-in text-center">
+  <section id="book" class="section text-center">
     <div class="container mx-auto px-4 relative z-10">
-      <h2 class="text-4xl font-semibold mb-4 tracking-tight"><span class="typing-text" data-title="Book Online 📅" data-font-index="0"></span></h2>
-      <p class="text-base font-normal mb-6 leading-relaxed">At Stellar Consults, we’ve developed an exceptionally seamless and intuitive online booking system, thoughtfully engineered to integrate effortlessly with the unique operational rhythms of your dental or medical practice. Whether you’re seeking an in-depth virtual consultation to explore innovative strategies or prefer an on-site session to dive into hands-on <span class="highlight">optimization</span>, our cutting-edge platform guarantees a streamlined, hassle-free scheduling experience. This allows you to dedicate your valuable time and energy to what truly matters—providing outstanding care to your patients while we handle the logistics with precision and care.</p>
+      <h2 class="text-4xl font-semibold mb-4 tracking-tight"><span class="typing-text" data-title="Book Online 📅" data-font-index="0">Book Online 📅</span></h2>
+      <p class="text-base font-normal mb-6 leading-relaxed">Our seamless online booking system integrates effortlessly with your practice’s operations. Whether you need virtual consultations or on-site sessions for <span class="highlight">optimization</span>, our platform ensures a hassle-free scheduling experience, letting you focus on patient care.</p>
       <a href="#contact" class="btn schedule-btn inline-block px-6 py-3 text-base font-medium">Schedule Now</a>
     </div>
   </section>
 
   <!-- About Us Section -->
-  <section id="about" class="section fade-in text-center">
+  <section id="about" class="section text-center">
     <div class="container mx-auto px-4 relative z-10">
-      <h2 class="text-4xl font-semibold mb-4 tracking-tight"><span class="typing-text" data-title="About Us 🚀" data-font-index="0"></span></h2>
-      <p class="text-base font-normal mb-6 leading-relaxed">Since our inception in 2017, Stellar Consults has emerged as a trailblazer in the realm of healthcare practice optimization, founded by a distinguished team of seasoned consultants with a deep-rooted passion for elevating industry standards. Our unwavering mission is to <span class="highlight">empower</span> dental, medical, and wellness practices across the United States with unparalleled expertise and transformative digital solutions. We combine decades of proven experience with pioneering technology to enhance operational efficiency, foster team development, and drive strategic growth. Our comprehensive approach ensures that our clients not only adapt to the challenges of a dynamic healthcare environment but also flourish, establishing themselves as leaders in their respective fields.</p>
+      <h2 class="text-4xl font-semibold mb-4 tracking-tight"><span class="typing-text" data-title="About Us 🚀" data-font-index="0">About Us 🚀</span></h2>
+      <p class="text-base font-normal mb-6 leading-relaxed">Since 2017, Stellar Consults has been a trailblazer in healthcare optimization. Founded by experienced consultants, we <span class="highlight">empower</span> dental, medical, and wellness practices with expertise and transformative solutions to enhance efficiency and drive growth.</p>
     </div>
   </section>
 
   <!-- Services Section -->
-  <section id="services" class="section fade-in text-center">
+  <section id="services" class="section text-center">
     <div class="container mx-auto px-4 relative z-10">
-      <h2 class="text-4xl font-semibold mb-4 tracking-tight"><span class="typing-text" data-title="Services We Offer 🛠️" data-font-index="0"></span></h2>
+      <h2 class="text-4xl font-semibold mb-4 tracking-tight"><span class="typing-text" data-title="Services We Offer 🛠️" data-font-index="0">Services We Offer 🛠️</span></h2>
       <ul class="grid list-disc pl-6 mb-6 text-left max-w-2xl mx-auto text-base font-medium">
-        <li class="service-item mb-4 cursor-pointer relative" data-service-id="1" tabindex="0">Healthcare Operations Management Support: Leverage our advanced tools and expertly designed processes to streamline your daily operations, reducing inefficiencies and enhancing patient <span class="highlight">throughput</span>.<span class="bubble-popup hidden">Streamline your operations!</span></li>
-        <li class="service-item mb-4 cursor-pointer relative" data-service-id="2" tabindex="0">Leadership Coaching: Benefit from personalized, one-on-one coaching sessions that sharpen your decision-making skills and elevate your ability to lead and inspire your team effectively.<span class="bubble-popup hidden">Elevate your leadership!</span></li>
-        <li class="service-item mb-4 cursor-pointer relative" data-service-id="3" tabindex="0">Short & Long-Term Growth Evaluations: Receive in-depth, data-driven strategies meticulously crafted to ensure sustainable growth and long-term success for your practice.<span class="bubble-popup hidden">Plan for growth!</span></li>
-        <li class="service-item mb-4 cursor-pointer relative" data-service-id="4" tabindex="0">Structured Goal Planning with KPIs: Collaborate with us to establish clear, achievable goals supported by key performance indicators, providing a roadmap to measurable progress.<span class="bubble-popup hidden">Set clear goals!</span></li>
-        <li class="service-item mb-4 cursor-pointer relative" data-service-id="5" tabindex="0">Virtual HR Services: Access our comprehensive remote solutions for talent acquisition, regulatory compliance, and employee management, all tailored to your practice’s needs.<span class="bubble-popup hidden">Simplify HR tasks!</span></li>
-        <li class="service-item mb-4 cursor-pointer relative" data-service-id="6" tabindex="0">HRIS Implementation: Deploy sophisticated human resource information systems to optimize workforce management and improve operational oversight.<span class="bubble-popup hidden">Optimize HR systems!</span></li>
-        <li class="service-item mb-4 cursor-pointer relative" data-service-id="7" tabindex="0">Clinical Department Development: Tap into our expert guidance to enhance your clinical teams, fostering skill development and operational excellence.<span class="bubble-popup hidden">Boost clinical teams!</span></li>
-        <li class="service-item mb-4 cursor-pointer relative" data-service-id="8" tabindex="0">Buildout Guidance Plans: Navigate facility expansions with our strategic planning services, ensuring a smooth and successful growth process.<span class="bubble-popup hidden">Expand with ease!</span></li>
-        <li class="service-item mb-4 cursor-pointer relative" data-service-id="9" tabindex="0">Financial Analysis & Reporting: Gain profound insights into your practice’s financial health with our detailed analyses and actionable reporting.<span class="bubble-popup hidden">Understand your finances!</span></li>
-        <li class="service-item mb-4 cursor-pointer relative" data-service-id="10" tabindex="0">Workflow Optimization: Refine patient flow and administrative processes with our proven methods, driving efficiency and improving the overall patient experience.<span class="bubble-popup hidden">Enhance workflows!</span></li>
-        <li class="service-item mb-4 cursor-pointer relative" data-service-id="11" tabindex="0">And More: Reach out to discover additional bespoke services designed to address your practice’s specific challenges and aspirations.<span class="bubble-popup hidden">Discover more services!</span></li>
+        <li class="service-item mb-4 cursor-pointer relative" data-service-id="1" tabindex="0" role="button" aria-label="Healthcare Operations Management Support">Healthcare Operations Management Support: Streamline operations with advanced tools to enhance patient <span class="highlight">throughput</span>.<span class="bubble-popup hidden">Streamline your operations!</span></li>
+        <li class="service-item mb-4 cursor-pointer relative" data-service-id="2" tabindex="0" role="button" aria-label="Leadership Coaching">Leadership Coaching: Personalized sessions to sharpen decision-making and leadership skills.<span class="bubble-popup hidden">Elevate your leadership!</span></li>
+        <li class="service-item mb-4 cursor-pointer relative" data-service-id="3" tabindex="0" role="button" aria-label="Growth Evaluations">Growth Evaluations: Data-driven strategies for sustainable practice growth.<span class="bubble-popup hidden">Plan for growth!</span></li>
+        <li class="service-item mb-4 cursor-pointer relative" data-service-id="4" tabindex="0" role="button" aria-label="Goal Planning with KPIs">Goal Planning with KPIs: Clear, achievable goals with measurable progress.<span class="bubble-popup hidden">Set clear goals!</span></li>
+        <li class="service-item mb-4 cursor-pointer relative" data-service-id="5" tabindex="0" role="button" aria-label="Virtual HR Services">Virtual HR Services: Remote solutions for talent acquisition and compliance.<span class="bubble-popup hidden">Simplify HR tasks!</span></li>
+        <li class="service-item mb-4 cursor-pointer relative" data-service-id="6" tabindex="0" role="button" aria-label="HRIS Implementation">HRIS Implementation: Optimize workforce management with advanced systems.<span class="bubble-popup hidden">Optimize HR systems!</span></li>
+        <li class="service-item mb-4 cursor-pointer relative" data-service-id="7" tabindex="0" role="button" aria-label="Clinical Department Development">Clinical Department Development: Enhance clinical teams for operational excellence.<span class="bubble-popup hidden">Boost clinical teams!</span></li>
+        <li class="service-item mb-4 cursor-pointer relative" data-service-id="8" tabindex="0" role="button" aria-label="Buildout Guidance">Buildout Guidance: Strategic planning for facility expansions.<span class="bubble-popup hidden">Expand with ease!</span></li>
+        <li class="service-item mb-4 cursor-pointer relative" data-service-id="9" tabindex="0" role="button" aria-label="Financial Analysis & Reporting">Financial Analysis & Reporting: Detailed insights into financial health.<span class="bubble-popup hidden">Understand your finances!</span></li>
+        <li class="service-item mb-4 cursor-pointer relative" data-service-id="10" tabindex="0" role="button" aria-label="Workflow Optimization">Workflow Optimization: Improve patient flow and administrative efficiency.<span class="bubble-popup hidden">Enhance workflows!</span></li>
+        <li class="service-item mb-4 cursor-pointer relative" data-service-id="11" tabindex="0" role="button" aria-label="Additional Services">And More: Discover bespoke services for your practice’s needs.<span class="bubble-popup hidden">Discover more services!</span></li>
       </ul>
     </div>
   </section>
 
   <!-- Our Success Section with Infographics -->
-  <section id="success" class="section fade-in text-center">
+  <section id="success" class="section text-center">
     <div class="container mx-auto px-4 relative z-10">
-      <h2 class="text-4xl font-semibold mb-4 tracking-tight"><span class="typing-text" data-title="Our Success 📊" data-font-index="0"></span></h2>
-      <p class="text-base font-normal mb-6 leading-relaxed">Explore our proven impact through interactive metrics showcasing the transformative results we deliver for healthcare practices.</p>
+      <h2 class="text-4xl font-semibold mb-4 tracking-tight"><span class="typing-text" data-title="Our Success 📊" data-font-index="0">Our Success 📊</span></h2>
+      <p class="text-base font-normal mb-6 leading-relaxed">Explore our proven impact through interactive metrics showcasing transformative results.</p>
       <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-        <div class="infographic-card relative" data-success-id="1" tabindex="0">
+        <div class="infographic-card relative" data-success-id="1" tabindex="0" role="button" aria-label="View Revenue Boost Details">
           <h3 class="text-2xl font-semibold mb-2">26% Revenue Boost</h3>
           <div class="progress-bar">
             <div class="progress-fill" style="width: 26%"></div>
           </div>
-          <p class="text-base mt-2">Our clients achieve an average revenue increase of 26% within the first year.</p>
+          <p class="text-base mt-2">Average revenue increase of 26% within the first year.</p>
           <div class="infographic-popup" data-success-id="1">
-            <span class="popup-close">×</span>
+            <span class="popup-close" role="button" aria-label="Close Popup">×</span>
             <h3 class="text-xl font-semibold mb-2">26% Revenue Boost</h3>
-            <p class="text-base">Our holistic strategies optimize every facet of practice performance, driving significant revenue growth in just one year.</p>
+            <p class="text-base">Holistic strategies drive significant revenue growth in one year.</p>
           </div>
         </div>
-        <div class="infographic-card relative" data-success-id="2" tabindex="0">
+        <div class="infographic-card relative" data-success-id="2" tabindex="0" role="button" aria-label="View Productivity Gain Details">
           <h3 class="text-2xl font-semibold mb-2">33-50% Productivity Gain</h3>
           <div class="progress-bar">
             <div class="progress-fill" style="width: 50%"></div>
           </div>
-          <p class="text-base mt-2">Streamlined workflows and advanced tech boost productivity by up to 50%.</p>
+          <p class="text-base mt-2">Streamlined workflows boost productivity by up to 50%.</p>
           <div class="infographic-popup" data-success-id="2">
-            <span class="popup-close">×</span>
+            <span class="popup-close" role="button" aria-label="Close Popup">×</span>
             <h3 class="text-xl font-semibold mb-2">33-50% Productivity Gain</h3>
-            <p class="text-base">We implement efficient workflows and integrate cutting-edge systems to enhance daily operations.</p>
+            <p class="text-base">Efficient workflows and cutting-edge systems enhance operations.</p>
           </div>
         </div>
-        <div class="infographic-card relative" data-success-id="3" tabindex="0">
+        <div class="infographic-card relative" data-success-id="3" tabindex="0" role="button" aria-label="View Reduced Receivables Details">
           <h3 class="text-2xl font-semibold mb-2">40% Reduced Receivables</h3>
           <div class="progress-bar">
             <div class="progress-fill" style="width: 40%"></div>
           </div>
-          <p class="text-base mt-2">Robust revenue cycle management cuts accounts receivable by over 40%.</p>
+          <p class="text-base mt-2">Robust revenue cycle management cuts receivables by over 40%.</p>
           <div class="infographic-popup" data-success-id="3">
-            <span class="popup-close">×</span>
+            <span class="popup-close" role="button" aria-label="Close Popup">×</span>
             <h3 class="text-xl font-semibold mb-2">40% Reduced Receivables</h3>
-            <p class="text-base">Our techniques strengthen cash flow and financial stability for practices.</p>
+            <p class="text-base">Strengthen cash flow and financial stability.</p>
           </div>
         </div>
-        <div class="infographic-card relative" data-success-id="4" tabindex="0">
+        <div class="infographic-card relative" data-success-id="4" tabindex="0" role="button" aria-label="View Practices Served Details">
           <h3 class="text-2xl font-semibold mb-2">30+ Practices Served</h3>
           <div class="progress-bar">
             <div class="progress-fill" style="width: 30%"></div>
           </div>
-          <p class="text-base mt-2">We support a diverse range of clinics, from small to multi-specialty groups.</p>
+          <p class="text-base mt-2">Supporting clinics from small to multi-specialty groups.</p>
           <div class="infographic-popup" data-success-id="4">
-            <span class="popup-close">×</span>
+            <span class="popup-close" role="button" aria-label="Close Popup">×</span>
             <h3 class="text-xl font-semibold mb-2">30+ Practices Served</h3>
-            <p class="text-base">Our customized solutions benefit practices nationwide, big and small.</p>
+            <p class="text-base">Customized solutions for practices nationwide.</p>
           </div>
         </div>
-        <div class="infographic-card relative" data-success-id="5" tabindex="0">
+        <div class="infographic-card relative" data-success-id="5" tabindex="0" role="button" aria-label="View Retention Rate Details">
           <h3 class="text-2xl font-semibold mb-2">95% Retention Rate</h3>
           <div class="progress-bar">
             <div class="progress-fill" style="width: 95%"></div>
           </div>
-          <p class="text-base mt-2">Our high retention rate reflects our commitment to lasting partnerships.</p>
+          <p class="text-base mt-2">High retention reflects our lasting partnerships.</p>
           <div class="infographic-popup" data-success-id="5">
-            <span class="popup-close">×</span>
+            <span class="popup-close" role="button" aria-label="Close Popup">×</span>
             <h3 class="text-xl font-semibold mb-2">95% Retention Rate</h3>
-            <p class="text-base">We deliver consistent, high-quality results that exceed client expectations.</p>
+            <p class="text-base">Consistent, high-quality results exceed expectations.</p>
           </div>
         </div>
-        <div class="infographic-card relative" data-success-id="6" tabindex="0">
+        <div class="infographic-card relative" data-success-id="6" tabindex="0" role="button" aria-label="View Mid-Sized Practices Details">
           <h3 class="text-2xl font-semibold mb-2">$1M-$5M Practices</h3>
           <div class="progress-bar">
             <div class="progress-fill" style="width: 60%"></div>
           </div>
           <p class="text-base mt-2">Tailored solutions for mid-sized healthcare providers.</p>
           <div class="infographic-popup" data-success-id="6">
-            <span class="popup-close">×</span>
+            <span class="popup-close" role="button" aria-label="Close Popup">×</span>
             <h3 class="text-xl font-semibold mb-2">$1M-$5M Practices</h3>
-            <p class="text-base">We specialize in addressing the unique challenges of mid-sized practices.</p>
+            <p class="text-base">Addressing unique challenges of mid-sized practices.</p>
           </div>
         </div>
       </div>
@@ -520,106 +654,124 @@
   </section>
 
   <!-- Subscribe Section -->
-  <section id="subscribe" class="section fade-in relative text-center">
+  <section id="subscribe" class="section relative text-center">
     <div class="spline-wrapper">
-      <spline-viewer url="https://prod.spline.design/QF93hExmWxJjAxAW/scene.splinecode" data-light-url="https://prod.spline.design/QF93hExmWxJjAxAW/scene.splinecode" data-dark-url="https://prod.spline.design/bPYHfwyVwULNcZok/scene.splinecode" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: -2; pointer-events: auto;"></spline-viewer>
-      <img class="fallback-image hidden" src="/assets/images/fallback-subscribe.jpg" alt="Fallback Background" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; z-index: -2;">
+      <spline-viewer loading="lazy" url="https://prod.spline.design/QF93hExmWxJjAxAW/scene.splinecode" data-light-url="https://prod.spline.design/QF93hExmWxJjAxAW/scene.splinecode" data-dark-url="https://prod.spline.design/bPYHfwyVwULNcZok/scene.splinecode" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: -2;">
+        <div class="spline-loading">Loading 3D Scene...</div>
+      </spline-viewer>
+      <img class="fallback-image hidden" src="/assets/images/fallback-subscribe.jpg" alt="Fallback Background" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; z-index: -2;" loading="lazy">
     </div>
     <div class="spline-overlay"></div>
     <div class="container mx-auto px-4 relative z-10">
-      <h2 class="text-4xl font-semibold mb-4 tracking-tight"><span class="typing-text" data-title="Subscribe 📬" data-font-index="0"></span></h2>
-      <p class="text-base font-normal mb-6 leading-relaxed">Stay at the forefront of healthcare innovation by subscribing to the Stellar Consults newsletter. Our expertly curated updates deliver the latest industry insights, advanced practice management techniques, and exclusive resources directly to your inbox. Whether you’re looking to refine your strategies or stay informed on emerging trends, our newsletter ensures you’re equipped with the knowledge and tools to <span class="highlight">succeed</span> in a competitive landscape.</p>
-      <div class="max-w-md mx-auto flex flex-col gap-4">
-        <input type="email" placeholder="Email Address" class="form-input px-4 py-3 border text-base" required>
-        <button type="button" class="btn signup-btn px-6 py-3 text-base font-medium">Sign Up</button>
-      </div>
+      <h2 class="text-4xl font-semibold mb-4 tracking-tight"><span class="typing-text" data-title="Subscribe 📬" data-font-index="0">Subscribe 📬</span></h2>
+      <p class="text-base font-normal mb-6 leading-relaxed">Stay ahead with our newsletter, delivering industry insights, practice management techniques, and exclusive resources to help you <span class="highlight">succeed</span>.</p>
+      <form class="max-w-md mx-auto flex flex-col gap-4" aria-label="Newsletter Subscription" id="subscribe-form">
+        <div class="relative">
+          <input type="email" placeholder="Email Address" class="form-input px-4 py-3 border text-base" required aria-label="Email Address" id="subscribe-email">
+          <span class="form-error" id="subscribe-email-error">Please enter a valid email address.</span>
+        </div>
+        <button type="submit" class="btn signup-btn px-6 py-3 text-base font-medium">Sign Up</button>
+      </form>
     </div>
   </section>
 
   <!-- Your Stellar Team Section -->
-  <section id="team" class="section fade-in text-center">
+  <section id="team" class="section text-center">
     <div class="container mx-auto px-4 relative z-10">
-      <h2 class="text-4xl font-semibold mb-4 tracking-tight"><span class="typing-text" data-title="Your Stellar Team 👩‍⚕️" data-font-index="0"></span></h2>
+      <h2 class="text-4xl font-semibold mb-4 tracking-tight"><span class="typing-text" data-title="Your Stellar Team 👩‍⚕️" data-font-index="0">Your Stellar Team 👩‍⚕️</span></h2>
       <h3 class="text-3xl font-medium mb-4 tracking-tight">Our Experience</h3>
       <ul class="grid list-disc pl-6 mb-6 text-left max-w-2xl mx-auto text-base font-medium">
-        <li class="mb-4 team-item cursor-pointer" data-team-id="1" tabindex="0">Our team is spearheaded by consummate professionals boasting over a decade of specialized experience in healthcare consulting and management, bringing a wealth of <span class="highlight">knowledge</span> to every project.</li>
-        <li class="mb-4 team-item cursor-pointer" data-team-id="2" tabindex="0">We adopt a holistic approach to practice optimization, meticulously addressing every operational and strategic dimension to deliver comprehensive, lasting improvements.</li>
-        <li class="mb-4 team-item cursor-pointer" data-team-id="3" tabindex="0">Our customized action plans are painstakingly tailored to align with your practice’s specific needs and ambitious long-term objectives, ensuring relevance and impact.</li>
-        <li class="mb-4 team-item cursor-pointer" data-team-id="4" tabindex="0">We provide hands-on, immersive coaching for your staff, ensuring seamless adoption of new processes and fostering a culture of continuous improvement.</li>
-        <li class="mb-4 team-item cursor-pointer" data-team-id="5" tabindex="0">Our ongoing support includes regular, proactive check-ins and unfettered access to our dedicated consulting team, guaranteeing sustained success.</li>
-        <li class="mb-4 team-item cursor-pointer" data-team-id="6" tabindex="0">We employ a proprietary methodology that synergistically blends advanced data analytics with patient-centered design principles, setting a new standard in practice enhancement.</li>
-        <li class="mb-4 team-item cursor-pointer" data-team-id="7" tabindex="0">Our consistently high client satisfaction ratings reflect our unrelenting commitment to excellence and our ability to deliver transformative results time and again.</li>
+        <li class="mb-4 team-item cursor-pointer" data-team-id="1" tabindex="0" role="button" aria-label="Healthcare Consulting Experience">Professionals with over a decade of healthcare consulting experience, bringing <span class="highlight">knowledge</span> to every project.</li>
+        <li class="mb-4 team-item cursor-pointer" data-team-id="2" tabindex="0" role="button" aria-label="Holistic Approach">Holistic approach to deliver comprehensive improvements.</li>
+        <li class="mb-4 team-item cursor-pointer" data-team-id="3" tabindex="0" role="button" aria-label="Customized Action Plans">Customized action plans tailored to your practice’s needs.</li>
+        <li class="mb-4 team-item cursor-pointer" data-team-id="4" tabindex="0" role="button" aria-label="Hands-on Coaching">Hands-on coaching for seamless process adoption.</li>
+        <li class="mb-4 team-item cursor-pointer" data-team-id="5" tabindex="0" role="button" aria-label="Ongoing Support">Ongoing support with regular check-ins for sustained success.</li>
+        <li class="mb-4 team-item cursor-pointer" data-team-id="6" tabindex="0" role="button" aria-label="Proprietary Methodology">Proprietary methodology blending analytics and patient-centered design.</li>
+        <li class="mb-4 team-item cursor-pointer" data-team-id="7" tabindex="0" role="button" aria-label="Client Satisfaction">High client satisfaction reflects our commitment to excellence.</li>
       </ul>
     </div>
   </section>
 
   <!-- Our Approach Section -->
-  <section id="approach" class="section fade-in text-center">
+  <section id="approach" class="section text-center">
     <div class="container mx-auto px-4 relative z-10">
-      <h2 class="text-4xl font-semibold mb-4 tracking-tight"><span class="typing-text" data-title="Our Approach 🔍" data-font-index="0"></span></h2>
-      <p class="text-base font-normal mb-6 leading-relaxed">Our proven, methodical approach commences with an exhaustive consultation, during which we meticulously identify operational inefficiencies and untapped growth opportunities unique to your practice. Following this, we present a thorough, meticulously detailed report that outlines a bespoke project plan, complete with precise timelines, critical milestones, in-depth cost analyses, and actionable, forward-thinking strategies. Our seasoned team collaborates closely with you throughout the implementation phase, ensuring a fluid transition and tangible, measurable <span class="highlight">outcomes</span>. This structured, results-driven methodology is engineered to secure sustainable success for your practice, positioning it as a leader in the healthcare sector.</p>
+      <h2 class="text-4xl font-semibold mb-4 tracking-tight"><span class="typing-text" data-title="Our Approach 🔍" data-font-index="0">Our Approach 🔍</span></h2>
+      <p class="text-base font-normal mb-6 leading-relaxed">Our approach starts with a thorough consultation to identify inefficiencies and opportunities. We provide a detailed report with a bespoke project plan, ensuring measurable <span class="highlight">outcomes</span> and sustainable success.</p>
     </div>
   </section>
 
   <!-- Why Us Section -->
-  <section id="why-us" class="section fade-in text-center">
+  <section id="why-us" class="section text-center">
     <div class="container mx-auto px-4 relative z-10">
-      <h2 class="text-4xl font-semibold mb-4 tracking-tight"><span class="typing-text" data-title="Why Choose Us? 🤝" data-font-index="0"></span></h2>
-      <p class="text-base font-normal mb-6 leading-relaxed">At Stellar Consults, we firmly believe that impactful healthcare consulting demands a selective, client-centric philosophy. We deliberately choose to work with a limited number of clients, ensuring that each receives the individualized attention, time, and expert guidance they deserve. Whether you’re seeking a strategic partner to navigate complex challenges, specialized expertise to unlock new opportunities, or innovative tools to revolutionize your operations, we stand ready to collaborate with you. Together, we’ll craft and refine a meticulously tailored success plan that aligns with your vision. Our steadfast commitment to partnership means you’ll have a trusted ally every step of the way. Contact us today to schedule a complimentary, no-obligation consultation and discover how we can elevate your practice into a thriving, future-ready <span class="highlight">powerhouse</span>.</p>
+      <h2 class="text-4xl font-semibold mb-4 tracking-tight"><span class="typing-text" data-title="Why Choose Us? 🤝" data-font-index="0">Why Choose Us? 🤝</span></h2>
+      <p class="text-base font-normal mb-6 leading-relaxed">We work with a select number of clients to provide individualized attention. Whether navigating challenges or unlocking opportunities, we craft tailored success plans to make your practice a <span class="highlight">powerhouse</span>. Contact us for a complimentary consultation.</p>
     </div>
   </section>
 
   <!-- Resources Section -->
-  <section id="resources" class="section fade-in text-center">
+  <section id="resources" class="section text-center">
     <div class="container mx-auto px-4 relative z-10">
-      <h2 class="text-4xl font-semibold mb-4 tracking-tight"><span class="typing-text" data-title="Resources 📚" data-font-index="0"></span></h2>
-      <p class="text-base font-normal mb-6 leading-relaxed">Delve into our expansive, meticulously curated library of resources, thoughtfully designed to equip healthcare professionals with actionable, cutting-edge insights and unparalleled industry knowledge. From sophisticated revenue growth strategies to advanced workflow optimization techniques, our comprehensive collection of guides, in-depth articles, and illuminating case studies empowers your practice to achieve extraordinary <span class="highlight">success</span>. Stay ahead of the curve in the ever-evolving healthcare landscape with resources crafted by our team of experts, dedicated to your professional advancement.</p>
+      <h2 class="text-4xl font-semibold mb-4 tracking-tight"><span class="typing-text" data-title="Resources 📚" data-font-index="0">Resources 📚</span></h2>
+      <p class="text-base font-normal mb-6 leading-relaxed">Explore our library of resources, from revenue growth strategies to workflow optimization, designed to empower your practice with cutting-edge insights for <span class="highlight">success</span>.</p>
       <ul class="grid list-disc pl-6 mb-6 text-left max-w-2xl mx-auto text-base font-medium">
-        <li class="mb-4"><a href="https://stellarconsults.io/blog/revenue-growth" class="resource-item hover:scale-105 transition-transform duration-400">Comprehensive Guide to Revenue Growth for Healthcare Practices</a></li>
-        <li class="mb-4"><a href="https://stellarconsults.io/blog/workflow-optimization" class="resource-item hover:scale-105 transition-transform duration-400">Top Tips for Workflow Optimization in Dental and Medical Settings</a></li>
-        <li class="mb-4"><a href="#success" class="resource-item hover:scale-105 transition-transform duration-400">Explore Our Success Metrics and Client Achievements</a></li>
+        <li class="mb-4"><a href="https://stellarconsults.io/blog/revenue-growth" class="resource-item hover:scale-105 transition-transform duration-400" target="_blank" rel="noopener">Guide to Revenue Growth for Healthcare Practices</a></li>
+        <li class="mb-4"><a href="https://stellarconsults.io/blog/workflow-optimization" class="resource-item hover:scale-105 transition-transform duration-400" target="_blank" rel="noopener">Tips for Workflow Optimization</a></li>
+        <li class="mb-4"><a href="#success" class="resource-item hover:scale-105 transition-transform duration-400">Explore Our Success Metrics</a></li>
       </ul>
     </div>
   </section>
 
   <!-- Contact Us Section -->
-  <section id="contact" class="section fade-in text-center">
+  <section id="contact" class="section text-center">
     <div class="container mx-auto px-4 relative z-10">
-      <h2 class="text-4xl font-semibold mb-4 tracking-tight"><span class="typing-text" data-title="Contact Us 📞" data-font-index="0"></span></h2>
-      <p class="text-base font-normal mb-6 leading-relaxed">We warmly invite you to connect with Stellar Consults to explore how our expertise can propel your practice to new <span class="highlight">heights</span>. Arrange a visit to our prestigious headquarters in Lower Manhattan’s iconic One World Trade Center, or opt for a convenient virtual consultation to discuss your needs from anywhere in the nation. Our dedicated team is fully committed to providing the unparalleled support, innovative solutions, and strategic guidance necessary to help your practice thrive in today’s competitive healthcare environment.</p>
-      <p class="text-base font-medium mb-4 leading-relaxed">Stellar Consults<br>Servcorp One World Trade Center, 285 Fulton St Fl 85, New York, NY 10007, United States<br>Phone: 646-490-0576<br>Email: info@stellarconsults.io</p>
+      <h2 class="text-4xl font-semibold mb-4 tracking-tight"><span class="typing-text" data-title="Contact Us 📞" data-font-index="0">Contact Us 📞</span></h2>
+      <p class="text-base font-normal mb-6 leading-relaxed">Connect with us to explore how we can propel your practice to new <span class="highlight">heights</span>. Visit our headquarters in One World Trade Center or opt for a virtual consultation.</p>
+      <p class="text-base font-medium mb-4 leading-relaxed">Stellar Consults<br>Servcorp One World Trade Center, 285 Fulton St Fl 85, New York, NY 10007, United States<br>Phone: <a href="tel:+16464900576">646-490-0576</a><br>Email: <a href="mailto:info@stellarconsults.io">info@stellarconsults.io</a></p>
       <p class="text-base font-medium mb-4 leading-relaxed">Business Hours: Monday–Friday, 09:00 AM – 05:00 PM</p>
-      <p class="text-base font-medium mb-4 leading-relaxed">For our valued out-of-state clients, our team is prepared to travel frequently, delivering on-site support tailored to your location and needs. Contact us today to schedule a visit or engage in a detailed discussion about how we can serve you best.</p>
-      <div class="max-w-md mx-auto flex flex-col gap-4">
-        <input type="text" placeholder="Name" class="form-input px-4 py-3 border text-base" required>
-        <input type="email" placeholder="Email*" class="form-input px-4 py-3 border text-base" required>
-        <textarea placeholder="Message" class="form-input px-4 py-3 border text-base h-32" required></textarea>
+      <p class="text-base font-medium mb-4 leading-relaxed">For out-of-state clients, we offer on-site support tailored to your needs. Contact us to schedule.</p>
+      <form class="max-w-md mx-auto flex flex-col gap-4" aria-label="Contact Form" id="contact-form">
+        <div class="relative">
+          <input type="text" placeholder="Name" class="form-input px-4 py-3 border text-base" required aria-label="Name" id="contact-name">
+          <span class="form-error" id="contact-name-error">Please enter your name.</span>
+        </div>
+        <div class="relative">
+          <input type="email" placeholder="Email*" class="form-input px-4 py-3 border text-base" required aria-label="Email Address" id="contact-email">
+          <span class="form-error" id="contact-email-error">Please enter a valid email address.</span>
+        </div>
+        <div class="relative">
+          <textarea placeholder="Message" class="form-input px-4 py-3 border text-base h-32" required aria-label="Message" id="contact-message"></textarea>
+          <span class="form-error" id="contact-message-error">Please enter a message.</span>
+        </div>
         <div class="text-sm text-gray-500 text-center">This site is protected by reCAPTCHA and the Google Privacy Policy and Terms of Service apply.</div>
         <div class="flex gap-4 justify-center">
-          <button type="button" class="btn px-6 py-3 text-base font-medium">Send</button>
-          <button type="button" class="btn px-6 py-3 text-base font-medium">Cancel</button>
+          <button type="submit" class="btn px-6 py-3 text-base font-medium">Send</button>
+          <button type="reset" class="btn px-6 py-3 text-base font-medium">Cancel</button>
         </div>
-      </div>
+      </form>
       <p class="mt-4"><a href="#map-section" class="text-base font-medium hover:scale-105 transition-transform duration-400">Get Directions 📍</a></p>
     </div>
   </section>
 
   <!-- Map Section -->
-  <section id="map-section" class="section fade-in text-center">
+  <section id="map-section" class="section text-center">
     <div class="container mx-auto px-4 relative z-10">
-      <h2 class="text-4xl font-semibold mb-4 tracking-tight"><span class="typing-text" data-title="Our Location 📍" data-font-index="0"></span></h2>
-      <p class="text-base font-normal mb-6 leading-relaxed">We warmly welcome you to visit our distinguished office, strategically situated within the iconic One World Trade Center in Lower Manhattan. This prime location positions us to effectively serve clients throughout the New York metropolitan area and beyond, offering a hub of innovation and <span class="highlight">excellence</span> in healthcare consulting.</p>
-      <div id="map" class="h-[400px] border"></div>
+      <h2 class="text-4xl font-semibold mb-4 tracking-tight"><span class="typing-text" data-title="Our Location 📍" data-font-index="0">Our Location 📍</span></h2>
+      <p class="text-base font-normal mb-6 leading-relaxed">Visit our office in One World Trade Center, a hub of innovation and <span class="highlight">excellence</span> in healthcare consulting.</p>
+      <div id="map" class="h-[400px] border">
+        <div class="map-loading">Loading Map...</div>
+      </div>
     </div>
   </section>
 
   <!-- Lower Spline Section -->
-  <section id="spline-lower" class="section fade-in relative text-center min-h-[80vh] flex items-center justify-center">
-    <spline-viewer url="https://prod.spline.design/QF93hExmWxJjAxAW/scene.splinecode" data-light-url="https://prod.spline.design/QF93hExmWxJjAxAW/scene.splinecode" data-dark-url="https://prod.spline.design/bPYHfwyVwULNcZok/scene.splinecode" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: -2; pointer-events: auto;"></spline-viewer>
-    <img class="fallback-image hidden" src="/assets/images/fallback-lower.jpg" alt="Fallback Background" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; z-index: -2;">
+  <section id="spline-lower" class="section relative text-center min-h-[80vh] flex items-center justify-center">
+    <spline-viewer loading="lazy" url="https://prod.spline.design/QF93hExmWxJjAxAW/scene.splinecode" data-light-url="https://prod.spline.design/QF93hExmWxJjAxAW/scene.splinecode" data-dark-url="https://prod.spline.design/bPYHfwyVwULNcZok/scene.splinecode" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: -2;">
+      <div class="spline-loading">Loading 3D Scene...</div>
+    </spline-viewer>
+    <img class="fallback-image hidden" src="/assets/images/fallback-lower.jpg" alt="Fallback Background" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; z-index: -2;" loading="lazy">
     <div class="spline-overlay"></div>
     <div class="container mx-auto px-4 relative z-10">
-      <h2 class="text-4xl font-semibold mb-4 tracking-tight"><span class="typing-text" data-title="Explore Our Vision 🚀" data-font-index="0"></span></h2>
+      <h2 class="text-4xl font-semibold mb-4 tracking-tight"><span class="typing-text" data-title="Explore Our Vision 🚀" data-font-index="0">Explore Our Vision 🚀</span></h2>
     </div>
   </section>
 
@@ -631,22 +783,44 @@
     </div>
   </footer>
 
+  <!-- Back to Top Button -->
+  <button class="back-to-top" aria-label="Back to Top">↑</button>
+
   <script>
-    // Initialize Leaflet map
+    // Utility: Debounce function
+    function debounce(func, wait) {
+      let timeout;
+      return function (...args) {
+        clearTimeout(timeout);
+        timeout = setTimeout(() => func.apply(this, args), wait);
+      };
+    }
+
+    // Progressive enhancement
+    document.documentElement.classList.add('js-enabled');
+
     document.addEventListener('DOMContentLoaded', () => {
+      // Initialize Leaflet map
+      const mapContainer = document.getElementById('map');
+      mapContainer.classList.add('loading');
       const map = L.map('map').setView([40.7128, -74.0134], 15);
       L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-        attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>',
+        attribution: '© <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>',
         maxZoom: 18,
       }).addTo(map);
       L.marker([40.7128, -74.0134]).addTo(map)
         .bindPopup('Stellar Consults<br>One World Trade Center, NYC')
         .openPopup();
+      map.whenReady(() => {
+        mapContainer.classList.remove('loading');
+      });
 
       // Starfield animation
       const starfield = document.getElementById('starfield');
       function createStars() {
-        for (let i = 0; i < 100; i++) {
+        const isMobile = window.innerWidth <= 640;
+        const starCount = isMobile ? 30 : 50; // Fewer stars on mobile
+        for (let i = 0; i < starCount; i++) {
           const star = document.createElement('div');
           star.className = 'star';
           star.style.width = `${Math.random() * 3 + 1}px`;
@@ -659,10 +833,214 @@
       }
       createStars();
 
-      // Resize handler for responsive map
-      window.addEventListener('resize', () => {
-        map.invalidateSize();
+      // Theme toggle
+      const themeToggle = document.getElementById('theme-toggle');
+      const sunIcon = themeToggle.querySelector('.sun-icon');
+      const moonIcon = themeToggle.querySelector('.moon-icon');
+      themeToggle.addEventListener('click', () => {
+        document.documentElement.classList.toggle('dark');
+        const isDark = document.documentElement.classList.contains('dark');
+        sunIcon.classList.toggle('hidden', isDark);
+        moonIcon.classList.toggle('hidden', !isDark);
+        themeToggle.setAttribute('aria-pressed', isDark);
+        localStorage.setItem('theme', isDark ? 'dark' : 'light');
+        // Update Spline viewers
+        document.querySelectorAll('spline-viewer').forEach(viewer => {
+          viewer.setAttribute('url', isDark ? viewer.getAttribute('data-dark-url') : viewer.getAttribute('data-light-url'));
+        });
       });
+
+      // Load theme from localStorage
+      if (localStorage.getItem('theme') === 'dark') {
+        document.documentElement.classList.add('dark');
+        sunIcon.classList.add('hidden');
+        moonIcon.classList.remove('hidden');
+        themeToggle.setAttribute('aria-pressed', 'true');
+      }
+
+      // Typing animation
+      const typingElements = document.querySelectorAll('.typing-text');
+      typingElements.forEach(el => {
+        const text = el.getAttribute('data-title');
+        el.textContent = '';
+        let i = 0;
+        const type = () => {
+          if (i < text.length) {
+            el.textContent += text.charAt(i);
+            i++;
+            el.classList.add('typing');
+            setTimeout(type, 50); // Faster typing for smoother effect
+          } else {
+            el.classList.remove('typing');
+            el.classList.add('typed');
+          }
+        };
+        type();
+      });
+
+      // IntersectionObserver for section animations
+      const containers = document.querySelectorAll('.container');
+      const observer = new IntersectionObserver(
+        (entries) => {
+          entries.forEach(entry => {
+            if (entry.isIntersecting) {
+              entry.target.classList.add('visible');
+              gsap.fromTo(
+                entry.target,
+                { opacity: 0, y: 20 },
+                { opacity: 1, y: 0, duration: 0.5, ease: 'power2.out' }
+              );
+            }
+          });
+        },
+        { threshold: 0.1 }
+      );
+      containers.forEach(container => observer.observe(container));
+
+      // Infographic popup handling
+      const infographicCards = document.querySelectorAll('.infographic-card');
+      infographicCards.forEach(card => {
+        const popup = card.querySelector('.infographic-popup');
+        const closeBtn = card.querySelector('.popup-close');
+        const openPopup = () => {
+          popup.classList.add('active');
+          popup.focus();
+          gsap.fromTo(popup, { scale: 0.8, opacity: 0 }, { scale: 1, opacity: 1, duration: 0.3, ease: 'power2.out' });
+        };
+        card.addEventListener('click', openPopup);
+        card.addEventListener('keypress', (e) => {
+          if (e.key === 'Enter' || e.key === ' ') {
+            e.preventDefault();
+            openPopup();
+          }
+        });
+        closeBtn.addEventListener('click', () => {
+          gsap.to(popup, {
+            scale: 0.8,
+            opacity: 0,
+            duration: 0.3,
+            ease: 'power2.in',
+            onComplete: () => {
+              popup.classList.remove('active');
+              card.focus();
+            }
+          });
+        });
+        popup.addEventListener('keydown', (e) => {
+          if (e.key === 'Escape') {
+            closeBtn.click();
+          }
+        });
+      });
+
+      // Spline viewer error handling
+      const splineViewers = document.querySelectorAll('spline-viewer');
+      splineViewers.forEach(viewer => {
+        viewer.classList.add('loading');
+        viewer.addEventListener('load', () => {
+          viewer.classList.remove('loading');
+        });
+        viewer.addEventListener('error', () => {
+          const section = viewer.closest('section');
+          const fallbackImage = section.querySelector('.fallback-image');
+          if (fallbackImage) fallbackImage.classList.remove('hidden');
+          viewer.classList.add('hidden');
+        });
+      });
+
+      // Smooth scroll for anchor links
+      document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener('click', (e) => {
+          e.preventDefault();
+          const target = document.querySelector(anchor.getAttribute('href'));
+          if (target) {
+            target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+          }
+        });
+      });
+
+      // Form validation
+      const validateEmail = (email) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+      const forms = [
+        {
+          form: document.getElementById('subscribe-form'),
+          fields: [
+            { input: document.getElementById('subscribe-email'), error: document.getElementById('subscribe-email-error') }
+          ]
+        },
+        {
+          form: document.getElementById('contact-form'),
+          fields: [
+            { input: document.getElementById('contact-name'), error: document.getElementById('contact-name-error') },
+            { input: document.getElementById('contact-email'), error: document.getElementById('contact-email-error') },
+            { input: document.getElementById('contact-message'), error: document.getElementById('contact-message-error') }
+          ]
+        }
+      ];
+      forms.forEach(({ form, fields }) => {
+        form.addEventListener('submit', (e) => {
+          e.preventDefault();
+          let valid = true;
+          fields.forEach(({ input, error }) => {
+            if (input.type === 'email' && !validateEmail(input.value)) {
+              error.classList.add('active');
+              valid = false;
+            } else if (!input.value.trim()) {
+              error.classList.add('active');
+              valid = false;
+            } else {
+              error.classList.remove('active');
+            }
+          });
+          if (valid) {
+            alert('Form submission is not yet implemented.');
+            form.reset();
+          }
+        });
+        form.addEventListener('reset', () => {
+          fields.forEach(({ error }) => error.classList.remove('active'));
+        });
+      });
+
+      // Scroll-aware navigation
+      const nav = document.querySelector('nav');
+      const handleScroll = () => {
+        if (window.scrollY > 50) {
+          nav.classList.add('scrolled');
+        } else {
+          nav.classList.remove('scrolled');
+        }
+      };
+      window.addEventListener('scroll', debounce(handleScroll, 10));
+
+      // Back to top button
+      const backToTop = document.querySelector('.back-to-top');
+      const toggleBackToTop = () => {
+        if (window.scrollY > 300) {
+          backToTop.classList.add('visible');
+        } else {
+          backToTop.classList.remove('visible');
+        }
+      };
+      window.addEventListener('scroll', debounce(toggleBackToTop, 10));
+      backToTop.addEventListener('click', () => {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      });
+
+      // Debounced resize handler for map
+      const resizeMap = debounce(() => {
+        map.invalidateSize();
+      }, 100);
+      window.addEventListener('resize', resizeMap);
+
+      // Date and time update
+      const datetimeWeather = document.getElementById('datetime-weather');
+      function updateDateTime() {
+        const now = new Date();
+        datetimeWeather.textContent = `Current time: ${now.toLocaleString('en-US', { timeZone: 'Europe/London', dateStyle: 'full', timeStyle: 'short' })}`;
+      }
+      updateDateTime();
+      setInterval(updateDateTime, 60000);
     });
   </script>
 </body>
