@@ -123,7 +123,7 @@
       border: 1px solid rgba(147, 197, 253, 0.4);
     }
     .btn:hover {
-      background: rgbagy, 165, 250, 0.2);
+      background: rgba(96, 165, 250, 0.2);
       box-shadow: 0 4px 12px rgba(96, 165, 250, 0.4);
       transform: translateY(-2px);
     }
@@ -161,6 +161,15 @@
       display: none;
     }
     .form-error.active {
+      display: block;
+    }
+    .form-success {
+      color: #10b981;
+      font-size: 0.875rem;
+      margin-top: 0.25rem;
+      display: none;
+    }
+    .form-success.active {
       display: block;
     }
     .text-bubble {
@@ -282,10 +291,12 @@
       display: flex;
       align-items: center;
       justify-content: center;
+      padding-top: clamp(5rem, 15vw, 7rem); /* Adjusted to prevent nav overlap */
     }
     @media (max-width: 640px) {
       #home {
-        padding: 4rem 0;
+        padding-top: clamp(6rem, 20vw, 8rem); /* Extra padding for mobile */
+        padding-bottom: 2rem;
       }
       .container {
         padding: 1rem;
@@ -293,6 +304,22 @@
       nav .container {
         flex-direction: column;
         gap: 1rem;
+        padding: 0.5rem 1rem;
+      }
+      nav .container a, nav .container button {
+        font-size: 0.9rem; /* Smaller font for nav links on mobile */
+      }
+      .text-bubble-container {
+        flex-direction: column;
+        align-items: center;
+      }
+      .infographic-card {
+        padding: 0.75rem;
+      }
+      .infographic-popup {
+        width: 90%;
+        max-width: 350px;
+        padding: 1rem;
       }
     }
     #starfield {
@@ -526,6 +553,17 @@
       opacity: 1;
       visibility: visible;
     }
+    .social-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.5rem 1rem;
+      font-size: 0.9rem;
+    }
+    .social-btn svg {
+      width: 1.25rem;
+      height: 1.25rem;
+    }
   </style>
 </head>
 <body class="bg-white text-black transition-colors duration-400">
@@ -708,6 +746,7 @@
         <div class="relative">
           <input type="email" placeholder="Email Address" class="form-input px-4 py-3 border text-base" required aria-label="Email Address" id="subscribe-email">
           <span class="form-error" id="subscribe-email-error">Please enter a valid email address.</span>
+          <span class="form-success" id="subscribe-email-success">Successfully subscribed!</span>
         </div>
         <button type="submit" class="btn signup-btn px-6 py-3 text-base font-medium">Sign Up</button>
       </form>
@@ -774,8 +813,9 @@
           <span class="form-error" id="contact-name-error">Please enter your name.</span>
         </div>
         <div class="relative">
-          <input type="email" placeholder="Email*" class="form-input px-4 py-3 border text-base" required aria-label="Email Address" id="contact-email">
+          <input type="email" placeholder="Email*" class="form-input px-4 py-3 border text-base" required aria-label="Email Address" id="contact-email" value="info@stellarconsults.io">
           <span class="form-error" id="contact-email-error">Please enter a valid email address.</span>
+          <span class="form-success" id="contact-email-success">Message sent successfully!</span>
         </div>
         <div class="relative">
           <textarea placeholder="Message" class="form-input px-4 py-3 border text-base h-32" required aria-label="Message" id="contact-message"></textarea>
@@ -787,7 +827,7 @@
           <button type="reset" class="btn px-6 py-3 text-base font-medium">Cancel</button>
         </div>
       </form>
-      <p class="mt-4"><a href="#map-section" class="text-base font-medium hover:scale-105 transition-transform duration-400">Get Directions 📍</a></p>
+      <p class="mt-4"><a href="#map-section" class="text-base font-medium hover:scale-105 transition-transform duration-400">Get Directions 📍 üçüncü</p>
     </div>
   </section>
 
@@ -819,6 +859,20 @@
     <div class="container mx-auto px-4">
       <a href="#home" class="logo text-2xl font-semibold no-underline hover:scale-105 transition-transform duration-400" aria-label="Stellar Consults Home">Stellar Consults 🚀</a>
       <p class="mt-2 text-base">Copyright © 2025 Stellar Consults - All Rights Reserved.</p>
+      <div class="mt-4 flex justify-center gap-4">
+        <a href="https://linkedin.com/company/stellarconsults" class="social-btn btn" target="_blank" rel="noopener" aria-label="Follow us on LinkedIn">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M19 3a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h14m-.5 15.5v-5.3a3.26 3.26 0 0 0-3.26-3.26c-.85 0-1.84.52-2.32 1.3v-1.11h-2.79v8.37h2.79v-4.93c0-.77.62-1.4 1.39-1.4a1.4 1.4 0 0 1 1.4 1.4v4.93h2.79M6.88 8.56a1.68 1.68 0 0 0 1.68-1.68c0-.93-.75-1.69-1.68-1.69a1.69 1.69 0 0 0-1.69 1.69c0 .93.76 1.68 1.69 1.68m1.39 9.94v-8.37H5.5v8.37h2.77z"/>
+          </svg>
+          LinkedIn
+        </a>
+        <a href="https://x.com/stellarconsults" class="social-btn btn" target="_blank" rel="noopener" aria-label="Follow us on X">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
+          </svg>
+          X
+        </a>
+      </div>
     </div>
   </footer>
 
@@ -858,14 +912,14 @@
       const starfield = document.getElementById('starfield');
       function createStars() {
         const isMobile = window.innerWidth <= 640;
-        const starCount = isMobile ? 30 : 50; // Fewer stars on mobile
+        const starCount = isMobile ? 20 : 50; // Reduced stars on mobile
         for (let i = 0; i < starCount; i++) {
           const star = document.createElement('div');
           star.className = 'star';
-          star.style.width = `${Math.random() * 3 + 1}px`;
+          star.style.width = `${Math.random() * 2 + 1}px`; // Smaller stars
           star.style.height = star.style.width;
           star.style.left = `${Math.random() * 100}vw`;
-          star.style.animationDuration = `${Math.random() * 5 + 5}s`;
+          star.style.animationDuration = `${Math.random() * 4 + 4}s`; // Faster animation
           star.style.animationDelay = `${Math.random() * 5}s`;
           starfield.appendChild(star);
         }
@@ -882,11 +936,11 @@
         const isDark = !document.documentElement.classList.contains('dark');
         localStorage.setItem('theme', isDark ? 'dark' : 'light');
         setTimeout(() => {
-          location.reload(); // Refresh page to load correct Spline URLs
-        }, 300); // Brief delay to show loading overlay
+          location.reload();
+        }, 300);
       });
 
-      // Load theme from localStorage and set initial Spline URLs
+      // Load theme from localStorage
       const savedTheme = localStorage.getItem('theme');
       if (savedTheme === 'dark') {
         document.documentElement.classList.add('dark');
@@ -1003,21 +1057,21 @@
         });
       });
 
-      // Form validation
+      // Form validation and submission
       const validateEmail = (email) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
       const forms = [
         {
           form: document.getElementById('subscribe-form'),
           fields: [
-            { input: document.getElementById('subscribe-email'), error: document.getElementById('subscribe-email-error') }
+            { input: document.getElementById('subscribe-email'), error: document.getElementById('subscribe-email-error'), success: document.getElementById('subscribe-email-success') }
           ]
         },
         {
           form: document.getElementById('contact-form'),
           fields: [
-            { input: document.getElementById('contact-name'), error: document.getElementById('contact-name-error') },
-            { input: document.getElementById('contact-email'), error: document.getElementById('contact-email-error') },
-            { input: document.getElementById('contact-message'), error: document.getElementById('contact-message-error') }
+            { input: document.getElementById('contact-name'), error: document.getElementById('contact-name-error'), success: null },
+            { input: document.getElementById('contact-email'), error: document.getElementById('contact-email-error'), success: document.getElementById('contact-email-success') },
+            { input: document.getElementById('contact-message'), error: document.getElementById('contact-message-error'), success: null }
           ]
         }
       ];
@@ -1025,24 +1079,34 @@
         form.addEventListener('submit', (e) => {
           e.preventDefault();
           let valid = true;
-          fields.forEach(({ input, error }) => {
+          fields.forEach(({ input, error, success }) => {
             if (input.type === 'email' && !validateEmail(input.value)) {
               error.classList.add('active');
+              if (success) success.classList.remove('active');
               valid = false;
             } else if (!input.value.trim()) {
               error.classList.add('active');
+              if (success) success.classList.remove('active');
               valid = false;
             } else {
               error.classList.remove('active');
+              if (success) {
+                success.classList.add('active');
+                setTimeout(() => success.classList.remove('active'), 3000);
+              }
             }
           });
           if (valid) {
-            alert('Form submission is not yet implemented.');
             form.reset();
+            // Simulate successful submission
+            // In a real implementation, send data to a server here
           }
         });
         form.addEventListener('reset', () => {
-          fields.forEach(({ error }) => error.classList.remove('active'));
+          fields.forEach(({ error, success }) => {
+            error.classList.remove('active');
+            if (success) success.classList.remove('active');
+          });
         });
       });
 
@@ -1085,6 +1149,14 @@
       }
       updateDateTime();
       setInterval(updateDateTime, 60000);
+
+      // Analytics tracking (placeholder)
+      /*
+      (function() {
+        // Initialize analytics (e.g., Google Analytics, Matomo)
+        // Example: ga('create', 'UA-XXXXX-Y', 'auto'); ga('send', 'pageview');
+      })();
+      */
     });
   </script>
 </body>
